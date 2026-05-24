@@ -1,0 +1,152 @@
+---
+import { getCollection } from 'astro:content';
+
+const slides = await getCollection('slider');
+const sorted = slides
+  .filter(s => s.data.imagen)
+  .sort((a, b) => (a.data.orden ?? 0) - (b.data.orden ?? 0));
+---
+
+<style>
+  .hero-slider {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+  }
+  .hero-slider .slides {
+    display: flex;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+  }
+  .hero-slider .slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .hero-slider .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-slider .slide a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hero-slider .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border: none;
+    font-size: 28px;
+    padding: 8px 14px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 3px;
+    line-height: 1;
+  }
+  .hero-slider .arrow:hover { background: rgba(0,0,0,0.7); }
+  .hero-slider .arrow.prev { left: 16px; }
+  .hero-slider .arrow.next { right: 16px; }
+  .hero-slider .dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .hero-slider .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .hero-slider .dot.active { background: #fff; }
+
+  @media (max-width: 768px) {
+    .hero-slider { height: 280px; }
+    .hero-slider .arrow { font-size: 22px; padding: 6px 10px; }
+    .hero-slider .arrow.prev { left: 8px; }
+    .hero-slider .arrow.next { right: 8px; }
+    .hero-slider .dot { width: 10px; height: 10px; }
+    .hero-slider .dots { bottom: 10px; gap: 6px; }
+  }
+  @media (max-width: 480px) {
+    .hero-slider { height: 200px; }
+    .hero-slider .arrow { font-size: 18px; padding: 4px 8px; }
+    .hero-slider .arrow.prev { left: 4px; }
+    .hero-slider .arrow.next { right: 4px; }
+    .hero-slider .dot { width: 8px; height: 8px; }
+    .hero-slider .dots { bottom: 8px; gap: 5px; }
+  }
+</style>
+
+<div class="hero-slider" id="hero-slider">
+  <div class="slides">
+    {sorted.map(slide => (
+      <div class="slide">
+        {slide.data.enlace ? (
+          <a href={slide.data.enlace}>
+            <img src={slide.data.imagen} alt={slide.data.alt || ''} />
+          </a>
+        ) : (
+          <img src={slide.data.imagen} alt={slide.data.alt || ''} />
+        )}
+      </div>
+    ))}
+  </div>
+
+  <button class="arrow prev" aria-label="Anterior">&#10094;</button>
+  <button class="arrow next" aria-label="Siguiente">&#10095;</button>
+
+  <div class="dots">
+    {sorted.map((_, i) => (
+      <button class={`dot${i === 0 ? ' active' : ''}`} data-index={i} aria-label={`Ir a diapositiva ${i + 1}`}></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  (function() {
+    const slider = document.getElementById('hero-slider');
+    if (!slider) return;
+    const slidesEl = slider.querySelector('.slides');
+    const dots = slider.querySelectorAll('.dot');
+    const prevBtn = slider.querySelector('.arrow.prev');
+    const nextBtn = slider.querySelector('.arrow.next');
+    const total = dots.length;
+    if (total < 2) {
+      slider.querySelectorAll('.arrow, .dots').forEach(el => el.style.display = 'none');
+      return;
+    }
+    let current = 0;
+    let interval: ReturnType<typeof setInterval>;
+
+    function goTo(index: number) {
+      current = ((index % total) + total) % total;
+      (slidesEl as HTMLElement).style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    nextBtn?.addEventListener('click', () => { next(); resetAuto(); });
+    prevBtn?.addEventListener('click', () => { prev(); resetAuto(); });
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => { goTo(Number((dot as HTMLElement).dataset.index)); resetAuto(); });
+    });
+
+    function resetAuto() { clearInterval(interval); interval = setInterval(next, 5000); }
+    interval = setInterval(next, 5000);
+  })();
+</script>

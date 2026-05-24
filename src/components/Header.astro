@@ -1,0 +1,297 @@
+<style>
+  .site-header {
+    background: #353535;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+  }
+  .site-logo img { width: 200px; height: auto; display: block; }
+  .social-icons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #555;
+    color: #ccc;
+    transition: background 0.2s, color 0.2s;
+  }
+  .social-icons a:hover {
+    color: #fff;
+  }
+  .social-icons a.fb:hover { background: #1877F2; }
+  .social-icons a.tw:hover { background: #1DA1F2; }
+  .social-icons a.vm:hover { background: #1AB7EA; }
+  .social-icons svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .site-nav {
+    background: #474747;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 20;
+  }
+  .site-nav > ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .site-nav a {
+    color: #ccc;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    display: block;
+  }
+  .site-nav > ul > li > a:hover,
+  .site-nav .submenu a:hover { color: #fff; }
+
+  .has-submenu { position: relative; }
+  .has-submenu > a::after {
+    content: ' ▾';
+    font-size: 10px;
+  }
+
+  .submenu {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2a2a2a;
+    list-style: none;
+    padding: 8px 0;
+    min-width: 180px;
+    border-radius: 0 0 4px 4px;
+    z-index: 100;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .has-submenu:hover .submenu { opacity: 1; visibility: visible; }
+
+  .submenu li { text-align: left; }
+  .submenu a {
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .submenu a:hover { background: #444; }
+
+  .has-subsubmenu { position: relative; }
+  .has-subsubmenu > a::after {
+    content: ' ▸';
+    font-size: 10px;
+    float: right;
+    margin-top: 2px;
+  }
+  .subsubmenu {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: #2a2a2a;
+    list-style: none;
+    padding: 8px 0;
+    min-width: 220px;
+    border-radius: 0 4px 4px 0;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .has-subsubmenu:hover .subsubmenu { opacity: 1; visibility: visible; }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px 12px;
+    line-height: 1;
+  }
+  .menu-toggle:hover { color: #fff; }
+
+  @media (max-width: 768px) {
+    .site-header {
+      padding-right: 12px;
+    }
+    .site-logo img { width: 150px; }
+    .social-icons { gap: 8px; }
+    .social-icons a {
+      width: 28px;
+      height: 28px;
+    }
+    .social-icons svg {
+      width: 14px;
+      height: 14px;
+    }
+    .site-nav { position: relative; }
+    .site-nav > ul {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      padding: 0;
+    }
+    .site-nav.open > ul { display: flex; }
+    .site-nav > ul > li {
+      width: 100%;
+      text-align: center;
+    }
+    .site-nav > ul > li > a {
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .menu-toggle { display: block; margin: 0 auto; }
+    .has-submenu > a::after { content: ' ▾'; font-size: 10px; }
+    .submenu {
+      position: static;
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0;
+      transform: none;
+      background: #333;
+      border-radius: 0;
+      min-width: auto;
+      transition: opacity 0.35s ease, visibility 0.35s ease, max-height 0.35s ease;
+    }
+    .has-submenu.open > .submenu {
+      opacity: 1;
+      visibility: visible;
+      max-height: 600px;
+    }
+    .subsubmenu {
+      position: static;
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0;
+      background: #3a3a3a;
+      border-radius: 0;
+      min-width: auto;
+      transition: opacity 0.35s ease, visibility 0.35s ease, max-height 0.35s ease;
+    }
+    .has-subsubmenu.open > .subsubmenu {
+      opacity: 1;
+      visibility: visible;
+      max-height: 600px;
+    }
+    .submenu a, .subsubmenu a {
+      padding: 8px 16px;
+      display: block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .site-logo img { width: 120px; }
+    .social-icons a {
+      width: 24px;
+      height: 24px;
+    }
+    .social-icons svg {
+      width: 12px;
+      height: 12px;
+    }
+    .site-nav > ul > li > a {
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+  }
+</style>
+
+<header class="site-header" transition:persist>
+  <a href="/" class="site-logo">
+    <img src="/media/2022/10/manuelrojas_header.png" alt="Fundación Manuel Rojas" onerror="this.style.display='none'" />
+  </a>
+  <div class="social-icons">
+    <a href="https://facebook.com" class="fb" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="https://twitter.com" class="tw" target="_blank" rel="noopener" aria-label="Twitter" title="Twitter">
+      <svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+    </a>
+    <a href="https://vimeo.com" class="vm" target="_blank" rel="noopener" aria-label="Vimeo" title="Vimeo">
+      <svg viewBox="0 0 24 24"><path d="M23.977 6.417c-.105 2.338-1.74 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.41 0-2.578-1.294-3.553-3.881L5.322 11.4c-.72-2.584-1.488-3.878-2.312-3.878-.18 0-.806.378-1.881 1.132l-1.13-1.457a316.64 316.64 0 003.102-2.765c1.396-1.205 2.446-1.84 3.148-1.902 1.653-.16 2.672.973 3.055 3.394.412 2.61.7 4.23.862 4.86.482 2.186.97 3.282 1.53 3.282.434 0 1.088-.684 1.962-2.055.873-1.37 1.34-2.415 1.4-3.134.124-1.186-.343-1.777-1.4-1.777-.498 0-1.012.114-1.541.341 1.023-3.35 2.977-4.977 5.862-4.884 2.138.068 3.145 1.45 3.022 4.148z"/></svg>
+    </a>
+  </div>
+</header>
+
+<nav class="site-nav" transition:persist>
+  <button class="menu-toggle" aria-label="Abrir menú" onclick="this.parentElement.classList.toggle('open'); this.setAttribute('aria-label', this.parentElement.classList.contains('open') ? 'Cerrar menú' : 'Abrir menú');">&#9776;</button>
+  <ul>
+    <li><a href="/">Inicio</a></li>
+
+    <li class="has-submenu">
+      <a href="/quienes-somos/" onclick="event.preventDefault(); this.parentElement.classList.toggle('open');">Quiénes Somos</a>
+      <ul class="submenu">
+        <li><a href="/quienes-somos/fundacion/">Fundación</a></li>
+        <li><a href="/quienes-somos/integrantes/">Integrantes</a></li>
+        <li><a href="/quienes-somos/actividades/">Actividades</a></li>
+      </ul>
+    </li>
+
+    <li class="has-submenu">
+      <a href="/manuel-rojas/" onclick="event.preventDefault(); this.parentElement.classList.toggle('open');">Manuel Rojas</a>
+      <ul class="submenu">
+        <li class="has-subsubmenu">
+          <a href="/manuel-rojas/vida/biografia/" onclick="event.preventDefault(); this.parentElement.classList.toggle('open');">Vida</a>
+          <ul class="subsubmenu">
+            <li><a href="/manuel-rojas/vida/biografia/">Biografía</a></li>
+            <li><a href="/manuel-rojas/vida/cronologia/">Cronología</a></li>
+          </ul>
+        </li>
+        <li class="has-subsubmenu">
+          <a href="/manuel-rojas/obra/poesia/" onclick="event.preventDefault(); this.parentElement.classList.toggle('open');">Obra</a>
+          <ul class="subsubmenu">
+            <li><a href="/manuel-rojas/obra/poesia/">Poesía</a></li>
+            <li><a href="/manuel-rojas/obra/ensayos-2/">Ensayos</a></li>
+            <li><a href="/manuel-rojas/obra/autobiografias_viajes/">Autobiografías y Viajes</a></li>
+            <li><a href="/manuel-rojas/obra/novelas/">Novelas</a></li>
+            <li><a href="/manuel-rojas/obra/cuentos-libro/">Cuentos</a></li>
+            <li><a href="/manuel-rojas/obra/compilaciones/">Compilaciones</a></li>
+          </ul>
+        </li>
+        <li class="has-subsubmenu">
+          <a href="/manuel-rojas/galeria/fotografias/" onclick="event.preventDefault(); this.parentElement.classList.toggle('open');">Galería</a>
+          <ul class="subsubmenu">
+            <li><a href="/manuel-rojas/galeria/fotografias/">Fotografías</a></li>
+            <li><a href="/manuel-rojas/galeria/audios/">Audios</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li class="has-submenu">
+      <a href="/sobre-su-obra/premios/" onclick="event.preventDefault(); this.parentElement.classList.toggle('open');">Sobre su obra</a>
+      <ul class="submenu">
+        <li><a href="/sobre-su-obra/premios/">Premios</a></li>
+        <li><a href="/sobre-su-obra/publicaciones_estudios/">Publicaciones y Estudios</a></li>
+        <li><a href="/sobre-su-obra/exposiciones/">Exposiciones</a></li>
+        <li><a href="/sobre-su-obra/videos_y_audios/">Videos y Audios</a></li>
+      </ul>
+    </li>
+
+    <li><a href="/noticias/">Noticias</a></li>
+  </ul>
+</nav>

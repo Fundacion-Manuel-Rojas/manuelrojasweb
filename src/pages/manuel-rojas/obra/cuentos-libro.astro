@@ -1,0 +1,27 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BookGallery from '../../../components/BookGallery.astro';
+const title = "Cuentos";
+const books = [
+  { href: '/manuel-rojas/obra/hombres-del-sur/', img: '/media/2023/06/hombre_del_sur_1947-e1430266263589.png', title: 'Hombres del Sur' },
+  { href: '/manuel-rojas/obra/el-delincuente/', img: '/media/2023/06/manuelrojaseldelincuente94-e1430266804400.jpg', title: 'El Delincuente' },
+  { href: '/manuel-rojas/obra/travesia/', img: '/media/2023/06/manuelrojastravesia197316-e1430267316171.jpg', title: 'Travesía' },
+  { href: '/manuel-rojas/obra/el-bonete-maulino/', img: '/media/2023/06/manuelrojaselbonetemaulino80-300x449-1-200x300.jpg', title: 'El Bonete Maulino' },
+  { href: '/manuel-rojas/obra/el-hombre-de-la-rosa/', img: '/media/2023/06/manuelrojaselhombredelarosa-200x300-1.jpg', title: 'El Hombre de la Rosa' },
+  { href: '/manuel-rojas/obra/el-vaso-de-leche/', img: '/media/2023/06/manuelrojaselvasodelecheysusmejorescuentos-e1430268994382.jpg', title: 'El Vaso de Leche' },
+  { href: '/10914-2/', img: '/media/2023/06/manuelrojascuentos-e1430461122164.jpg', title: 'Cuentos' },
+  { href: '/manuel-rojas/obra/cuentos-completos/', img: '/media/2023/06/Cuentos-completos-Manuel-Rojas-187x300.jpeg', title: 'Cuentos Completos' },
+];
+---
+
+<Layout title={title}>
+
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Cuentos</h3>
+
+  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">Paralelamente con sus incursiones en la poesía, Manuel Rojas escribe sus primeros cuentos. El segundo premio obtenido en Buenos Aires con su cuento <i>Laguna</i> (1922) es el inicio de una trayectoria que lo llevará a ser reconocido como uno de los más importantes narradores de Chile y Latinoamérica. Entre los más de veinte cuentos escritos por Manuel Rojas destacan, además de <i>Laguna</i>, <i>El bonete maulino</i>, uno de los relatos que le contara su madre, <i>El vaso de leche</i>, que figura en casi todas las antologías hispanoamericanas y <i>Una carabina y una cotorra</i>, considerado por su autor y la crítica como el más acabado.</p>
+
+  <p class="mb-4 leading-relaxed text-gray-600">Sus numerosos cuentos fueron reunidos en diversas recopilaciones y colecciones, tales como <i>Hombres del sur</i>; <i>El delincuente</i>, <i>Travesía</i> o <i>Cuentos</i>. El año 2019 todos sus relatos junto a 6 cuentos inéditos y dispersos fueron publicados por primera vez en <i>Cuentos Completos</i> por la editorial Alfaguara.</p>
+
+  <BookGallery books={books} />
+
+</Layout>

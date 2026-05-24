@@ -1,0 +1,144 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const defaultImg = '/media/fotografias/R19-Manuel-Rojas-Retrato-1971-900x600-a2af8da699.jpg';
+
+const title = "Audios";
+---
+
+<Layout title={title}>
+
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Galería /</span> Audios</h3>
+
+  <style>
+    .audio-section {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      align-items: flex-start;
+    }
+    .audio-info { flex: 1; min-width: 0; }
+    .audio-cover { flex-shrink: 0; width: 280px; }
+    .audio-cover img {
+      width: 100%;
+      height: auto;
+      max-height: 380px;
+      object-fit: contain;
+      border-radius: 0.5rem;
+      border: 1px solid #ddd;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: block;
+    }
+    .audio-player-box {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #f8f8f8;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e5e5;
+    }
+    .audio-player-box audio { width: 100%; }
+    .audio-player-box .meta {
+      font-size: 13px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .audio-section { flex-direction: column; gap: 1rem; }
+      .audio-cover { width: 100%; }
+      .audio-cover img { max-height: 280px; }
+    }
+  </style>
+
+  <!-- Chile de arriba a abajo -->
+  <div class="audio-section">
+    <div class="audio-info">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Chile de arriba a abajo</h2>
+      <p class="mb-4 leading-relaxed text-gray-600"><strong>Chile de arriba a abajo</strong> es un disco del cantautor chileno <strong>Ángel Parra</strong> realizado conjuntamente con <strong>Manuel Rojas</strong>. El disco está compuesto por 8 canciones interpretadas por Ángel Parra; cada canción está precedida por un breve texto leído por Manuel Rojas. Tanto los textos preliminares como la letra de las canciones son de Manuel Rojas; la composición de la música e interpretación es de Ángel Parra, acompañado por <em>Los de la peña</em> – cantores e instrumentistas populares.</p>
+      <p class="mb-4 leading-relaxed text-gray-600">El vinilo de 33⅓ rpm fue editado en 1968 por <em>Arena Producciones</em> y la <em>Corporación de Radio de Chile S.A.</em></p>
+      <p class="mb-4 leading-relaxed text-gray-600"><strong>Chile de arriba a abajo</strong> es el tercer y último álbum de la serie iniciada por Ángel Parra en colaboración con algunos de los más importantes escritores y poetas de la literatura chilena. Le precedieron <em>Arte de pájaros</em> donde brillan los versos de Pablo Neruda y <em>Las Cuecas de Ángel Parra y Fernando Alegría</em>.</p>
+      <ul class="list-disc pl-6 mb-4 space-y-1 text-gray-600">
+        <li>Atacameño – Trote</li><li>El hombre del Loa – Lamento y cachimba</li>
+        <li>Salinas – Tonada punteada</li><li>Viento en el Rupanco – Parabién</li>
+        <li>El canto de Chile – Cueca</li><li>Chucao – Canción</li>
+        <li>Puerto Edén – Vals pericona</li><li>Lobero muerto – Sirilla</li>
+      </ul>
+      <div class="audio-player-box">
+        <audio preload="none" controls="controls"><source type="audio/webm" src="/media/audios/Manuel-Rojas-Angel-Parra-Chile-de-arriba-a-abajo.webm"></audio>
+        <div class="meta"><strong>Letra: Manuel Rojas – Composición: Ángel Parra</strong> / <em>1968</em> · <a href="/media/audios/Manuel-Rojas-Angel-Parra-Chile-de-arriba-a-abajo.webm" class="text-blue-500 hover:underline">Descargar</a></div>
+      </div>
+    </div>
+    <div class="audio-cover">
+      <img src="/media/2023/06/Chile_de_arriba_a_abajo.jpg" alt="Chile de arriba a abajo" />
+    </div>
+  </div>
+
+  <hr class="border-t border-gray-200 my-8">
+
+  <!-- Manuel Rojas: Voz viva de América Latina -->
+  <div class="audio-section">
+    <div class="audio-info">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Manuel Rojas: Voz viva de América Latina</h2>
+      <p class="mb-4 leading-relaxed text-gray-600">En <strong>Voz viva de América Latina</strong>, <strong>Manuel Rojas</strong> lee tres fragmentos de su novela <a href="/manuel-rojas/obra/hijo-de-ladron/" class="text-blue-500 hover:underline"><strong>Hijo de ladrón</strong></a>. El vinilo de 33⅓ rpm, fue editado en 1968 por la <em>Universidad Autónoma de México</em> (UNAM) y la <em>Unión de Universidades de América Latina</em>.</p>
+      <p class="mb-4 leading-relaxed text-gray-600">Este disco es el onceavo álbum de la serie <em>Voz viva de América Latina</em> en la que se registraron las voces de destacados escritores latinoamericanos, incluyendo –entre otros– a Benito Juárez, José Martí, Rubén Darío, Pablo Neruda, Miguel Ángel Asturias, César Vallejo, Alejo Carpentier, Juan Carlos Onetti, Gabriel García Márquez, Mario Vargas Llosa, Jorge Luis Borges, Ernesto Cardenal, Sara Ibáñez y el propio Manuel Rojas.</p>
+      <p class="mb-4 leading-relaxed text-gray-600">El disco incluye un <strong>Libreto con un Prólogo de Emmanuel Carballo</strong> y la transcripción de los tres fragmentos de <a href="/manuel-rojas/obra/hijo-de-ladron/" class="text-blue-500 hover:underline"><strong>Hijo de ladrón</strong></a> leídos por su autor.</p>
+      <ul class="list-disc pl-6 mb-4 space-y-1 text-gray-600">
+        <li>Hijo de ladrón – Inicio de la novela</li>
+        <li>Hijo de ladrón – La herida</li>
+        <li>Hijo de ladrón – Últimas páginas</li>
+      </ul>
+      <div class="audio-player-box">
+        <audio preload="none" controls="controls"><source type="audio/webm" src="/media/audios/Manuel-Rojas-Hijo-de-ladron.webm"></audio>
+        <div class="meta"><strong>Voz viva de América Latina</strong> / <em>1968</em> · <a href="/media/audios/Manuel-Rojas-Hijo-de-ladron.webm" class="text-blue-500 hover:underline">Descargar</a></div>
+      </div>
+    </div>
+    <div class="audio-cover">
+      <img src="/media/2023/06/Manuel_Rojas_UNAM.jpg" alt="Manuel Rojas UNAM" />
+    </div>
+  </div>
+
+  <hr class="border-t border-gray-200 my-8">
+
+  <!-- Manuel Rojas: El vaso de leche -->
+  <div class="audio-section">
+    <div class="audio-info">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Manuel Rojas: El vaso de leche</h2>
+      <p class="mb-4 leading-relaxed text-gray-600">En la colección de discos <em>Archivo de la Palabra</em>, <strong>Manuel Rojas</strong> lee su famoso cuento <a href="/manuel-rojas/obra/el-vaso-de-leche/" class="text-blue-500 hover:underline"><strong>El vaso de leche</strong></a>. El vinilo de 78 rpm, del que existen muy pocos ejemplares, fue grabado en 1953 por la histórica editorial <em>Cruz del Sur</em>. Dirigida por Arturo Soria y otros destacados refugiados republicanos españoles –como Mauricio Amster, José Ricardo Morales y Roser Bru–, <em>Cruz del Sur</em> tenía por objetivos rescatar los valores de la tradición literaria española y crear un diálogo con los escritores locales.</p>
+      <p class="mb-4 leading-relaxed text-gray-600">La editorial dio también cabida a diversas iniciativas culturales, en las que se enmarca la colección de discos <em>Archivo de la Palabra</em>. Los títulos aparecidos –además de <a href="/manuel-rojas/obra/el-vaso-de-leche/" class="text-blue-500 hover:underline"><strong>El vaso de leche</strong></a>– son: <em>Golfo de Penas</em> de Francisco Coloane, <em>La Araucana</em> con voz de Rubén Azocar, <em>Mi amigo Miguel de Cervantes</em> con voz de Carlos Vicuña, <em>El nuevo mundo y sus apóstoles</em> de Marcel Bataillon y <em>Sobre el buen uso de las ruinas</em> de Julián Marías.</p>
+      <div class="audio-player-box">
+        <audio preload="none" controls="controls"><source type="audio/webm" src="/media/audios/Manuel-Rojas-El-vaso-de-leche.webm"></audio>
+        <div class="meta"><strong>Cruz del Sur – Archivo de la Palabra</strong> / <em>1953</em> · <a href="/media/audios/Manuel-Rojas-El-vaso-de-leche.webm" class="text-blue-500 hover:underline">Descargar</a></div>
+      </div>
+    </div>
+    <div class="audio-cover">
+      <img src="/media/2023/06/El-Vaso-de-Leche-300x300.jpg" alt="El vaso de leche" />
+    </div>
+  </div>
+
+  <hr class="border-t border-gray-200 my-8">
+
+  <!-- Cuentos – Pancho Rojas y Poco sueldo -->
+  <div class="audio-section">
+    <div class="audio-info">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Cuentos – Pancho Rojas y Poco sueldo</h2>
+      <p class="mb-4 leading-relaxed text-gray-600">A fines de los años 60 Manuel Rojas graba dos de sus cuentos para la <em>Biblioteca Nacional</em>: <em>Poco sueldo</em> y <em>Pancho Rojas</em>. El primero proviene de la colección titulada <a href="/manuel-rojas/obra/travesia/" class="text-blue-500 hover:underline"><strong>Travesía</strong></a>, publicada en 1934. Con <em>Poco sueldo</em> Rojas inaugura la oficina como espacio para la narrativa chilena, en la que instala las diferencias sociales extremas al describir magistralmente la confrontación de funcionarios capitalinos con la miseria del pueblo.</p>
+      <p class="mb-4 leading-relaxed text-gray-600"><em>Pancho Rojas</em> es uno de los últimos cuentos escrito por el autor, publicado en 1951 en la revista <em>Occidente</em>. La narración es una profunda reflexión sobre la libertad a propósito de un queltehue que el escritor y su familia cuidan en el patio de su casa. <em>Pancho Rojas</em> destaca dentro de la serie de cuentos sobre pájaros –tales como <em>Mares libres</em> o <em>El niño y el choroy</em>–, aves que Rojas amó y conoció, siendo para él el símbolo natural y vital de la libertad.</p>
+
+      <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-6">Poco sueldo – Leído por el autor</h3>
+      <div class="audio-player-box">
+        <audio preload="none" controls="controls"><source type="audio/webm" src="/media/audios/Manuel-Rojas-Poco-sueldo.webm"></audio>
+        <div class="meta"><strong>Biblioteca Nacional</strong> / <em>1934</em> · <a href="/media/audios/Manuel-Rojas-Poco-sueldo.webm" class="text-blue-500 hover:underline">Descargar</a></div>
+      </div>
+
+      <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-6">Pancho Rojas – Leído por el autor</h3>
+      <div class="audio-player-box">
+        <audio preload="none" controls="controls"><source type="audio/webm" src="/media/audios/Manuel-Rojas-Pancho-Rojas.webm"></audio>
+        <div class="meta"><strong>Biblioteca Nacional</strong> / <em>1951</em> · <a href="/media/audios/Manuel-Rojas-Pancho-Rojas.webm" class="text-blue-500 hover:underline">Descargar</a></div>
+      </div>
+    </div>
+    <div class="audio-cover">
+      <img src="/media/2023/06/Biblioteca-Nacional-300x298.jpeg" alt="Biblioteca Nacional" />
+    </div>
+  </div>
+
+</Layout>

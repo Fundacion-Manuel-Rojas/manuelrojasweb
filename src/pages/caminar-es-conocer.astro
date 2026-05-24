@@ -1,0 +1,188 @@
+---
+import Layout from '../layouts/Layout.astro';
+const title = "Caminar es conocer";
+
+const slides = [
+  { src: "/media/exposiciones/01-BN-MANUEL-ROJAS-CAMINAR-ES-CONOCER.jpg", caption: "Caminar es conocer" },
+  { src: "/media/exposiciones/02-BN-MANUEL-ROJAS-CAMINAR-ES-CONOCER.jpg", caption: "Caminar es conocer" },
+  { src: "/media/exposiciones/03-BN-MANUEL-ROJAS-VIAJERO-SIN-FRONTERAS.jpg", caption: "Viajero sin fronteras" },
+  { src: "/media/exposiciones/04-BN-MANUEL-ROJAS-CERTIFICADOS.jpg", caption: "Certificados" },
+  { src: "/media/exposiciones/05-BN-MANUEL-ROJAS-BUENOS-AIRES-01.jpg", caption: "Buenos Aires 01" },
+  { src: "/media/exposiciones/06-BN-MANUEL-ROJAS-BUENOS-AIRES-02.jpg", caption: "Buenos Aires 02" },
+  { src: "/media/exposiciones/07-BN-MANUEL-ROJAS-SANTIAGO-01.jpg", caption: "Santiago 01" },
+  { src: "/media/exposiciones/08-BN-MANUEL-ROJAS-SANTIAGO-02.jpg", caption: "Santiago 02" },
+  { src: "/media/exposiciones/09-BN-MANUEL-ROJAS-ALLA-ARRIBA-EN-LA-CORDILLERA-01.jpg", caption: "Allá arriba en la cordillera 01" },
+  { src: "/media/exposiciones/10-BN-MANUEL-ROJAS-ALLA-ARRIBA-EN-LA-CORDILLERA-02.jpg", caption: "Allá arriba en la cordillera 02" },
+  { src: "/media/exposiciones/11-BN-MANUEL-ROJAS-VALPARAISO-01.jpg", caption: "Valparaíso 01" },
+  { src: "/media/exposiciones/12-BN-MANUEL-ROJAS-VALPARAISO-02.jpg", caption: "Valparaíso 02" },
+  { src: "/media/exposiciones/13-BN-MANUEL-ROJAS-CIUDAD-DE-LOS-CESARES.jpg", caption: "Ciudad de los Césares" },
+  { src: "/media/exposiciones/14-BN-MANUEL-ROJAS-MAULE-TIERRA-MATERNA-01.jpg", caption: "Maule, tierra materna 01" },
+  { src: "/media/exposiciones/15-BN-MANUEL-ROJAS-MAULE-TIERRA-MATERNA-02.jpg", caption: "Maule, tierra materna 02" },
+  { src: "/media/exposiciones/16-BN-MANUEL-ROJAS-A-PIE-POR-CHILE-01.jpg", caption: "A pie por Chile 01" },
+  { src: "/media/exposiciones/17-BN-MANUEL-ROJAS-A-PIE-POR-CHILE-02.jpg", caption: "A pie por Chile 02" },
+  { src: "/media/exposiciones/18-BN-MANUEL-ROJAS-VIAJERO-INMOVIL-01.jpg", caption: "Viajero inmóvil 01" },
+  { src: "/media/exposiciones/19-BN-MANUEL-ROJAS-CUBA-Y-CENTROAMERICA-01.jpg", caption: "Cuba y Centroamérica 01" },
+  { src: "/media/exposiciones/20-BN-MANUEL-ROJAS-CUBA-Y-CENTROAMERICA-02.jpg", caption: "Cuba y Centroamérica 02" },
+  { src: "/media/exposiciones/21-BN-MANUEL-ROJAS-ESTADOS-UNIDOS-01.jpg", caption: "Estados Unidos 01" },
+  { src: "/media/exposiciones/22-BN-MANUEL-ROJAS-ESTADOS-UNIDOS-02.jpg", caption: "Estados Unidos 02" },
+  { src: "/media/exposiciones/23-BN-MANUEL-ROJAS-MEXICO-01.jpg", caption: "México 01" },
+  { src: "/media/exposiciones/24-BN-MANUEL-ROJAS-MEXICO-02.jpg", caption: "México 02" },
+  { src: "/media/exposiciones/25-BN-MANUEL-ROJAS-EUROPA-Y-RUSIA-01.jpg", caption: "Europa y Rusia 01" },
+  { src: "/media/exposiciones/26-BN-MANUEL-ROJAS-EUROPA-Y-RUSIA-02.jpg", caption: "Europa y Rusia 02" },
+  { src: "/media/exposiciones/27-BN-MANUEL-ROJAS-ISRAEL.jpg", caption: "Israel" },
+  { src: "/media/exposiciones/28-BN-MANUEL-ROJAS-EL-ULTIMO-VIAJE.jpg", caption: "El último viaje" },
+  { src: "/media/exposiciones/29-BN-MANUEL-ROJAS-CREDITOS.jpg", caption: "Créditos" },
+];
+---
+
+<Layout title={title}>
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
+    <span class="text-gray-500">Exposiciones /</span> Caminar es conocer
+  </h3>
+
+  <style>
+    .slider-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      background: #111;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .slides-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .slides-track::-webkit-scrollbar { display: none; }
+    .slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      position: relative;
+      min-height: 50vh;
+    }
+    .slide img {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
+      display: block;
+    }
+    .slide .caption {
+      color: #aaa;
+      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+      text-align: center;
+    }
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      width: 40px;
+      height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .slider-arrow:hover { background: rgba(0,0,0,0.75); }
+    .slider-arrow.prev { left: 0; border-radius: 0 4px 4px 0; }
+    .slider-arrow.next { right: 0; border-radius: 4px 0 0 4px; }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: #111;
+    }
+    .slider-dots button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #666;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .slider-dots button.active { background: #fff; border-color: #fff; }
+
+    @media (max-width: 768px) {
+      .slider-arrow { width: 32px; height: 48px; font-size: 1.2rem; }
+      .slide img { max-height: 60vh; }
+    }
+  </style>
+
+  <div class="slider-wrap" id="caminar-slider">
+    <button class="slider-arrow prev" aria-label="Anterior">&#8249;</button>
+    <button class="slider-arrow next" aria-label="Siguiente">&#8250;</button>
+    <div class="slides-track" id="caminar-track">
+      {slides.map((s, i) => (
+        <div class="slide" id={`caminar-slide-${i}`}>
+          <a href={s.src} target="_blank" rel="noopener">
+            <img src={s.src} alt={s.caption} loading={i === 0 ? "eager" : "lazy"} />
+          </a>
+          <p class="caption">{String(i + 1).padStart(2, "0")} &mdash; {s.caption}</p>
+        </div>
+      ))}
+    </div>
+    <div class="slider-dots" id="caminar-dots">
+      {slides.map((_, i) => (
+        <button class={i === 0 ? "active" : ""} data-index={i} aria-label={`Ir a slide ${i + 1}`}></button>
+      ))}
+    </div>
+  </div>
+
+  <p class="text-center text-gray-500 text-md mt-6 mb-12">
+    <a href="/sobre-su-obra/exposiciones/" class="text-blue-500 hover:underline">&larr; Volver a Exposiciones</a>
+  </p>
+</Layout>
+
+<script>
+  const track = document.getElementById('caminar-track');
+  const dots = document.querySelectorAll('#caminar-dots button');
+  const prev = document.querySelector('#caminar-slider .prev');
+  const next = document.querySelector('#caminar-slider .next');
+  let current = 0;
+
+  function goTo(index) {
+    const slide = document.getElementById(`caminar-slide-${index}`);
+    if (slide) slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  }
+
+  function updateDots(index) {
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    current = index;
+  }
+
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / track.clientWidth);
+    if (idx !== current) updateDots(idx);
+  });
+
+  prev.addEventListener('click', () => {
+    const nextIdx = Math.max(0, current - 1);
+    goTo(nextIdx);
+  });
+  next.addEventListener('click', () => {
+    const nextIdx = Math.min(dots.length - 1, current + 1);
+    goTo(nextIdx);
+  });
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goTo(i));
+  });
+</script>

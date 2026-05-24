@@ -1,0 +1,183 @@
+---
+import Layout from '../layouts/Layout.astro';
+const title = "Una oscura y radiante vida";
+
+const slides = [
+  { src: "/media/exposiciones/Manuel-Rojas-Una-oscura-y-radiante-vida-2.jpg", caption: "Una oscura y radiante vida" },
+  { src: "/media/exposiciones/Expo-UORV-2-scaled-1-1142x1536.jpg", caption: "Expo UORV 2" },
+  { src: "/media/exposiciones/Expo-UORV-3-scaled-1-1280x1720.jpg", caption: "Expo UORV 3" },
+  { src: "/media/exposiciones/Expo-UORV-4-scaled-1-1142x1536.jpg", caption: "Expo UORV 4" },
+  { src: "/media/exposiciones/Expo-UORV-5-scaled-1-1142x1536.jpg", caption: "Expo UORV 5" },
+  { src: "/media/exposiciones/Expo-UORV-6-1-scaled-1-1142x1536.jpg", caption: "Expo UORV 6" },
+  { src: "/media/exposiciones/Expo-UORV-7-scaled-1-1080x1453.jpg", caption: "Expo UORV 7" },
+  { src: "/media/exposiciones/Expo-UORV-8-scaled-1-980x1318.jpg", caption: "Expo UORV 8" },
+  { src: "/media/exposiciones/Expo-UORV-10-1-scaled-1.jpg", caption: "Expo UORV 10" },
+  { src: "/media/exposiciones/Expo-UORV-11-scaled-1.jpg", caption: "Expo UORV 11" },
+  { src: "/media/exposiciones/Expo-UORV-12-scaled-1.jpg", caption: "Expo UORV 12" },
+  { src: "/media/exposiciones/Expo-UORV-13-scaled-1.jpg", caption: "Expo UORV 13" },
+  { src: "/media/exposiciones/Expo-UORV-14-scaled-1.jpg", caption: "Expo UORV 14" },
+  { src: "/media/exposiciones/Expo-UORV-15-scaled-1.jpg", caption: "Expo UORV 15" },
+  { src: "/media/exposiciones/Expo-UORV-16-scaled-1.jpg", caption: "Expo UORV 16" },
+  { src: "/media/exposiciones/Expo-UORV-17-scaled-1.jpg", caption: "Expo UORV 17" },
+  { src: "/media/exposiciones/Expo-UORV-18-scaled-1.jpg", caption: "Expo UORV 18" },
+  { src: "/media/exposiciones/Expo-UORV-19-scaled-1.jpg", caption: "Expo UORV 19" },
+  { src: "/media/exposiciones/Expo-UORV-20-scaled-1.jpg", caption: "Expo UORV 20" },
+  { src: "/media/exposiciones/Expo-UORV-21-scaled-1.jpg", caption: "Expo UORV 21" },
+  { src: "/media/exposiciones/Expo-UORV-22-1-scaled-1.jpg", caption: "Expo UORV 22" },
+  { src: "/media/exposiciones/Expo-UORV-23-scaled-1.jpg", caption: "Expo UORV 23" },
+  { src: "/media/exposiciones/Expo-UORV-24-scaled-1.jpg", caption: "Expo UORV 24" },
+  { src: "/media/exposiciones/Expo-UORV-25-scaled-1.jpg", caption: "Expo UORV 25" },
+];
+---
+
+<Layout title={title}>
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
+    <span class="text-gray-500">Exposiciones /</span> Una oscura y radiante vida
+  </h3>
+
+  <style>
+    .slider-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      background: #111;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .slides-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .slides-track::-webkit-scrollbar { display: none; }
+    .slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      position: relative;
+      min-height: 50vh;
+    }
+    .slide img {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
+      display: block;
+    }
+    .slide .caption {
+      color: #aaa;
+      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+      text-align: center;
+    }
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border: none;
+      width: 40px;
+      height: 60px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .slider-arrow:hover { background: rgba(0,0,0,0.75); }
+    .slider-arrow.prev { left: 0; border-radius: 0 4px 4px 0; }
+    .slider-arrow.next { right: 0; border-radius: 4px 0 0 4px; }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: #111;
+    }
+    .slider-dots button {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #666;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .slider-dots button.active { background: #fff; border-color: #fff; }
+
+    @media (max-width: 768px) {
+      .slider-arrow { width: 32px; height: 48px; font-size: 1.2rem; }
+      .slide img { max-height: 60vh; }
+    }
+  </style>
+
+  <div class="slider-wrap" id="uorv-slider">
+    <button class="slider-arrow prev" aria-label="Anterior">&#8249;</button>
+    <button class="slider-arrow next" aria-label="Siguiente">&#8250;</button>
+    <div class="slides-track" id="uorv-track">
+      {slides.map((s, i) => (
+        <div class="slide" id={`uorv-slide-${i}`}>
+          <a href={s.src} target="_blank" rel="noopener">
+            <img src={s.src} alt={s.caption} loading={i === 0 ? "eager" : "lazy"} />
+          </a>
+          <p class="caption">{s.caption}</p>
+        </div>
+      ))}
+    </div>
+    <div class="slider-dots" id="uorv-dots">
+      {slides.map((_, i) => (
+        <button class={i === 0 ? "active" : ""} data-index={i} aria-label={`Ir a slide ${i + 1}`}></button>
+      ))}
+    </div>
+  </div>
+
+  <p class="text-center text-gray-500 text-md mt-6 mb-12">
+    <a href="/sobre-su-obra/exposiciones/" class="text-blue-500 hover:underline">&larr; Volver a Exposiciones</a>
+  </p>
+</Layout>
+
+<script>
+  const track = document.getElementById('uorv-track');
+  const dots = document.querySelectorAll('#uorv-dots button');
+  const prev = document.querySelector('#uorv-slider .prev');
+  const next = document.querySelector('#uorv-slider .next');
+  let current = 0;
+
+  function goTo(index) {
+    const slide = document.getElementById(`uorv-slide-${index}`);
+    if (slide) slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  }
+
+  function updateDots(index) {
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    current = index;
+  }
+
+  track.addEventListener('scroll', () => {
+    const idx = Math.round(track.scrollLeft / track.clientWidth);
+    if (idx !== current) updateDots(idx);
+  });
+
+  prev.addEventListener('click', () => {
+    const nextIdx = Math.max(0, current - 1);
+    goTo(nextIdx);
+  });
+  next.addEventListener('click', () => {
+    const nextIdx = Math.min(dots.length - 1, current + 1);
+    goTo(nextIdx);
+  });
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goTo(i));
+  });
+</script>

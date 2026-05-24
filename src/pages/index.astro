@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Slider from '../components/Slider.astro';
+import { getCollection } from 'astro:content';
+
+const title = "Fundación Manuel Rojas";
+
+const todasNoticias = await getCollection('noticias');
+const noticiasDestacadas = todasNoticias
+  .filter(n => n.data.destacado === true)
+  .sort((a, b) => {
+    const dateA = a.data.fecha ? new Date(a.data.fecha).getTime() : 0;
+    const dateB = b.data.fecha ? new Date(b.data.fecha).getTime() : 0;
+    return dateB - dateA;
+  })
+  .slice(0, 3);
+---
+
+<Layout title={title}>
+  <Slider slot="full-width" />
+
+  {
+    noticiasDestacadas.length > 0 && (
+      <>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Noticias</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {noticiasDestacadas.map((noticia) => (
+            <a
+              href={`/noticias/${noticia.id}/`}
+              class="group block bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-200"
+            >
+              {noticia.data.imagen ? (
+                <div class="aspect-[16/10] overflow-hidden bg-gray-100">
+                  <img
+                    src={noticia.data.imagen}
+                    alt={noticia.data.subtitle || noticia.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="aspect-[16/10] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                  <span class="text-4xl text-gray-300 font-serif">
+                    {noticia.data.subtitle?.charAt(0) || noticia.data.title?.charAt(0) || 'N'}
+                  </span>
+                </div>
+              )}
+              <div class="p-4">
+                <p class="text-xs text-gray-400 mb-2">
+                  {noticia.data.fecha
+                    ? new Date(noticia.data.fecha).toLocaleDateString('es-CL', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : ''}
+                </p>
+                <h3 class="text-base font-bold text-gray-800 mb-2 group-hover:text-blue-500 transition-colors leading-snug">
+                  {noticia.data.subtitle || noticia.data.title}
+                </h3>
+                {noticia.data.extracto && (
+                  <p class="text-sm text-gray-500 leading-relaxed line-clamp-3">
+                    {noticia.data.extracto}
+                  </p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </>
+    )
+  }
+
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Novelas</h2>
+  <a href="/manuel-rojas/obra/novelas/">
+    <img src="/media/2023/05/manuel_rojas-novelas_home.jpg" alt="Novelas de Manuel Rojas" class="rounded-lg border border-gray-300 shadow-sm max-w-full h-auto my-4 mx-auto block" />
+  </a>
+
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Biografía</h2>
+  <a href="/manuel-rojas/vida/biografia/">
+    <img src="/media/2023/05/manuel_rojas_home.jpg" alt="Manuel Rojas" class="rounded-lg border border-gray-300 shadow-sm max-w-full h-auto my-4 mx-auto block" />
+  </a>
+
+  <p class="mb-4 leading-relaxed text-gray-600"><em>«Escribí poesías, porque un amigo me animó a que lo hiciera; cuentista, porque quise ganar, estando en muy mala situación económica, un premio en un concurso; novelista, porque ya no podía detenerme». Desde el relato breve, Manuel Rojas transita a la novela como un paso natural y lógico, donde el material literario proviene mayoritariamente de las experiencias de su propia vida. Primero en «Lanchas en la bahía»…</em></p>
+
+  <p class="mb-4 leading-relaxed text-gray-600">Manuel Rojas (Buenos Aires, 1896 – Santiago, 1973) es reconocido como uno de los autores más notables de la literatura chilena. Su obra más difundida, «Hijo de ladrón», se considera como la mejor novela chilena del siglo XX…</p>
+</Layout>

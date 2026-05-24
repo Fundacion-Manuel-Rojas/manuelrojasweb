@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const noticias = await getCollection('noticias');
+  return noticias.map((n) => ({
+    params: { slug: n.id },
+    props: { noticia: n },
+  }));
+}
+
+const { noticia } = Astro.props;
+
+const title = noticia.data.subtitle || noticia.data.title;
+---
+
+<Layout 
+  title={title}
+  description={noticia.data.extracto}
+  image={noticia.data.imagen}
+>
+  <div class="text-lg text-gray-400 mb-2 pt-6 pb-3 border-b border-gray-200">
+    <span class="text-gray-500">
+      <a href="/" class="hover:text-blue-500 transition-colors">Inicio</a> /
+      <a href="/noticias/" class="hover:text-blue-500 transition-colors">Noticias</a> /
+    </span>
+    {noticia.data.subtitle || noticia.data.title}
+  </div>
+
+  {
+    noticia.data.imagen && (
+      <div class="mb-8 rounded-lg overflow-hidden">
+        <img
+          src={noticia.data.imagen}
+          alt={noticia.data.subtitle || noticia.data.title}
+          class="w-full max-h-96 object-cover rounded-lg border border-gray-200 shadow-sm"
+        />
+      </div>
+    )
+  }
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-2">{noticia.data.subtitle || noticia.data.title}</h1>
+  {
+    noticia.data.fecha && (
+      <p class="text-sm text-gray-400 mb-6">
+        {new Date(noticia.data.fecha).toLocaleDateString('es-CL', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </p>
+    )
+  }
+  {
+    noticia.data.autor && (
+      <p class="text-sm text-gray-500 mb-4 italic">Por {noticia.data.autor}</p>
+    )
+  }
+  <div class="prose prose-lg max-w-none" set:html={noticia.body || ''} />
+</Layout>

@@ -1,0 +1,25 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BookGallery from '../../../components/BookGallery.astro';
+const title = "Poesía";
+const books = [
+  { href: '/manuel-rojas/obra/poeticas/', img: '/media/2023/06/poeticas_chica.jpg', title: 'Poéticas' },
+  { href: '/manuel-rojas/obra/tonada-del-transeunte/', img: '/media/2023/06/manuelrojastonadadeltranseunte_chica.jpg', title: 'Tonada del Transeunte' },
+  { href: '/manuel-rojas/obra/deshecha-rosa/', img: '/media/2023/06/deshecharosa_19961.jpg', title: 'Deshecha Rosa' },
+  { href: '/manuel-rojas/obra/canciones-para-ellos/', img: '/media/2023/06/Canciones-para-ellos-chica-216x300.jpg', title: 'Canciones para ellos' },
+];
+---
+
+<Layout title={title}>
+
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Poesía</h3>
+
+  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">Poeta perseverante de juventud e intermitente en años posteriores, la lírica estaría siempre presente en el quehacer literario de Manuel Rojas. Se inicia con tempranos versos de inspiración modernista, de los cuales diría años después: <i>«empecé a escribir poesías y produje las peores que se hayan escrito en el hemisferio sur»</i>. La publicación de su soneto <i>Gusano</i>, en 1917, le otorga un primer reconocimiento de la crítica y lo alienta para publicar, en la ciudad de Mendoza, una primera colección de 9 poemas con el título de <i>Poéticas</i>.</p>
+
+  <p class="mb-4 leading-relaxed text-gray-600"> Posteriormente en Chile, una treintena de poesías aparecieron dispersas en revistas y periódicos, siendo reunidas en 1927 en el libro <i>Tonada del transeúnte</i>. Más tarde publica su poema mayor y más extenso, con el nombre de <i>Deshecha rosa</i>, dedicado a su mujer ya fallecida María Baeza —ella misma poeta— y a la que le había compuesto a mano su desconocida obra: <i>Canciones para ellos</i>.</p>
+
+  <p class="mb-4 leading-relaxed text-gray-600">Los poemas de Manuel Rojas terminaron siendo alabados y destacados por los principales autores y críticos de la época.</p>
+
+  <BookGallery books={books} />
+
+</Layout>

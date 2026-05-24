@@ -1,0 +1,37 @@
+{
+  "name": "manuelrojas-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "SKIP_KEYSTATIC=true astro build",
+    "preview": "astro preview",
+    "scrape": "node scripts/scrape.mjs"
+  },
+  "dependencies": {
+    "@astrojs/alpinejs": "^0.5.0",
+    "@astrojs/markdoc": "^1.0.4",
+    "@astrojs/react": "^5.0.4",
+    "@keystatic/astro": "^5.0.6",
+    "@keystatic/core": "^0.5.50",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/alpinejs": "^3.13.11",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "alpinejs": "^3.15.12",
+    "astro": "^6.3.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0",
+    "node-fetch": "^3.3.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}

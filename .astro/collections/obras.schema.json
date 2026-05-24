@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "categoria": {
+      "type": "string"
+    },
+    "ano": {
+      "type": "number"
+    },
+    "imagen": {
+      "type": "string"
+    },
+    "primeraEdicion": {
+      "type": "string"
+    },
+    "ultimaEdicion": {
+      "type": "string"
+    },
+    "linkCompra": {
+      "type": "string"
+    },
+    "linkPDF": {
+      "type": "string"
+    },
+    "descripcion": {
+      "type": "string"
+    },
+    "orden": {
+      "type": "number"
+    },
+    "obrasRelacionadas": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "categoria"
+  ]
+}

@@ -1,0 +1,203 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  twitterCard?: string;
+}
+const { title, description, image, twitterCard = 'summary_large_image' } = Astro.props;
+const siteUrl = 'https://manuelrojas.cl';
+const defaultDescription = 'Fundación Manuel Rojas - Preservando y difundiendo la obra del escritor chileno Manuel Rojas';
+const defaultImage = '/media/default_noticias.jpg';
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} | Fundación Manuel Rojas</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet" />
+  <ClientRouter />
+  
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description || defaultDescription} />
+  <meta property="og:image" content={image || defaultImage} />
+  <meta property="og:url" content={Astro.url.href} />
+  <meta property="og:type" content="website" />
+  
+  <meta name="twitter:card" content={twitterCard} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description || defaultDescription} />
+  <meta name="twitter:image" content={image || defaultImage} />
+  <meta name="twitter:site" content="@fundacionmr" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Alice', Georgia, 'Times New Roman', serif;
+      font-size: 18px;
+      color: #666;
+      background: #fff url('/media/background.webp') no-repeat fixed center center;
+      background-size: cover;
+      line-height: 1.7em;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: #5A9AB5; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; height: auto; }
+    #main-content img { max-width: 100%; height: auto; }
+
+    .site-wrapper {
+      max-width: 1280px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .inner { width: 80%; max-width: 1080px; margin: auto; position: relative; }
+
+    #main-content { padding-bottom: 40px; }
+    .content-wrapper {
+      max-width: 1080px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 80%;
+    }
+    .content-wrapper :global(img) {
+      max-width: 100%;
+      height: auto;
+    }
+    .content-wrapper > :global(img),
+    .content-wrapper > :global(a) > :global(img) {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      max-height: 550px;
+      max-width: min(100%, 500px);
+      height: auto;
+      width: auto;
+      object-fit: scale-down;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .content-wrapper :global(input[type="text"]),
+    .content-wrapper :global(input[type="email"]),
+    .content-wrapper :global(input[type="tel"]),
+    .content-wrapper :global(input[type="number"]),
+    .content-wrapper :global(textarea) {
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 16px;
+    }
+    .content-wrapper :global(input[type="submit"]) {
+      background: #353535;
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .content-wrapper :global(input[type="submit"]:hover) {
+      background: #555;
+    }
+
+    @media (max-width: 1024px) {
+      body { font-size: 17px; }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        font-size: 16px;
+        background-attachment: scroll;
+      }
+      .content-wrapper { width: 94%; padding: 0 8px; }
+      .site-wrapper {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+      }
+      .inner { width: 90%; }
+      .content-wrapper > :global(img),
+      .content-wrapper > :global(a) > :global(img) {
+        max-height: 400px;
+        max-width: min(100%, 400px);
+      }
+      .content-wrapper :global(h1) { font-size: 1.5rem; }
+      .content-wrapper :global(h2) { font-size: 1.25rem; }
+      .content-wrapper :global(h3) { font-size: 1.1rem; }
+      .content-wrapper :global(table) { font-size: 14px; }
+      .content-wrapper :global(table) tbody,
+      .content-wrapper :global(table) tr { display: block; }
+      .content-wrapper :global(table) tr { height: auto !important; margin-bottom: 1rem; }
+      .content-wrapper :global(table) td,
+      .content-wrapper :global(table) th {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px;
+      }
+      .content-wrapper :global(table) td:not(:last-child) {
+        margin-bottom: 12px;
+      }
+      .content-wrapper :global(.first-letter\:text-5xl)::first-letter {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content-wrapper { width: 96%; padding: 0 4px; }
+      #main-content { padding-bottom: 24px; }
+      .content-wrapper > :global(img),
+      .content-wrapper > :global(a) > :global(img) {
+        max-height: 300px;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 1320px) {
+      .site-wrapper {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-wrapper">
+    <Header />
+
+    <section id="main-content" transition:animate="fade">
+      <slot name="full-width" />
+      <div class="content-wrapper">
+        <slot />
+      </div>
+    </section>
+
+    <Footer />
+  </div>
+</body>
+</html>

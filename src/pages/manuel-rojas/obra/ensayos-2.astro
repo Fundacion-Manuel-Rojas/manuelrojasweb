@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BookGallery from '../../../components/BookGallery.astro';
+const title = "Ensayos";
+const books = [
+  { href: '/manuel-rojas/obra/ensayos-i-el-arbol-siempre-verde/', img: '/media/2025/07/Manuel-Rojas-Ensayos-Completos-I-scaled.jpg', title: 'Ensayos Completos I' },
+  { href: '/manuel-rojas/obra/ensayos-completos-i/', img: '/media/2025/07/Manuel-Rojas-Ensayos-Completos-II-scaled.jpg', title: 'Ensayos Completos II' },
+  { href: '/manuel-rojas/obra/mariano-latorre-algunos-de-sus-mejores-cuentos/', img: '/media/2023/06/manuelrojasmarianolatorrealgunodesusmejorescuentos98-200x300-1.jpg', title: 'Mariano Latorre' },
+  { href: '/manuel-rojas/obra/el-arbol-siempre-verde/', img: '/media/2023/06/manuelrojaselarbolsiempreverde95-200x300-1.jpg', title: 'El árbol siempre verde' },
+  { href: '/manuel-rojas/obra/chile-5-navegantes-y-1-astronomo/', img: '/media/2023/06/manuelrojaschile5navegantesy1astronomo74-200x300-1.jpg', title: 'Chile: 5 navegantes y un astrónomo' },
+  { href: '/manuel-rojas/obra/jose-joaquin-vallejo/', img: '/media/2023/06/manuelrojasjosejoaquinvallejos51-200x300-1.jpg', title: 'José Joaquín Vallejo' },
+  { href: '/manuel-rojas/obra/los-costumbristas-chilenos/', img: '/media/2023/06/manuelrojasloscostumbristaschilenos55-300x449-1.jpg', title: 'Los costumbristas chilenos' },
+  { href: '/manuel-rojas/obra/alberto-edwards-cuentos-fantasticos/', img: '/media/2023/06/manuelrojasalbertoedwards31-200x300-1.jpg', title: 'Alberto Edwards' },
+  { href: '/manuel-rojas/obra/blest-gana-sus-mejores-paginas/', img: '/media/2023/06/manuelrojasblestganasusmejorespaginas15-200x300-1.jpg', title: 'Blest Gana' },
+  { href: '/manuel-rojas/obra/esencias-del-pais-chileno-poesias/', img: '/media/2023/06/manuelrojasesenciadelpaischilenopoesia11-200x300-1.jpg', title: 'Esencias del país chileno' },
+  { href: '/manuel-rojas/obra/apuntes-sobre-la-expresion-escrita/', img: '/media/2023/06/manuelrojasapuntessobrelaexpresionescrita74-200x300-1.jpg', title: 'Apuntes sobre la Expresión Escrita' },
+  { href: '/manuel-rojas/obra/historia-breve-de-la-literatura-chilena/', img: '/media/2023/06/manuelrojashistoriabrevedelaliteraturachilena12-200x300-1.jpg', title: 'Historia breve de la literatura chilena' },
+  { href: '/2015/04/24/de-la-poesia-a-la-revolucion-ensayo/', img: '/media/2025/07/manuelrojasdelapoesiaalarevolucion38-1.jpg', title: 'De la poesía a la revolución' },
+];
+---
+
+<Layout title={title}>
+
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Ensayos</h3>
+
+  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">Las crónicas y ensayos literarios de Manuel Rojas abarcan buena parte de su producción escrita y en ellos se aprecia la amplitud de sus intereses intelectuales. La reflexión acerca de su propio oficio de escritor está presente en diversos textos, desde la conferencia que dictara en 1960 en Concepción —conocida como <i>Apuntes sobre la expresión escrita</i>— hasta el ensayo <i>De la poesía a la revolución</i>, donde Rojas define su particular visión acerca de la función de la literatura y la responsabilidad social del escritor.</p>
+
+  <p class="mb-4 leading-relaxed text-gray-600">Una importante faceta es la de antólogo y prologuista: bajo los auspicios de la editorial Zig-Zag realizó ediciones y estudios preliminares de algunos de los principales autores de la tradición narrativa chilena, tales como <i>Los costumbristas chilenos</i>, las páginas selectas de <i>Alberto Edwards</i> y <i>Blest Gana</i>, y una selección de los mejores cuentos de <i>Mariano Latorre</i>. A ello se suma el estudio introductorio al volumen de <i>José Joaquín Vallejo</i>. También escribió un documentado artículo sobre los navegantes y el astrónomo que descubrieron los mares del sur de Chile, bajo el título <i>Chile: 5 navegantes y 1 astrónomo</i>, entre otros documentos de carácter histórico. Su <i>Historia breve de la literatura chilena</i>, publicada en México en 1965, fue un intento por ofrecer una visión de conjunto de la evolución de nuestras letras.</p>
+
+  <BookGallery books={books} />
+
+</Layout>

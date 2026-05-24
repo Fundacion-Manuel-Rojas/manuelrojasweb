@@ -1,0 +1,44 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const title = "Exposiciones";
+---
+
+<Layout title={title}>
+
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
+    <span class="text-gray-500">Sobre su obra /</span> Exposiciones
+  </h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+
+    <a href="/caminar-es-conocer/" class="group block bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
+        <img
+          src="/media/exposiciones/01-BN-MANUEL-ROJAS-CAMINAR-ES-CONOCER.jpg"
+          alt="Caminar es conocer"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <div class="p-4">
+        <h2 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">Caminar es conocer</h2>
+        <p class="text-sm text-gray-500 mt-1">29 láminas &mdash; Ver exposición &rarr;</p>
+      </div>
+    </a>
+
+    <a href="/una-oscura-y-radiante-vida/" class="group block bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      <div class="aspect-[3/4] bg-gray-100 overflow-hidden">
+        <img
+          src="/media/exposiciones/Manuel-Rojas-Una-oscura-y-radiante-vida-2.jpg"
+          alt="Una oscura y radiante vida"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <div class="p-4">
+        <h2 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">Una oscura y radiante vida</h2>
+        <p class="text-sm text-gray-500 mt-1">24 láminas &mdash; Ver exposición &rarr;</p>
+      </div>
+    </a>
+
+  </div>
+
+</Layout>

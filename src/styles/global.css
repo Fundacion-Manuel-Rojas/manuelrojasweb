@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --color-blue-500: #5A9AB5;
+}
+
+.obra-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.obra-images > a,
+.obra-images > img {
+  flex-shrink: 0;
+}
+.obra-images img {
+  margin: 0;
+  max-height: 500px;
+  max-width: min(100%, 450px);
+  height: auto;
+  width: auto;
+  object-fit: scale-down;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 1rem 0;
+}
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+div:has(> iframe[style*="position: absolute"]) {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 1rem 0;
+}
+div:has(> iframe[style*="position: absolute"]) iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .obra-images {
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  .obra-images img {
+    max-height: 350px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .obra-images img {
+    max-height: 280px;
+  }
+}
