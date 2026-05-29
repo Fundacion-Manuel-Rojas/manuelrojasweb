@@ -27,4 +27,42 @@ const slider = defineCollection({
   }),
 });
 
-export const collections = { noticias, slider };
+const libros = defineCollection({
+  loader: glob({ pattern: '**/*.mdoc', base: './src/content/libros' }),
+  schema: z.object({
+    titulo: z.string(),
+    categoria: z.enum(['poesia', 'novela', 'cuento', 'ensayo', 'autobiografia_viaje', 'compilacion']),
+    imagen: z.string(),
+    pdf: z.string().optional(),
+    imagen_link: z.string().optional(),
+    imagenes: z.array(z.union([z.string(), z.object({
+      src: z.string(),
+      link: z.string().optional(),
+    })])).optional(),
+    primera_edicion: z.object({
+      editorial: z.string(),
+      anio: z.number(),
+      lugar: z.string().optional(),
+    }).optional(),
+    ultima_edicion: z.object({
+      editorial: z.string(),
+      anio: z.number(),
+      lugar: z.string().optional(),
+      url: z.string().optional(),
+    }).optional(),
+    traducciones: z.array(z.object({
+      titulo: z.string(),
+      idioma: z.string(),
+      lugar: z.string(),
+      anio: z.number().optional(),
+      imagen: z.string().optional(),
+    })).optional(),
+    enlaces: z.array(z.object({
+      titulo: z.string(),
+      url: z.string(),
+    })).optional(),
+    orden: z.number().optional(),
+  }),
+});
+
+export const collections = { noticias, slider, libros };

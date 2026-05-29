@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -11,6 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { noticia } = Astro.props;
+const { Content } = await render(noticia);
 
 const title = noticia.data.subtitle || noticia.data.title;
 ---
@@ -57,5 +58,7 @@ const title = noticia.data.subtitle || noticia.data.title;
       <p class="text-sm text-gray-500 mb-4 italic">Por {noticia.data.autor}</p>
     )
   }
-  <div class="prose prose-lg max-w-none" set:html={noticia.body || ''} />
+  <div class="prose prose-lg max-w-none">
+    <Content />
+  </div>
 </Layout>

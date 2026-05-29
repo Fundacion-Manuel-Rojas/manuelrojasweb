@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const libros = await getCollection('libros');
+  return libros.map((libro) => ({
+    params: { slug: libro.id },
+    props: { libro },
+  }));
+}
+
+const { libro } = Astro.props;
+const { Content } = await render(libro);
+
+const categoriaLabels = {
+  poesia: 'Poesía',
+  novela: 'Novelas',
+  cuento: 'Cuentos',
+  ensayo: 'Ensayos',
+  autobiografia_viaje: 'Autobiografías & Viajes',
+  compilacion: 'Compilaciones',
+};
+
+const categoriaLabel = categoriaLabels[libro.data.categoria] || libro.data.categoria;
+
+const categoriaSlugMap: Record<string, string> = {
+  poesia: 'poesia',
+  novela: 'novelas',
+  cuento: 'cuentos-libro',
+  ensayo: 'ensayos-2',
+  autobiografia_viaje: 'autobiografias_viajes',
+  compilacion: 'compilaciones',
+};
+
+const categoriaSlug = categoriaSlugMap[libro.data.categoria] || libro.data.categoria;
+
+const allImages = [
+  libro.data.imagen ? { src: libro.data.imagen, link: libro.data.imagen_link } : null,
+  ...(libro.data.imagenes?.map((img: any) => typeof img === 'string' ? { src: img, link: null } : img) || [])
+].filter(Boolean);
+---
+
+<Layout title={libro.data.titulo}>
+  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
+    <span class="text-gray-500">Obra /</span>
+    <a href={`/manuel-rojas/obra/${categoriaSlug}/`} class="text-blue-500 hover:underline">{categoriaLabel}</a>
+    / {libro.data.titulo}
+  </h3>
+
+  {allImages.length > 0 && (
+    <div class="obra-images flex gap-4 flex-wrap justify-center">
+      {allImages.map((img: any) => (
+        img.link ? (
+          <a href={img.link} target="_blank" rel="noopener" class="flex-shrink-0">
+            <img src={img.src} alt="" title={libro.data.titulo} class="rounded-lg border border-gray-300 shadow-sm max-w-full h-auto my-4 mx-auto block">
+          </a>
+        ) : (
+          <div class="flex-shrink-0">
+            <img src={img.src} alt="" title={libro.data.titulo} class="rounded-lg border border-gray-300 shadow-sm max-w-full h-auto my-4 mx-auto block">
+          </div>
+        )
+      ))}
+    </div>
+  )}
+
+  <p class="mb-4 leading-relaxed text-gray-600">
+    {libro.data.primera_edicion && (
+      <><strong>Primera edición:</strong> {libro.data.primera_edicion.editorial} – {libro.data.primera_edicion.lugar}, {libro.data.primera_edicion.anio}<br></>
+    )}
+    {libro.data.ultima_edicion && (
+      <a href={libro.data.ultima_edicion.url || '#'} target="_blank" rel="noopener" class="text-blue-500 hover:underline">
+        <strong>Última edición:</strong> {libro.data.ultima_edicion.editorial} – {libro.data.ultima_edicion.lugar}, {libro.data.ultima_edicion.anio}
+      </a>
+    )}
+  </p>
+
+  {libro.data.pdf && (
+    <p class="mb-4 leading-relaxed text-gray-600">
+      <a href={libro.data.pdf} target="_blank" rel="noopener" class="text-blue-500 hover:underline">Descargar PDF</a>
+    </p>
+  )}
+
+  {libro.data.enlaces?.map((enlace: { titulo: string; url: string }) => (
+    <p class="mb-4 leading-relaxed text-gray-600">
+      <a href={enlace.url} target="_blank" rel="noopener" class="text-blue-500 hover:underline">{enlace.titulo}</a>
+    </p>
+  ))}
+
+  <Content />
+
+  {libro.data.traducciones && libro.data.traducciones.length > 0 && (
+    <>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Traducciones</h2>
+      <table class="w-full border-collapse mb-6 text-sm">
+        <tbody>
+          {libro.data.traducciones.map((trad: { titulo: string; idioma: string; lugar: string; anio?: number; imagen?: string }) => (
+            <tr>
+              <td class="border border-gray-200 p-3 align-top">
+                {trad.imagen && <img src={trad.imagen} alt="" class="rounded-lg border border-gray-300 shadow-sm max-w-full h-auto my-4 mx-auto block" style="float: right;">}
+              </td>
+              <td class="border border-gray-200 p-3 align-top">
+                <h5 class="text-base font-semibold text-gray-700 mb-2">{trad.titulo} – {trad.lugar}{trad.anio && `, ${trad.anio}`}</h5>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )}
+</Layout>

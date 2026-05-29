@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.5.0",
-    "@astrojs/markdoc": "^1.0.4",
-    "@astrojs/react": "^5.0.4",
+    "@astrojs/markdoc": "^1.0.6",
+    "@astrojs/react": "^5.0.6",
     "@keystatic/astro": "^5.0.6",
     "@keystatic/core": "^0.5.50",
     "@tailwindcss/vite": "^4.3.0",
@@ -19,7 +19,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "alpinejs": "^3.15.12",
-    "astro": "^6.3.1",
+    "astro": "^6.4.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.0"

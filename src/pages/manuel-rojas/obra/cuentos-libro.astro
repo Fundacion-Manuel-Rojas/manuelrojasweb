@@ -1,17 +1,16 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import BookGallery from '../../../components/BookGallery.astro';
+import { getCollection } from 'astro:content';
+
 const title = "Cuentos";
-const books = [
-  { href: '/manuel-rojas/obra/hombres-del-sur/', img: '/media/2023/06/hombre_del_sur_1947-e1430266263589.webp', title: 'Hombres del Sur' },
-  { href: '/manuel-rojas/obra/el-delincuente/', img: '/media/2023/06/manuelrojaseldelincuente94-e1430266804400.webp', title: 'El Delincuente' },
-  { href: '/manuel-rojas/obra/travesia/', img: '/media/2023/06/manuelrojastravesia197316-e1430267316171.webp', title: 'Travesía' },
-  { href: '/manuel-rojas/obra/el-bonete-maulino/', img: '/media/2023/06/manuelrojaselbonetemaulino80-300x449-1-200x300.webp', title: 'El Bonete Maulino' },
-  { href: '/manuel-rojas/obra/el-hombre-de-la-rosa/', img: '/media/2023/06/manuelrojaselhombredelarosa-200x300-1.webp', title: 'El Hombre de la Rosa' },
-  { href: '/manuel-rojas/obra/el-vaso-de-leche/', img: '/media/2023/06/manuelrojaselvasodelecheysusmejorescuentos-e1430268994382.webp', title: 'El Vaso de Leche' },
-  { href: '/10914-2/', img: '/media/2023/06/manuelrojascuentos-e1430461122164.webp', title: 'Cuentos' },
-  { href: '/manuel-rojas/obra/cuentos-completos/', img: '/media/2023/06/Cuentos-completos-Manuel-Rojas-187x300.webp', title: 'Cuentos Completos' },
-];
+const libros = await getCollection('libros', (libro) => libro.data.categoria === 'cuento');
+const librosOrdenados = libros.sort((a, b) => (a.data.orden || 0) - (b.data.orden || 0));
+const books = librosOrdenados.map((libro) => ({
+  href: `/libros/${libro.id}/`,
+  img: libro.data.imagen,
+  title: libro.data.titulo,
+}));
 ---
 
 <Layout title={title}>
@@ -22,6 +21,6 @@ const books = [
 
   <p class="mb-4 leading-relaxed text-gray-600">Sus numerosos cuentos fueron reunidos en diversas recopilaciones y colecciones, tales como <i>Hombres del sur</i>; <i>El delincuente</i>, <i>Travesía</i> o <i>Cuentos</i>. El año 2019 todos sus relatos junto a 6 cuentos inéditos y dispersos fueron publicados por primera vez en <i>Cuentos Completos</i> por la editorial Alfaguara.</p>
 
-  <BookGallery books={books} />
+  {books.length > 0 ? <BookGallery books={books} /> : <p class="text-gray-500 py-6">Próximamente...</p>}
 
 </Layout>

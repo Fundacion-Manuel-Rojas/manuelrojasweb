@@ -3,6 +3,7 @@
 
 ## Pendientes
 
+- Migrar libros existentes de .astro a .mdoc (continuar desde lo avanzado)
 - Transformar los elementos de noticias del html completo que tienen ahora a página de astro estilada bien con tailwind siguiendo estilos del sitio web
 - Unificar las vistas de cards de publicaciones y de cada elemento
 - Trabajar estilos de las imagenes
@@ -44,8 +45,8 @@ Astro 6.3 static site for **Fundación Manuel Rojas** (https://manuelrojas.cl). 
 ## Keystatic usage
 
 1. Run `npm run dev` to start dev server with Keystatic admin UI
-2. Visit `http://localhost:4321/keystatic` to manage noticias
-3. Content saves to `src/content/noticias/*.mdoc` as Markdoc files
+2. Visit `http://localhost:4321/keystatic` to manage noticias and libros
+3. Content saves to `src/content/noticias/*.mdoc` or `src/content/libros/*.mdoc` as Markdoc files
 4. For production builds: `SKIP_KEYSTATIC=true npm run build`
 5. For production deploys, configure Keystatic GitHub mode or keep disabled
 
@@ -214,6 +215,7 @@ https://manuelrojas.cl
 |------|--------|-------------|-------------|
 | **Páginas estáticas** (WordPress scrapeado) | `set:html` con markup Divi | `src/pages/**/*.astro` | Astro file-based routing |
 | **Noticias CMS** (Keystatic) | `.mdoc` (Markdoc) | `src/content/noticias/*.mdoc` | Content collections + `render()` |
+| **Libros CMS** (Keystatic) | `.mdoc` (Markdoc) | `src/content/libros/*.mdoc` | Dynamic route `/libros/[slug]/` + `render()` |
 | **Assets** (media) | Descargados de WordPress | `public/media/` | Servidos estáticamente |
 | **Layout** (único) | Tailwind + CSS inline | `src/layouts/Layout.astro` | Wrapper de todas las páginas |
 
@@ -227,14 +229,25 @@ noticias → glob: src/content/noticias/**/*.mdoc
   ├── autor       (string, opcional)
   ├── categoria   (string, opcional: destacado | noticias | entrevistas | anos-anteriores)
   └── content     (markdoc, cuerpo enriquecido)
+
+libros → glob: src/content/libros/**/*.mdoc
+  ├── titulo           (string, requerido)
+  ├── categoria        (enum: poesia | novela | cuento | ensayo | autobiografia_viaje | compilacion)
+  ├── imagen           (string)
+  ├── imagenes         (array de strings, opcional)
+  ├── primera_edicion  (objeto: editorial, anio, lugar)
+  ├── ultima_edicion   (objeto: editorial, anio, lugar, url)
+  ├── traducciones     (array: titulo, idioma, lugar, anio, imagen)
+  ├── enlaces          (array: titulo, url)
+  └── orden            (number, para ordenar en landings)
 ```
 
 ### Keystatic CMS (`keystatic.config.ts`)
 
 ```
 Admin UI: /keystatic (solo en dev)
-Colección gestionable: noticias
-Almacenamiento: local → src/content/noticias/
+Colecciones gestionables: noticias, libros, slider
+Almacenamiento: local → src/content/
 ```
 
 ### Comandos clave
@@ -271,6 +284,9 @@ src/
 │   ├── 10035-2.astro           ← (WordPress legacy ID)
 │   ├── 10914-2.astro           ← (WordPress legacy ID)
 │   │
+│   ├── libros/
+│   │   └── [slug].astro        ← Página dinámica para libros CMS
+│   │
 │   ├── quienes-somos/
 │   │   ├── fundacion.astro
 │   │   ├── integrantes.astro
@@ -281,14 +297,13 @@ src/
 │   │   │   ├── biografia.astro
 │   │   │   └── cronologia.astro
 │   │   ├── obra/
-│   │   │   ├── poesia.astro
+│   │   │   ├── poesia.astro         ← getCollection('libros', c => c.categoria === 'poesia')
 │   │   │   ├── autobiografias_viajes.astro
 │   │   │   ├── novelas.astro
-│   │   │   ├── cuentos-completos.astro
-│   │   │   ├── compilaciones.astro
-│   │   │   ├── poeticas.astro
 │   │   │   ├── cuentos-libro.astro
-│   │   │   └── [28 libros individuales más].astro
+│   │   │   ├── compilaciones.astro
+│   │   │   ├── ensayos-2.astro
+│   │   │   └── [libros individuales .astro]  ← Migrar a src/content/libros/
 │   │   └── galeria/
 │   │       ├── fotografias.astro
 │   │       └── audios.astro
@@ -303,8 +318,12 @@ src/
 │
 ├── content/
 │   ├── config.ts               ← Definición de colecciones
-│   └── noticias/
-│       └── bienvenida.mdoc     ← Única entrada CMS actual
+│   ├── noticias/
+│   │   └── *.mdoc             ← Entradas gestionadas por Keystatic
+│   ├── slider/
+│   │   └── *.mdoc             ← Slider para home
+│   └── libros/
+│       └── *.mdoc             ← Libros gestionados por Keystatic
 ├── content.config.ts           ← Carga las colecciones
 └── styles/                     ← Vacío (CSS en Layout.astro)
 
@@ -383,16 +402,17 @@ https://tu-site.netlify.app/.netlify/functions/share-webhook
 |----------|----------|
 | Páginas `.astro` totales | 67 |
 | Páginas raíz (`src/pages/*.astro`) | 8 (landings + páginas legacy) |
-| `manuel-rojas/obra/` (libros) | 37 `.astro` |
+| `manuel-rojas/obra/` (libros) | 37 `.astro` (migrando a CMS) |
 | `manuel-rojas/vida/` | 2 `.astro` |
 | `manuel-rojas/galeria/` | 2 `.astro` |
 | `quienes-somos/` | 3 `.astro` |
 | `sobre-su-obra/` | 4 `.astro` |
 | Blog por fecha (`AAAA/MM/DD/`) | 11 `.astro` |
-| Entradas CMS (`.mdoc`) | 1 |
+| Entradas CMS (`.mdoc`) | 2 (`noticias`, `libros`) |
+| Libros en CMS | 7 (poesía: 4, novela: 2, cuento: 1) |
 | Enlaces legacy sin página (rotos) | ~27 |
 | Layouts | 1 |
-| Colecciones de contenido | 1 (`noticias`) |
+| Colecciones de contenido | 3 (`noticias`, `slider`, `libros`) |
 
 
 ---
