@@ -5,7 +5,41 @@ const title = "Contacto";
 
 <Layout title={title}>
 
-<h1 class="text-3xl font-bold text-gray-800 mb-6">CONTACTO</h1>
-<div lang="en-US" dir="ltr"><form action="/contacto/#wpcf7-f11329-p10-o1" method="post" novalidate="novalidate"><input type="hidden" name="_wpcf7" value="11329"><input type="hidden" name="_wpcf7_version" value="6.1"><input type="hidden" name="_wpcf7_locale" value="en_US"><input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f11329-p10-o1"><input type="hidden" name="_wpcf7_container_post" value="10"><input type="hidden" name="_wpcf7_posted_data_hash" value=""><p class="mb-4 leading-relaxed text-gray-600"><label> Su nombre<br><span data-name="your-name"><input size="40" maxlength="400" autocomplete="name" value="" type="text" name="your-name"></span></label></p><p class="mb-4 leading-relaxed text-gray-600"><label> E-mail<br><span data-name="your-email"><input size="40" maxlength="400" autocomplete="email" value="" type="email" name="your-email"></span></label></p><p class="mb-4 leading-relaxed text-gray-600"><label> Asunto<br><span data-name="your-subject"><input size="40" maxlength="400" value="" type="text" name="your-subject"></span></label></p><p class="mb-4 leading-relaxed text-gray-600"><label> Mensaje<br><span data-name="your-message"><textarea cols="40" rows="10" maxlength="2000" name="your-message"></textarea></span></label></p><p class="mb-4 leading-relaxed text-gray-600"><input type="submit" value="Enviar"></p></form></div>
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">CONTACTO</h1>
+
+  <!-- 
+    Netlify Forms: 
+    - data-netlify="true" le dice a Netlify que capture este formulario.
+    - El campo hidden "form-name" es obligatorio para que Netlify lo identifique.
+    - En tu dashboard de Netlify (Sitio > Forms) configura una notificación por email a: fe.manuelrojas@gmail.com
+  -->
+  <form 
+    name="contacto" 
+    method="POST" 
+    data-netlify="true"
+    action="/contacto/"
+    class="max-w-xl"
+  >
+    <input type="hidden" name="form-name" value="contacto" />
+
+    <div class="mb-6">
+      <label for="mensaje" class="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
+      <textarea
+        id="mensaje"
+        name="mensaje"
+        rows="8"
+        maxlength="2000"
+        required
+        class="w-full border border-gray-300 rounded-md p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+      ></textarea>
+    </div>
+
+    <button
+      type="submit"
+      class="bg-gray-800 text-white px-6 py-2 rounded-md hover:bg-gray-700 transition-colors cursor-pointer"
+    >
+      Enviar
+    </button>
+  </form>
 
 </Layout>
