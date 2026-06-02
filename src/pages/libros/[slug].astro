@@ -35,13 +35,47 @@ const categoriaSlugMap: Record<string, string> = {
 
 const categoriaSlug = categoriaSlugMap[libro.data.categoria] || libro.data.categoria;
 
+const generoMap: Record<string, string> = {
+  poesia: 'Poesía',
+  novela: 'Novela',
+  cuento: 'Cuento',
+  ensayo: 'Ensayo',
+  autobiografia_viaje: 'Autobiografía',
+  compilacion: 'Compilación',
+};
+
 const allImages = [
   libro.data.imagen ? { src: libro.data.imagen, link: libro.data.imagen_link } : null,
   ...(libro.data.imagenes?.map((img: any) => typeof img === 'string' ? { src: img, link: null } : img) || [])
 ].filter(Boolean);
+
+const slugPath = `/libros/${libro.id}/`;
+const firstEdition = libro.data.primera_edicion;
+const description = `${libro.data.titulo}, de Manuel Rojas. ${categoriaLabel}. ${firstEdition ? `Primera edición: ${firstEdition.editorial}, ${firstEdition.anio}.` : ''}`.trim();
 ---
 
-<Layout title={libro.data.titulo}>
+<Layout
+  title={libro.data.titulo}
+  description={description}
+  image={libro.data.imagen}
+  ogType="book"
+  bookData={{
+    name: libro.data.titulo,
+    description,
+    image: libro.data.imagen,
+    author: 'Manuel Rojas',
+    datePublished: firstEdition?.anio,
+    genre: generoMap[libro.data.categoria],
+    inLanguage: 'es-CL',
+    url: slugPath,
+  }}
+  breadcrumbs={[
+    { name: 'Inicio', url: '/' },
+    { name: 'Manuel Rojas', url: '/manuel-rojas/' },
+    { name: categoriaLabel, url: `/manuel-rojas/obra/${categoriaSlug}/` },
+    { name: libro.data.titulo, url: slugPath },
+  ]}
+>
   <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
     <span class="text-gray-500">Obra /</span>
     <a href={`/manuel-rojas/obra/${categoriaSlug}/`} class="text-blue-500 hover:underline">{categoriaLabel}</a>

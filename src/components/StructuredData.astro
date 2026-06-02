@@ -1,0 +1,151 @@
+---
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+export interface OrganizationProps {
+  name?: string;
+  url?: string;
+  logo?: string;
+  sameAs?: string[];
+}
+
+export interface ArticleProps {
+  type?: 'Article' | 'NewsArticle' | 'BlogPosting';
+  headline: string;
+  description?: string;
+  image?: string;
+  datePublished: string;
+  dateModified?: string;
+  author?: string;
+  url: string;
+}
+
+export interface BookProps {
+  name: string;
+  description?: string;
+  image?: string;
+  author?: string;
+  datePublished?: number;
+  isbn?: string;
+  genre?: string;
+  inLanguage?: string;
+  url: string;
+}
+
+interface Props {
+  organization?: OrganizationProps | boolean;
+  article?: ArticleProps;
+  book?: BookProps;
+  breadcrumbs?: BreadcrumbItem[];
+  pageType?: 'website' | 'article' | 'book';
+}
+
+const SITE_URL = 'https://manuelrojas.cl';
+const SITE_NAME = 'Fundación Manuel Rojas';
+const DEFAULT_LOGO = `${SITE_URL}/media/logo.png`;
+
+function absoluteUrl(path: string): string {
+  if (!path) return path;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${SITE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+}
+
+const { organization, article, book, breadcrumbs } = Astro.props;
+
+const orgData: any = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}#organization`,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: DEFAULT_LOGO,
+  sameAs: [
+    'https://twitter.com/fundacionmr',
+  ],
+};
+
+if (organization && typeof organization === 'object') {
+  if (organization.name) orgData.name = organization.name;
+  if (organization.url) orgData.url = organization.url;
+  if (organization.logo) orgData.logo = absoluteUrl(organization.logo);
+  if (organization.sameAs) orgData.sameAs = organization.sameAs;
+}
+
+const websiteData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}#website`,
+  url: SITE_URL,
+  name: SITE_NAME,
+  inLanguage: 'es-CL',
+  publisher: { '@id': `${SITE_URL}#organization` },
+};
+
+const jsonLdItems: any[] = [orgData, websiteData];
+
+if (article) {
+  const articleData: any = {
+    '@context': 'https://schema.org',
+    '@type': article.type || 'Article',
+    headline: article.headline,
+    url: absoluteUrl(article.url),
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': absoluteUrl(article.url),
+    },
+    datePublished: article.datePublished,
+    inLanguage: 'es-CL',
+    publisher: { '@id': `${SITE_URL}#organization` },
+  };
+  if (article.description) articleData.description = article.description;
+  if (article.image) articleData.image = absoluteUrl(article.image);
+  if (article.dateModified) articleData.dateModified = article.dateModified;
+  if (article.author) {
+    articleData.author = {
+      '@type': 'Person',
+      name: article.author,
+    };
+  }
+  jsonLdItems.push(articleData);
+}
+
+if (book) {
+  const bookData: any = {
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    name: book.name,
+    url: absoluteUrl(book.url),
+    inLanguage: book.inLanguage || 'es-CL',
+    author: {
+      '@type': 'Person',
+      name: book.author || 'Manuel Rojas',
+    },
+    publisher: { '@id': `${SITE_URL}#organization` },
+  };
+  if (book.description) bookData.description = book.description;
+  if (book.image) bookData.image = absoluteUrl(book.image);
+  if (book.datePublished) bookData.datePublished = String(book.datePublished);
+  if (book.isbn) bookData.isbn = book.isbn;
+  if (book.genre) bookData.genre = book.genre;
+  jsonLdItems.push(bookData);
+}
+
+if (breadcrumbs && breadcrumbs.length > 0) {
+  jsonLdItems.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.url),
+    })),
+  });
+}
+---
+
+{jsonLdItems.map((data) => (
+  <script type="application/ld+json" set:html={JSON.stringify(data)} />
+))}

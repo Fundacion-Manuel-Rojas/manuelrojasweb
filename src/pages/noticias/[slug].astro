@@ -14,12 +14,31 @@ const { noticia } = Astro.props;
 const { Content } = await render(noticia);
 
 const title = noticia.data.subtitle || noticia.data.title;
+const description = noticia.data.extracto || `Noticia publicada por la Fundación Manuel Rojas: ${title}.`;
+const slugPath = `/noticias/${noticia.id}/`;
+const publishedTime = noticia.data.fecha ? new Date(noticia.data.fecha).toISOString() : undefined;
 ---
 
-<Layout 
+<Layout
   title={title}
-  description={noticia.data.extracto}
+  description={description}
   image={noticia.data.imagen}
+  ogType="article"
+  publishedTime={publishedTime}
+  author={noticia.data.autor}
+  articleData={{
+    headline: title,
+    description,
+    image: noticia.data.imagen,
+    datePublished: publishedTime || new Date().toISOString(),
+    author: noticia.data.autor,
+    url: slugPath,
+  }}
+  breadcrumbs={[
+    { name: 'Inicio', url: '/' },
+    { name: 'Noticias', url: '/noticias/' },
+    { name: title, url: slugPath },
+  ]}
 >
   <div class="text-lg text-gray-400 mb-2 pt-6 pb-3 border-b border-gray-200">
     <span class="text-gray-500">

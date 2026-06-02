@@ -3,42 +3,132 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StructuredData from '../components/StructuredData.astro';
 
 export interface Props {
   title: string;
   description?: string;
   image?: string;
-  twitterCard?: string;
+  twitterCard?: 'summary' | 'summary_large_image';
+  ogType?: 'website' | 'article' | 'book' | 'profile';
+  noindex?: boolean;
+  canonical?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  articleData?: {
+    headline: string;
+    description?: string;
+    image?: string;
+    datePublished: string;
+    dateModified?: string;
+    author?: string;
+    url: string;
+  };
+  bookData?: {
+    name: string;
+    description?: string;
+    image?: string;
+    author?: string;
+    datePublished?: number;
+    genre?: string;
+    inLanguage?: string;
+    url: string;
+  };
+  breadcrumbs?: Array<{ name: string; url: string }>;
 }
-const { title, description, image, twitterCard = 'summary_large_image' } = Astro.props;
+
+const {
+  title,
+  description,
+  image,
+  twitterCard = 'summary_large_image',
+  ogType = 'website',
+  noindex = false,
+  canonical,
+  publishedTime,
+  modifiedTime,
+  author,
+  articleData,
+  bookData,
+  breadcrumbs,
+} = Astro.props;
+
 const siteUrl = 'https://manuelrojas.cl';
-const defaultDescription = 'Fundación Manuel Rojas - Preservando y difundiendo la obra del escritor chileno Manuel Rojas';
-const defaultImage = '/media/default_noticias.webp';
+const siteName = 'Fundación Manuel Rojas';
+const defaultDescription = 'Fundación Manuel Rojas - Preservando y difundiendo la vida y obra del escritor chileno Manuel Rojas (1896-1973), autor de «Hijo de ladrón».';
+const defaultImagePath = '/media/default_noticias.webp';
+const defaultImage = `${siteUrl}${defaultImagePath}`;
+
+const rawImage = image || defaultImagePath;
+const fullImage = rawImage.startsWith('http') ? rawImage : `${siteUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`;
+
+const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+const finalDescription = (description || defaultDescription).slice(0, 160);
+
+const canonicalUrl = canonical
+  ? (canonical.startsWith('http') ? canonical : `${siteUrl}${canonical.startsWith('/') ? '' : '/'}${canonical}`)
+  : new URL(Astro.url.pathname, siteUrl).href.replace(/\/index\.html$/, '/');
 ---
+
 <!doctype html>
-<html lang="es">
+<html lang="es-CL">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} | Fundación Manuel Rojas</title>
+  <meta name="theme-color" content="#5A9AB5" />
+  <meta name="generator" content={Astro.generator} />
+
+  <title>{fullTitle}</title>
+  <meta name="description" content={finalDescription} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
+
+  <link rel="canonical" href={canonicalUrl} />
+
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet" />
+
   <ClientRouter />
-  
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description || defaultDescription} />
-  <meta property="og:image" content={image || defaultImage} />
-  <meta property="og:url" content={Astro.url.href} />
-  <meta property="og:type" content="website" />
-  
+
+  <meta property="og:site_name" content={siteName} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={finalDescription} />
+  <meta property="og:image" content={fullImage} />
+  <meta property="og:image:secure_url" content={fullImage} />
+  <meta property="og:image:alt" content={title} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:locale" content="es_CL" />
+  <meta property="og:locale:alternate" content="es_ES" />
+
+  {ogType === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  {ogType === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+  {ogType === 'article' && author && <meta property="article:author" content={author} />}
+
   <meta name="twitter:card" content={twitterCard} />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description || defaultDescription} />
-  <meta name="twitter:image" content={image || defaultImage} />
   <meta name="twitter:site" content="@fundacionmr" />
+  <meta name="twitter:creator" content="@fundacionmr" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={finalDescription} />
+  <meta name="twitter:image" content={fullImage} />
+  <meta name="twitter:image:alt" content={title} />
+
+  <StructuredData
+    organization={true}
+    article={articleData}
+    book={bookData}
+    breadcrumbs={breadcrumbs}
+  />
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
