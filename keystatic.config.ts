@@ -20,7 +20,6 @@ export default config({
         categoria: fields.select({
           label: 'Categoría',
           options: [
-            { label: 'Destacado', value: 'destacado' },
             { label: 'Noticias', value: 'noticias' },
             { label: 'Entrevistas', value: 'entrevistas' },
             { label: 'Años anteriores', value: 'anos-anteriores' },
@@ -56,6 +55,10 @@ export default config({
           publicPath: '/media/slider/',
         }),
         alt: fields.text({ label: 'Texto alternativo (alt)' }),
+        texto: fields.mdx({
+          label: 'Texto sobre la imagen',
+          description: 'Texto blanco que aparece sobre la mitad de la imagen. Permite formato: negrita, cursiva, enlaces.',
+        }),
         enlace: fields.text({ label: 'Enlace (opcional)' }),
         orden: fields.number({
           label: 'Orden',

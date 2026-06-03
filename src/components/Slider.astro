@@ -1,9 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 
 const slides = await getCollection('slider');
 const sorted = slides
   .filter(s => s.data.imagen)
+  .map(s => ({
+    ...s,
+    html: s.data.texto ? marked.parse(s.data.texto, { async: false }) : '',
+  }))
   .sort((a, b) => (a.data.orden ?? 0) - (b.data.orden ?? 0));
 ---
 
@@ -35,6 +40,29 @@ const sorted = slides
     width: 100%;
     height: 100%;
   }
+  .hero-slider .slide-overlay {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    max-width: 55%;
+    text-align: left;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    pointer-events: none;
+  }
+  .hero-slider .slide-overlay a {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .hero-slider .slide-overlay p { margin: 0; }
+  .hero-slider .slide-overlay strong { font-weight: 700; }
+  .hero-slider .slide-overlay em { font-style: italic; }
   .hero-slider .arrow {
     position: absolute;
     top: 50%;
@@ -78,7 +106,8 @@ const sorted = slides
     .hero-slider .arrow.prev { left: 8px; }
     .hero-slider .arrow.next { right: 8px; }
     .hero-slider .dot { width: 10px; height: 10px; }
-    .hero-slider .dots { bottom: 10px; gap: 6px; }
+    .hero-slider .dots { bottom: 8px; gap: 6px; }
+    .hero-slider .slide-overlay { font-size: 0.95rem; padding: 0.75rem 1.1rem; right: 1.25rem; max-width: 60%; }
   }
   @media (max-width: 480px) {
     .hero-slider { height: 200px; }
@@ -87,6 +116,7 @@ const sorted = slides
     .hero-slider .arrow.next { right: 4px; }
     .hero-slider .dot { width: 8px; height: 8px; }
     .hero-slider .dots { bottom: 8px; gap: 5px; }
+    .hero-slider .slide-overlay { font-size: 0.85rem; padding: 0.5rem 0.75rem; right: 0.75rem; max-width: 70%; }
   }
 </style>
 
@@ -100,6 +130,9 @@ const sorted = slides
           </a>
         ) : (
           <img src={slide.data.imagen} alt={slide.data.alt || ''} />
+        )}
+        {slide.html && (
+          <div class="slide-overlay" set:html={slide.html} />
         )}
       </div>
     ))}
