@@ -313,6 +313,14 @@
     nav.querySelectorAll('.has-submenu.open, .has-subsubmenu.open').forEach(el => el.classList.remove('open'));
   }
 
+  function closeSiblingSubmenus(li) {
+    const parentUl = li.parentElement;
+    if (!parentUl) return;
+    parentUl.querySelectorAll(':scope > li.open').forEach(el => {
+      if (el !== li) el.classList.remove('open');
+    });
+  }
+
   function isMobile() { return window.innerWidth <= 768; }
 
   toggle.addEventListener('click', function(e) {
@@ -329,7 +337,7 @@
     if (li.classList.contains('has-submenu') || li.classList.contains('has-subsubmenu')) {
       e.preventDefault();
       const wasOpen = li.classList.contains('open');
-      closeAllSubmenus();
+      closeSiblingSubmenus(li);
       if (!wasOpen) li.classList.add('open');
     } else {
       nav.classList.remove('open');
