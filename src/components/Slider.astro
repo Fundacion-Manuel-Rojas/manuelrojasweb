@@ -45,8 +45,8 @@ const sorted = slides
     top: 50%;
     right: 2rem;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.75);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.75);
+    color: #000000;
     padding: 1rem 1.5rem;
     max-width: 55%;
     text-align: left;
@@ -63,23 +63,7 @@ const sorted = slides
   .hero-slider .slide-overlay p { margin: 0; }
   .hero-slider .slide-overlay strong { font-weight: 700; }
   .hero-slider .slide-overlay em { font-style: italic; }
-  .hero-slider .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.4);
-    color: #fff;
-    border: none;
-    font-size: 28px;
-    padding: 8px 14px;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 3px;
-    line-height: 1;
-  }
-  .hero-slider .arrow:hover { background: rgba(0,0,0,0.7); }
-  .hero-slider .arrow.prev { left: 16px; }
-  .hero-slider .arrow.next { right: 16px; }
+
   .hero-slider .dots {
     position: absolute;
     bottom: 16px;
@@ -102,18 +86,12 @@ const sorted = slides
 
   @media (max-width: 768px) {
     .hero-slider { height: 280px; }
-    .hero-slider .arrow { font-size: 22px; padding: 6px 10px; }
-    .hero-slider .arrow.prev { left: 8px; }
-    .hero-slider .arrow.next { right: 8px; }
     .hero-slider .dot { width: 10px; height: 10px; }
     .hero-slider .dots { bottom: 8px; gap: 6px; }
     .hero-slider .slide-overlay { font-size: 0.95rem; padding: 0.75rem 1.1rem; right: 1.25rem; max-width: 60%; }
   }
   @media (max-width: 480px) {
     .hero-slider { height: 200px; }
-    .hero-slider .arrow { font-size: 18px; padding: 4px 8px; }
-    .hero-slider .arrow.prev { left: 4px; }
-    .hero-slider .arrow.next { right: 4px; }
     .hero-slider .dot { width: 8px; height: 8px; }
     .hero-slider .dots { bottom: 8px; gap: 5px; }
     .hero-slider .slide-overlay { font-size: 0.85rem; padding: 0.5rem 0.75rem; right: 0.75rem; max-width: 70%; }
@@ -138,9 +116,6 @@ const sorted = slides
     ))}
   </div>
 
-  <button class="arrow prev" aria-label="Anterior">&#10094;</button>
-  <button class="arrow next" aria-label="Siguiente">&#10095;</button>
-
   <div class="dots">
     {sorted.map((_, i) => (
       <button class={`dot${i === 0 ? ' active' : ''}`} data-index={i} aria-label={`Ir a diapositiva ${i + 1}`}></button>
@@ -154,11 +129,9 @@ const sorted = slides
     if (!slider) return;
     const slidesEl = slider.querySelector('.slides');
     const dots = slider.querySelectorAll('.dot');
-    const prevBtn = slider.querySelector('.arrow.prev');
-    const nextBtn = slider.querySelector('.arrow.next');
     const total = dots.length;
     if (total < 2) {
-      slider.querySelectorAll('.arrow, .dots').forEach(el => el.style.display = 'none');
+      slider.querySelectorAll('.dots').forEach(el => el.style.display = 'none');
       return;
     }
     let current = 0;
@@ -171,10 +144,7 @@ const sorted = slides
     }
 
     function next() { goTo(current + 1); }
-    function prev() { goTo(current - 1); }
 
-    nextBtn?.addEventListener('click', () => { next(); resetAuto(); });
-    prevBtn?.addEventListener('click', () => { prev(); resetAuto(); });
     dots.forEach(dot => {
       dot.addEventListener('click', () => { goTo(Number((dot as HTMLElement).dataset.index)); resetAuto(); });
     });
