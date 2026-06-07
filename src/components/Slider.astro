@@ -125,7 +125,7 @@ const sorted = slides
     {sorted.map(slide => (
       <div class="slide">
         {slide.data.enlace ? (
-          <a href={slide.data.enlace}>
+          <a target="_blank" href={slide.data.enlace}>
             <img src={slide.data.imagen} alt={slide.data.alt || ''} />
           </a>
         ) : (

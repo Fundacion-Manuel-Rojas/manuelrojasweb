@@ -14,14 +14,14 @@ const { books } = Astro.props;
   {
     books.map((book) => (
       <div class="flex flex-col items-center text-center group">
-        <a href={book.href} class="flex items-center justify-center w-full h-[280px] bg-gray-50 rounded-lg border border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+        <a target="_blank" href={book.href} class="flex items-center justify-center w-full h-[280px] bg-gray-50 rounded-lg border border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
           <img
             src={book.img}
             alt={book.alt || book.title}
             class="max-h-[260px] max-w-[90%] object-contain transition-transform group-hover:scale-105"
           />
         </a>
-        <a href={book.href} class="mt-3 text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors leading-tight">
+        <a target="_blank" href={book.href} class="mt-3 text-sm font-medium text-gray-700 hover:text-blue-500 transition-colors leading-tight">
           {book.title}
         </a>
       </div>

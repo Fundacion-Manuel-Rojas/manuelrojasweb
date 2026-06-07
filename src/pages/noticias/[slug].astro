@@ -42,8 +42,8 @@ const publishedTime = noticia.data.fecha ? new Date(noticia.data.fecha).toISOStr
 >
   <div class="text-lg text-gray-400 mb-2 pt-6 pb-3 border-b border-gray-200">
     <span class="text-gray-500">
-      <a href="/" class="hover:text-blue-500 transition-colors">Inicio</a> /
-      <a href="/noticias/" class="hover:text-blue-500 transition-colors">Noticias</a> /
+      <a target="_blank" href="/" class="hover:text-blue-500 transition-colors">Inicio</a> /
+      <a target="_blank" href="/noticias/" class="hover:text-blue-500 transition-colors">Noticias</a> /
     </span>
     {noticia.data.subtitle || noticia.data.title}
   </div>
