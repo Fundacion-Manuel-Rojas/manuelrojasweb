@@ -2,7 +2,12 @@ import { config, fields, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'cloud',
+  },
+  cloud: {
+    // TODO: Reemplaza con tu team/project de https://keystatic.cloud
+    // Ejemplo: project: 'fundacion-rojas/manuelrojas',
+    project: 'TU_TEAM/TU_PROJECT',
   },
   collections: {
     noticias: collection({
