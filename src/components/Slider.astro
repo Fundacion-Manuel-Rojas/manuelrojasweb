@@ -149,7 +149,7 @@ const sorted = slides
       dot.addEventListener('click', () => { goTo(Number((dot as HTMLElement).dataset.index)); resetAuto(); });
     });
 
-    function resetAuto() { clearInterval(interval); interval = setInterval(next, 5000); }
-    interval = setInterval(next, 5000);
+    function resetAuto() { clearInterval(interval); interval = setInterval(next, 10000); }
+    interval = setInterval(next, 10000);
   })();
 </script>
