@@ -14,7 +14,6 @@ import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   site: 'https://manuelrojas.cl',
-  output: 'hybrid',
   adapter: netlify(),
   trailingSlash: 'ignore',
 
