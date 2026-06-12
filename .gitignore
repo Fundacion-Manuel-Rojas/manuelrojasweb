@@ -58,3 +58,6 @@ coverage/
 
 # Optional: uncomment if you don't want to track media files
 # public/media/
+
+# Local Netlify folder
+.netlify
