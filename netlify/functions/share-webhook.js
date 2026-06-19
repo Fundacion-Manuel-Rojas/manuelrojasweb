@@ -16,7 +16,7 @@
  * - NextJS + Vercel (con API routes)
  */
 
-exports.handler = async (event, context) => {
+export const handler = async (event, context) => {
   // Solo permitir POST
   if (event.httpMethod !== 'POST') {
     return {
