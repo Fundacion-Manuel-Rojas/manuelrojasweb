@@ -7,7 +7,7 @@ export default config({
   cloud: {
     // TODO: Reemplaza con tu team/project de https://keystatic.cloud
     // Ejemplo: project: 'fundacion-rojas/manuelrojas',
-    project: "devel/fmanuelrojas",
+    project: "devel/fmanuelrojasweb",
     branch: "master",
   },
   collections: {
