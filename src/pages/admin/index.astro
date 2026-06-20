@@ -13,7 +13,7 @@ const siteUrl = 'https://manuelrojas.cl';
 const twitterHandle = '@fundacionmr';
 
 function getShareUrls(noticia: any) {
-  const url = `${siteUrl}/noticias/${noticia.id}/`;
+  const url = `${siteUrl}/noticias/${noticia.id.replace('/index', '')}/`;
   const title = encodeURIComponent(noticia.data.subtitle || noticia.data.title);
   const excerpt = encodeURIComponent(noticia.data.extracto || '');
   

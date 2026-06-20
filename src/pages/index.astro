@@ -91,7 +91,7 @@ Desde el relato breve, Manuel Rojas transita a la novela como un paso natural y 
         <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Noticias</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {noticiasDestacadas.map((noticia) => (
-            <a target="_blank" href={`/noticias/${noticia.id}/`}
+            <a target="_blank" href={`/noticias/${noticia.id.replace('/index', '')}/`}
               class="group block bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-200"
             >
               {noticia.data.imagen ? (

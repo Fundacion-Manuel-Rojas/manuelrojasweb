@@ -15,7 +15,7 @@ export default config({
       label: "Noticias",
       slugField: "title",
       columns: ["title", "fecha", "categoria"],
-      path: "src/content/noticias/*",
+      path: "src/content/noticias/*/index",
       format: { contentField: "content" },
       entryLayout: "content",
       schema: {

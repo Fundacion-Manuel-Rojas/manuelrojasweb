@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 export async function getStaticPaths() {
   const noticias = await getCollection('noticias');
   return noticias.map((n) => ({
-    params: { slug: n.id },
+    params: { slug: n.id.replace('/index', '') },
     props: { noticia: n },
   }));
 }
@@ -15,7 +15,7 @@ const { Content } = await render(noticia);
 
 const title = noticia.data.subtitle || noticia.data.title;
 const description = noticia.data.extracto || `Noticia publicada por la Fundación Manuel Rojas: ${title}.`;
-const slugPath = `/noticias/${noticia.id}/`;
+const slugPath = `/noticias/${noticia.id.replace('/index', '')}/`;
 const publishedTime = noticia.data.fecha ? new Date(noticia.data.fecha).toISOString() : undefined;
 ---
 

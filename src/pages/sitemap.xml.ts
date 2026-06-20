@@ -89,7 +89,7 @@ export const GET: APIRoute = async () => {
   ];
 
   const noticiaEntries: UrlEntry[] = noticias.map((n) => ({
-    loc: `/noticias/${n.id}/`,
+    loc: `/noticias/${n.id.replace('/index', '')}/`,
     lastmod: isoDate(n.data.fecha),
     changefreq: 'monthly',
     priority: 0.6,
