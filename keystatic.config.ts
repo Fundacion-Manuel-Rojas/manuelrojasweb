@@ -15,8 +15,9 @@ export default config({
       label: "Noticias",
       slugField: "title",
       columns: ["title", "fecha", "categoria"],
-      path: "src/content/noticias/*/index",
-      entryLayout: "form",
+      path: "src/content/noticias/*/",
+      format: { contentField: "content" },
+      entryLayout: "content",
       schema: {
         title: fields.slug({ name: { label: "Título" } }),
         subtitle: fields.text({ label: "Subtítulo", multiline: true }),
@@ -41,9 +42,8 @@ export default config({
           label: "Extracto",
           multiline: true,
         }),
-        content: fields.text({
+        content: fields.markdoc({
           label: "Contenido",
-          multiline: true,
         }),
       },
     }),

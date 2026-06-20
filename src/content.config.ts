@@ -16,7 +16,6 @@ import { fileURLToPath } from 'node:url';
     imagen: z.string().optional(),
     extracto: z.string().optional(),
     destacado: z.boolean().optional(),
-    content: z.string().optional(),
   }),
 });
 
