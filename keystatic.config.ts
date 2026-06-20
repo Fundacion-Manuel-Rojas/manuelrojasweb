@@ -33,9 +33,10 @@ export default config({
           defaultValue: "noticias",
         }),
         destacado: fields.checkbox({ label: "Mostrar en home" }),
-        imagen: fields.text({
-          label: "Imagen destacada (ruta /media/noticias/...)",
-          description: "Ruta de la imagen, ej. /media/noticias/angelita-jeria/imagen.webp",
+        imagen: fields.image({
+          label: "Imagen destacada",
+          directory: "public/media/noticias",
+          publicPath: "/media/noticias/",
         }),
         extracto: fields.text({
           label: "Extracto",
