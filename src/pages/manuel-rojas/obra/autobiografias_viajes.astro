@@ -21,6 +21,6 @@ const books = librosOrdenados.map((libro) => ({
 
   <p class="mb-4 leading-relaxed text-gray-600">La experiencia de sus viajes por Chile, Latinoamérica y otras latitudes, es relatada por Manuel Rojas primeramente en crónicas publicadas en periódicos y en breves ensayos que serán luego recopilados en diversas ediciones. Sus excursiones a la Cordillera de los Andes y a distintas localidades de Chile se reúnen en <i>A pie por Chile</i> y sus primeras visitas a Cuba y Puerto Rico en <i>El árbol siempre verde</i>. Su estadía y recorrido por México, entre 1962 y 1963, es presentada en <i>Pasé por México un día</i>, obra que no constituye un diario de viaje, sino que es la reunión de las impresiones del paisaje, del habitante y su historia, organizadas cronológicamente. Similar estructura presenta <i>Viaje al país de los profetas</i>, donde Manuel Rojas comenta su visita a Israel, aceptando la invitación que se le hiciera en 1968.</p>
 
-  {books.length > 0 ? <BookGallery books={books} /> : <p class="text-gray-500 py-6">Próximamente...</p>}
+  <BookGallery books={books} />
 
 </Layout>

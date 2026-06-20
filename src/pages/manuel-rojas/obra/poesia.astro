@@ -23,6 +23,6 @@ const books = librosOrdenados.map((libro) => ({
 
   <p class="mb-4 leading-relaxed text-gray-600">Los poemas de Manuel Rojas terminaron siendo alabados y destacados por los principales autores y críticos de la época.</p>
 
-  {books.length > 0 ? <BookGallery books={books} /> : <p class="text-gray-500 py-6">Próximamente...</p>}
+  <BookGallery books={books} />
 
 </Layout>

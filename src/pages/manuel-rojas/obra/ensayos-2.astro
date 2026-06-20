@@ -21,6 +21,6 @@ const books = librosOrdenados.map((libro) => ({
 
   <p class="mb-4 leading-relaxed text-gray-600">Una importante faceta es la de antólogo y prologuista: bajo los auspicios de la editorial Zig-Zag realizó ediciones y estudios preliminares de algunos de los principales autores de la tradición narrativa chilena, tales como <i>Los costumbristas chilenos</i>, las páginas selectas de <i>Alberto Edwards</i> y <i>Blest Gana</i>, y una selección de los mejores cuentos de <i>Mariano Latorre</i>. A ello se suma el estudio introductorio al volumen de <i>José Joaquín Vallejo</i>. También escribió un documentado artículo sobre los navegantes y el astrónomo que descubrieron los mares del sur de Chile, bajo el título <i>Chile: 5 navegantes y 1 astrónomo</i>, entre otros documentos de carácter histórico. Su <i>Historia breve de la literatura chilena</i>, publicada en México en 1965, fue un intento por ofrecer una visión de conjunto de la evolución de nuestras letras.</p>
 
-  {books.length > 0 ? <BookGallery books={books} /> : <p class="text-gray-500 py-6">Próximamente...</p>}
+  <BookGallery books={books} />
 
 </Layout>

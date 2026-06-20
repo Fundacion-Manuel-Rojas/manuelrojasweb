@@ -21,6 +21,6 @@ const books = librosOrdenados.map((libro) => ({
 
   <p class="mb-4 leading-relaxed text-gray-600">Sus numerosos cuentos fueron reunidos en diversas recopilaciones y colecciones, tales como <i>Hombres del sur</i>; <i>El delincuente</i>, <i>Travesía</i> o <i>Cuentos</i>. El año 2019 todos sus relatos junto a 6 cuentos inéditos y dispersos fueron publicados por primera vez en <i>Cuentos Completos</i> por la editorial Alfaguara.</p>
 
-  {books.length > 0 ? <BookGallery books={books} /> : <p class="text-gray-500 py-6">Próximamente...</p>}
+  <BookGallery books={books} />
 
 </Layout>

@@ -21,6 +21,6 @@ const books = librosOrdenados.map((libro) => ({
 
   <p class="mb-4 leading-relaxed text-gray-600">En la selección de los escritos que se incluyeron en todas estas compilaciones participó activamente el propio autor y contienen la última versión de sus obras más significativas, revisadas y corregidas por él mismo. Finalmente se edita, en un volumen muy cuidado, la compilación <i>Obras</i>; esta edición salió a circulación en 1973, poco después que Manuel Rojas falleciera e incluye un extenso prólogo del escritor español Jorge Campos.</p>
 
-  {books.length > 0 ? <BookGallery books={books} /> : <p class="text-gray-500 py-6">Próximamente...</p>}
+  <BookGallery books={books} />
 
 </Layout>
