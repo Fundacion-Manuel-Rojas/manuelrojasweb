@@ -41,8 +41,9 @@ export default config({
           label: "Extracto",
           multiline: true,
         }),
-        content: fields.markdoc({
+        content: fields.text({
           label: "Contenido",
+          multiline: true,
         }),
       },
     }),
