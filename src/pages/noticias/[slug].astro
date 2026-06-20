@@ -1,5 +1,6 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -11,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { noticia } = Astro.props;
-const { Content } = await render(noticia);
+const contentHtml = marked.parse(noticia.data.content || '', { async: false });
 
 const title = noticia.data.subtitle || noticia.data.title;
 const description = noticia.data.extracto || `Noticia publicada por la Fundación Manuel Rojas: ${title}.`;
@@ -77,7 +78,5 @@ const publishedTime = noticia.data.fecha ? new Date(noticia.data.fecha).toISOStr
       <p class="text-sm text-gray-500 mb-4 italic">Por {noticia.data.autor}</p>
     )
   }
-  <div class="prose prose-lg max-w-none">
-    <Content />
-  </div>
+  <div class="prose prose-lg max-w-none" set:html={contentHtml} />
 </Layout>

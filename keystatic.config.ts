@@ -16,7 +16,6 @@ export default config({
       slugField: "title",
       columns: ["title", "fecha", "categoria"],
       path: "src/content/noticias/*/index",
-      format: { contentField: "content" },
       entryLayout: "form",
       schema: {
         title: fields.slug({ name: { label: "Título" } }),

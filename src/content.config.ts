@@ -5,7 +5,7 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const noticias = defineCollection({
+  const noticias = defineCollection({
   loader: glob({ pattern: '**/*.mdoc', base: './src/content/noticias' }),
   schema: z.object({
     title: z.string(),
@@ -16,6 +16,7 @@ const noticias = defineCollection({
     imagen: z.string().optional(),
     extracto: z.string().optional(),
     destacado: z.boolean().optional(),
+    content: z.string().optional(),
   }),
 });
 
