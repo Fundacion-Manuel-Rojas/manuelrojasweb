@@ -5,13 +5,11 @@
   "scripts": {
     "dev": "astro dev",
     "build": "rm -rf .astro node_modules/.astro dist && astro build",
-    "preview": "astro preview",
-    "scrape": "node scripts/scrape.mjs"
+    "preview": "astro preview"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.5.0",
     "@astrojs/markdoc": "^1.0.6",
-    "@astrojs/netlify": "^7.0.13",
     "@astrojs/react": "^5.0.6",
     "@keystatic/astro": "^5.0.6",
     "@keystatic/core": "^0.5.50",
@@ -26,8 +24,5 @@
     "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.0"
   },
-  "devDependencies": {
-    "jsdom": "^25.0.0",
-    "node-fetch": "^3.3.2"
-  }
+  "devDependencies": {}
 }
