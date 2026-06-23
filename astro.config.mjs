@@ -10,9 +10,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 import alpinejs from '@astrojs/alpinejs';
 
+import netlify from '@astrojs/netlify';
+
 export default defineConfig({
   site: 'https://manuelrojas.cl',
   output: 'static',
+  adapter: netlify(),
   trailingSlash: 'ignore',
 
   build: {
