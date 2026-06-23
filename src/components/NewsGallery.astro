@@ -16,7 +16,7 @@ const validImages = images?.filter((img) => img?.imagen) || [];
 {
   validImages.length > 0 && (
     <div class="news-gallery not-prose my-6">
-      {title && <h3 class="text-lg font-bold text-gray-700 mb-3">{title}</h3>}
+      {title && <h3 class="text-lg font-bold text-gray-200 mb-3">{title}</h3>}
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {validImages.map((img, index) => (
@@ -105,7 +105,7 @@ const validImages = images?.filter((img) => img?.imagen) || [];
             </div>
           )}
 
-          <p class="gallery-caption mt-2 max-w-2xl text-center text-sm text-white/90" />
+          <div class="gallery-caption mt-2 max-w-2xl text-center text-xl text-white"></div>
         </div>
       </div>
     </div>

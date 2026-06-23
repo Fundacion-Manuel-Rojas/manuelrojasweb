@@ -1,11 +1,11 @@
 import { config, fields, collection } from "@keystatic/core";
 
 // En desarrollo local usamos almacenamiento local para que los cambios en
-// /keystatic se reflejen inmediatamente en src/content/... En producción o
-// cuando se fuerce con KEYSTATIC_STORAGE=cloud, seguimos usando Keystatic Cloud.
-const useCloud =
-  process.env.NODE_ENV === "production" ||
-  process.env.KEYSTATIC_STORAGE === "cloud";
+// /keystatic se reflejen inmediatamente en src/content/... En producción
+// (npm run build / deploy) seguimos usando Keystatic Cloud.
+// Usamos import.meta.env en lugar de process porque este archivo también se
+// ejecuta en el navegador al hidratar el panel de Keystatic.
+const useCloud = import.meta.env.PROD;
 
 export default config({
   storage: {
