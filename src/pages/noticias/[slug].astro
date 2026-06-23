@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import NewsGallery from '../../components/NewsGallery.astro';
 
 export async function getStaticPaths() {
   const noticias = await getCollection('noticias');
@@ -77,6 +78,9 @@ const publishedTime = noticia.data.fecha ? new Date(noticia.data.fecha).toISOStr
       <p class="text-sm text-gray-500 mb-4 italic">Por {noticia.data.autor}</p>
     )
   }
+
+  <NewsGallery images={noticia.data.galeria || []} />
+
   <div class="prose prose-lg max-w-none">
     <Content />
   </div>

@@ -1,15 +1,24 @@
 import { config, fields, collection } from "@keystatic/core";
 
+// En desarrollo local usamos almacenamiento local para que los cambios en
+// /keystatic se reflejen inmediatamente en src/content/... En producción o
+// cuando se fuerce con KEYSTATIC_STORAGE=cloud, seguimos usando Keystatic Cloud.
+const useCloud =
+  process.env.NODE_ENV === "production" ||
+  process.env.KEYSTATIC_STORAGE === "cloud";
+
 export default config({
   storage: {
-    kind: "cloud",
+    kind: useCloud ? "cloud" : "local",
   },
-  cloud: {
-    // TODO: Reemplaza con tu team/project de https://keystatic.cloud
-    // Ejemplo: project: 'fundacion-rojas/manuelrojas',
-    project: "devel/manuelrojasweb",
-    branch: "master",
-  },
+  cloud: useCloud
+    ? {
+        // TODO: Reemplaza con tu team/project de https://keystatic.cloud
+        // Ejemplo: project: 'fundacion-rojas/manuelrojas',
+        project: "devel/manuelrojasweb",
+        branch: "master",
+      }
+    : undefined,
   collections: {
     noticias: collection({
       label: "Noticias",
@@ -42,6 +51,27 @@ export default config({
           label: "Extracto",
           multiline: true,
         }),
+        galeria: fields.array(
+          fields.object({
+            imagen: fields.image({
+              label: "Imagen",
+              directory: "public/media/noticias",
+              publicPath: "/media/noticias/",
+            }),
+            alt: fields.text({ label: "Texto alternativo (alt)" }),
+            titulo: fields.text({
+              label: "Título (opcional)",
+              description: "Leyenda que aparece al abrir la imagen",
+            }),
+          }),
+          {
+            label: "Galería de imágenes",
+            itemLabel: (props) =>
+              props.fields.titulo.value ||
+              props.fields.alt.value ||
+              "Imagen",
+          }
+        ),
         content: fields.markdoc({
           label: "Contenido",
         }),

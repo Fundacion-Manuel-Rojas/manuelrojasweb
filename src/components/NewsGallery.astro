@@ -1,0 +1,222 @@
+---
+export interface Props {
+  images: Array<{
+    imagen: string;
+    alt?: string;
+    titulo?: string;
+  }>;
+  title?: string;
+}
+
+const { images, title } = Astro.props;
+
+const validImages = images?.filter((img) => img?.imagen) || [];
+---
+
+{
+  validImages.length > 0 && (
+    <div class="news-gallery not-prose my-6">
+      {title && <h3 class="text-lg font-bold text-gray-700 mb-3">{title}</h3>}
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {validImages.map((img, index) => (
+          <button
+            type="button"
+            class="gallery-thumb group relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100 text-left shadow-sm transition-all hover:shadow-md hover:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            data-index={index}
+            aria-label={`Ver imagen ${index + 1} de ${validImages.length}`}
+          >
+            <img
+              src={img.imagen}
+              alt={img.alt || `Imagen ${index + 1} de la galería`}
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+            {img.titulo && (
+              <span class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-1.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                {img.titulo}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <div
+        class="gallery-lightbox fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Galería de imágenes"
+      >
+        <button
+          type="button"
+          class="gallery-close absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          aria-label="Cerrar galería"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="gallery-prev absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:left-4"
+          aria-label="Imagen anterior"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="gallery-next absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20 sm:right-4"
+          aria-label="Imagen siguiente"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </button>
+
+        <div class="flex h-full w-full max-w-5xl flex-col items-center justify-center">
+          <div class="relative max-h-[80vh] w-full">
+            <img
+              class="gallery-image mx-auto max-h-[80vh] w-auto max-w-full rounded-md object-contain shadow-2xl"
+              src=""
+              alt=""
+            />
+          </div>
+
+          {validImages.length > 1 && (
+            <div class="mt-4 flex items-center gap-4">
+              <span class="gallery-counter text-sm text-white/80">
+                1 / {validImages.length}
+              </span>
+              <div class="flex gap-1.5">
+                {validImages.map((_, i) => (
+                  <button
+                    type="button"
+                    class="gallery-dot h-2 w-2 rounded-full bg-white/40 transition-colors"
+                    data-index={i}
+                    aria-label={`Ir a imagen ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          <p class="gallery-caption mt-2 max-w-2xl text-center text-sm text-white/90" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script is:inline>
+  (function () {
+    function initGallery(gallery) {
+      const thumbs = gallery.querySelectorAll('.gallery-thumb');
+      const lightbox = gallery.querySelector('.gallery-lightbox');
+      if (!lightbox || thumbs.length === 0) return;
+
+      const imageEl = lightbox.querySelector('.gallery-image');
+      const captionEl = lightbox.querySelector('.gallery-caption');
+      const counterEl = lightbox.querySelector('.gallery-counter');
+      const dots = lightbox.querySelectorAll('.gallery-dot');
+      const closeBtn = lightbox.querySelector('.gallery-close');
+      const prevBtn = lightbox.querySelector('.gallery-prev');
+      const nextBtn = lightbox.querySelector('.gallery-next');
+
+      let currentIndex = 0;
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      function imageData(index) {
+        const thumb = thumbs[index];
+        const img = thumb.querySelector('img');
+        return {
+          src: img?.src || '',
+          alt: img?.alt || '',
+          title: thumb.querySelector('span')?.textContent || '',
+        };
+      }
+
+      function showImage(index) {
+        currentIndex = ((index % thumbs.length) + thumbs.length) % thumbs.length;
+        const data = imageData(currentIndex);
+
+        imageEl.src = data.src;
+        imageEl.alt = data.alt;
+        captionEl.textContent = data.title || '';
+        captionEl.style.display = data.title ? 'block' : 'none';
+
+        if (counterEl) {
+          counterEl.textContent = `${currentIndex + 1} / ${thumbs.length}`;
+        }
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('bg-white', i === currentIndex);
+          dot.classList.toggle('bg-white/40', i !== currentIndex);
+        });
+      }
+
+      function open(index) {
+        showImage(index);
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function close() {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      function next() {
+        showImage(currentIndex + 1);
+      }
+
+      function prev() {
+        showImage(currentIndex - 1);
+      }
+
+      thumbs.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => open(index));
+      });
+
+      closeBtn.addEventListener('click', close);
+      nextBtn.addEventListener('click', next);
+      prevBtn.addEventListener('click', prev);
+
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => showImage(Number(dot.dataset.index)));
+      });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+      });
+
+      lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      lightbox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? next() : prev();
+        }
+      }, { passive: true });
+
+      document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'ArrowLeft') prev();
+      });
+    }
+
+    document.querySelectorAll('.news-gallery').forEach(initGallery);
+  })();
+</script>
