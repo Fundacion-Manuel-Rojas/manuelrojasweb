@@ -131,6 +131,7 @@ export default config({
           label: "Imagen principal",
           directory: "public/media",
           publicPath: "/media/",
+          validation: { isRequired: true },
         }),
         pdf: fields.file({
           label: "Archivo PDF del libro",
@@ -146,21 +147,27 @@ export default config({
               label: "Imagen",
               directory: "public/media",
               publicPath: "/media/",
+              validation: { isRequired: true },
             }),
             link: fields.text({ label: "Enlace (opcional)" }),
           }),
         ),
-        primera_edicion: fields.object({
-          editorial: fields.text({ label: "Editorial" }),
-          anio: fields.number({ label: "Año" }),
-          lugar: fields.text({ label: "Lugar" }),
-        }),
-        ultima_edicion: fields.object({
-          editorial: fields.text({ label: "Editorial" }),
-          anio: fields.number({ label: "Año" }),
-          lugar: fields.text({ label: "Lugar" }),
-          url: fields.text({ label: "URL de compra" }),
-        }),
+        ediciones: fields.array(
+          fields.object({
+            nombre: fields.text({
+              label: "Nombre de la edición",
+              description: "Ej: Primera edición, Segunda edición, Última edición",
+            }),
+            editorial: fields.text({ label: "Editorial" }),
+            anio: fields.number({ label: "Año" }),
+            lugar: fields.text({ label: "Lugar" }),
+            url: fields.text({ label: "URL de compra o información" }),
+          }),
+          {
+            label: "Ediciones",
+            itemLabel: (props) => props.fields.nombre.value || "Edición",
+          }
+        ),
         traducciones: fields.array(
           fields.object({
             titulo: fields.text({ label: "Título en traducción" }),

@@ -50,7 +50,8 @@ const allImages = [
 ].filter(Boolean);
 
 const slugPath = `/libros/${libro.id}/`;
-const firstEdition = libro.data.primera_edicion;
+const ediciones = libro.data.ediciones || [];
+const firstEdition = ediciones.length > 0 ? ediciones.reduce((a, b) => (a.anio < b.anio ? a : b)) : null;
 const description = `${libro.data.titulo}, de Manuel Rojas. ${categoriaLabel}. ${firstEdition ? `Primera edición: ${firstEdition.editorial}, ${firstEdition.anio}.` : ''}`.trim();
 ---
 
@@ -98,16 +99,21 @@ const description = `${libro.data.titulo}, de Manuel Rojas. ${categoriaLabel}. $
     </div>
   )}
 
-  <p class="mb-4 leading-relaxed text-gray-600">
-    {libro.data.primera_edicion && (
-      <><strong>Primera edición:</strong> {libro.data.primera_edicion.editorial} – {libro.data.primera_edicion.lugar}, {libro.data.primera_edicion.anio}<br></>
-    )}
-    {libro.data.ultima_edicion && (
-      <a href={libro.data.ultima_edicion.url || '#'} target="_blank" rel="noopener" class="text-blue-500 hover:underline">
-        <strong>Última edición:</strong> {libro.data.ultima_edicion.editorial} – {libro.data.ultima_edicion.lugar}, {libro.data.ultima_edicion.anio}
-      </a>
-    )}
-  </p>
+  {ediciones.length > 0 && (
+    <div class="mb-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-3">Ediciones</h2>
+      <ul class="list-disc pl-5 mb-4 leading-relaxed text-gray-600">
+        {ediciones.map((edicion) => (
+          <li>
+            <strong>{edicion.nombre}:</strong> {edicion.editorial}{edicion.lugar && ` – ${edicion.lugar}`}, {edicion.anio}
+            {edicion.url && (
+              <> — <a href={edicion.url} target="_blank" rel="noopener" class="text-blue-500 hover:underline">ver más</a></>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
 
   {libro.data.pdf && (
     <p class="mb-4 leading-relaxed text-gray-600">

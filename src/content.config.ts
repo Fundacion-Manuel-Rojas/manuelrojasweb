@@ -130,17 +130,13 @@ const libros = defineCollection({
       src: z.string(),
       link: z.string().optional(),
     })])).optional(),
-    primera_edicion: z.object({
-      editorial: z.string(),
-      anio: z.number(),
-      lugar: z.string().optional(),
-    }).optional(),
-    ultima_edicion: z.object({
+    ediciones: z.array(z.object({
+      nombre: z.string(),
       editorial: z.string(),
       anio: z.number(),
       lugar: z.string().optional(),
       url: z.string().optional(),
-    }).optional(),
+    })).optional(),
     traducciones: z.array(z.object({
       titulo: z.string(),
       idioma: z.string(),
