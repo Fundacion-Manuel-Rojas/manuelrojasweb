@@ -11,46 +11,48 @@ const title = "Audios";
   <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Galería /</span>Videos y Audios</h3>
 
   <style>
-    .audio-section {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 2rem;
-      align-items: flex-start;
-    }
-    .audio-info { flex: 1; min-width: 0; }
-    .audio-cover { flex-shrink: 0; width: 280px; }
-    .audio-cover img {
-      width: 100%;
-      height: auto;
-      max-height: 380px;
-      object-fit: contain;
-      border-radius: 0.5rem;
-      border: 1px solid #ddd;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      display: block;
-    }
-    .audio-player-box {
-      margin-top: 1rem;
-      padding: 0.75rem;
-      background: #f8f8f8;
-      border-radius: 0.5rem;
-      border: 1px solid #e5e5e5;
-    }
-    .audio-player-box audio { width: 100%; }
-    .audio-player-box .meta {
-      font-size: 13px;
-      color: #999;
-      margin-top: 4px;
-    }
+  .audio-section {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
+  }
+  .audio-info { flex: 1; min-width: 0; }
+  .audio-cover { flex-shrink: 0; width: 280px; }
+  .audio-cover img {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: block;
+  }
+  .audio-player-box {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #f8f8f8;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e5e5;
+  }
+  .audio-player-box audio { width: 100%; }
+  .audio-player-box .meta {
+    font-size: 13px;
+    color: #999;
+    margin-top: 4px;
+  }
 
-    @media (max-width: 768px) {
-      .audio-section { flex-direction: column-reverse; gap: 1rem; }
-      .audio-cover { width: 100%; }
-      .audio-cover img { max-height: 280px; }
-    }
+  @media (max-width: 768px) {
+    .audio-section { flex-direction: column-reverse; gap: 1rem; }
+    .audio-cover { width: 100%; }
+    .audio-cover img { max-height: 280px; }
+  }
   </style>
 
   <!-- Chile de arriba a abajo -->
+    <div style="padding: 0.3% 0 0 0; position: relative;"><div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1200903680?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrRrpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MANUEL ROJAS Lago Rupanco y Vallenar"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script></div><p class="mb-4 leading-relaxed text-gray-600">Imágenes de Manuel Rojas junto a su familia en el lago Rupanco y en la ciudad de Vallenar en los años 1950. Junto al escritor aparecen su hija María Paz, su amigo Roberto Otero, y su nieto Pablo Ortiz. Registro original en super 8 conservado por su familia.</p></div><hr class="border-t border-gray-200 my-8">
+
   <div class="audio-section">
     <div class="audio-info">
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Chile de arriba a abajo</h2>
@@ -63,14 +65,8 @@ const title = "Audios";
         <li>El canto de Chile – Cueca</li><li>Chucao – Canción</li>
         <li>Puerto Edén – Vals pericona</li><li>Lobero muerto – Sirilla</li>
       </ul>
-      <div class="audio-player-box" style="padding: 0; overflow: hidden;">
-        <iframe
-          src="https://player.vimeo.com/video/1204010832?title=0&byline=0&portrait=0&controls=1"
-          style="display: block; width: 100%; height: 80px; border: 0;"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-          title="Chile de arriba a abajo"
-        ></iframe>
+      <div class="audio-player-box">
+        <iframe src="https://player.vimeo.com/video/1204010832?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="220" height="140" frameborder="1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Manuel-Rojas-Angel-Parra-Chile-de-arriba-a-abajo"></iframe>
         <div class="meta"><strong>Letra: Manuel Rojas – Composición: Ángel Parra</strong> / <em>1968</em> · <a target="_blank" href="https://vimeo.com/1204010832" class="text-blue-500 hover:underline">Ver en Vimeo</a></div>
       </div>
     </div>
@@ -94,8 +90,10 @@ const title = "Audios";
         <li>Hijo de ladrón – Últimas páginas</li>
       </ul>
       <div class="audio-player-box">
-        <audio preload="none" controls="controls"><source type="audio/webm" src="/media/audios/Manuel-Rojas-Hijo-de-ladron.webm"></audio>
-        <div class="meta"><strong>Voz viva de América Latina</strong> / <em>1968</em> · <a target="_blank" href="/media/audios/Manuel-Rojas-Hijo-de-ladron.webm" class="text-blue-500 hover:underline">Descargar</a></div>
+        
+        <iframe src="https://player.vimeo.com/video/1204010792?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="220" height="140" frameborder="1" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Hijo de Ladrón"></iframe>
+
+        <div class="meta"><strong>Voz viva de América Latina</strong> / <em>1968</em> · <a target="_blank" href="https://vimeo.com/1204010792?share=copy&fl=sv&fe=ci" class="text-blue-500 hover:underline">Ver en Vimeo</a></div>
       </div>
     </div>
     <div class="audio-cover">
