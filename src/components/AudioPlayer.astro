@@ -1,0 +1,565 @@
+---
+interface Props {
+  id?: string;
+  src?: string;
+  title?: string;
+  cover?: string;
+  year?: string;
+}
+const { id, src, title, cover, year } = Astro.props;
+const audioUrl = src || (id ? `https://drive.google.com/uc?export=download&id=${id}` : '');
+const driveUrl = id ? `https://drive.google.com/file/d/${id}/view?usp=sharing` : null;
+const instanceId = Math.random().toString(36).substring(2, 11);
+---
+
+<div class="audio-player" data-audio-player data-instance={instanceId}>
+  <audio preload="metadata" src={audioUrl} data-audio></audio>
+
+  <div class="player-body">
+    {
+      cover && (
+        <div class="player-cover">
+          <img src={cover} alt={title || 'Portada'} loading="lazy" decoding="async" />
+        </div>
+      )
+    }
+
+    <div class="player-content">
+      <div class="player-meta">
+        <span class="player-title">{title || 'Audio'}</span>
+        {year && <span class="player-year">{year}</span>}
+      </div>
+
+      <div class="player-controls">
+        <button type="button" class="control-btn play-btn" data-play aria-label="Reproducir">
+          <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+          </svg>
+        </button>
+
+        <div class="progress-area">
+          <span class="time" data-current>0:00</span>
+          <div class="progress-bar" data-progress-bar>
+            <div class="progress-fill" data-progress-fill></div>
+            <input type="range" class="progress-input" data-progress-input min="0" max="100" value="0" step="0.1" aria-label="Progreso del audio" />
+          </div>
+          <span class="time" data-duration>0:00</span>
+        </div>
+
+        <div class="extra-controls">
+          <div class="volume-control">
+            <button type="button" class="control-btn volume-btn" data-mute aria-label="Silenciar">
+              <svg class="icon-volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
+              </svg>
+              <svg class="icon-mute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path>
+              </svg>
+            </button>
+            <input type="range" class="volume-slider" data-volume min="0" max="1" step="0.05" value="1" aria-label="Volumen" />
+          </div>
+
+          <button type="button" class="speed-btn" data-speed>1x</button>
+
+          {
+            driveUrl && (
+              <a class="drive-link" href={driveUrl} target="_blank" rel="noopener noreferrer" aria-label="Abrir en Google Drive">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"></path>
+                </svg>
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="player-error" data-error hidden>
+    <p>No se puede reproducir este audio directamente aquí.</p>
+    {
+      driveUrl ? (
+        <a href={driveUrl} target="_blank" rel="noopener noreferrer" class="drive-play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          Escuchar en Google Drive
+        </a>
+      ) : (
+        <a href={audioUrl} target="_blank" rel="noopener noreferrer" class="drive-play-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+          Abrir archivo de audio
+        </a>
+      )
+    }
+  </div>
+</div>
+
+<script>
+  function formatTime(seconds: number): string {
+    if (!isFinite(seconds) || isNaN(seconds) || seconds < 0) return '0:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  }
+
+  function initAudioPlayer(container: HTMLElement) {
+    if (container.dataset.initialized) return;
+    container.dataset.initialized = 'true';
+
+    const audio = container.querySelector<HTMLAudioElement>('[data-audio]');
+    const playBtn = container.querySelector<HTMLButtonElement>('[data-play]');
+    const currentEl = container.querySelector<HTMLElement>('[data-current]');
+    const durationEl = container.querySelector<HTMLElement>('[data-duration]');
+    const progressInput = container.querySelector<HTMLInputElement>('[data-progress-input]');
+    const progressFill = container.querySelector<HTMLElement>('[data-progress-fill]');
+    const volumeInput = container.querySelector<HTMLInputElement>('[data-volume]');
+    const muteBtn = container.querySelector<HTMLButtonElement>('[data-mute]');
+    const speedBtn = container.querySelector<HTMLButtonElement>('[data-speed]');
+    const errorEl = container.querySelector<HTMLElement>('[data-error]');
+
+    if (!audio || !playBtn || !currentEl || !durationEl || !progressInput || !progressFill || !volumeInput || !muteBtn || !speedBtn || !errorEl) return;
+
+    let wasPlayingBeforeSeek = false;
+
+    const updateProgress = () => {
+      if (!audio.duration) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      progressInput.value = String(pct);
+      progressFill.style.width = `${pct}%`;
+      currentEl.textContent = formatTime(audio.currentTime);
+    };
+
+    const updateDuration = () => {
+      durationEl.textContent = formatTime(audio.duration || 0);
+    };
+
+    const updateVolumeIcon = () => {
+      container.classList.toggle('is-muted', audio.muted || audio.volume === 0);
+    };
+
+    const showError = () => {
+      container.classList.add('has-error');
+      errorEl.hidden = false;
+    };
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        document.querySelectorAll<HTMLAudioElement>('[data-audio-player] [data-audio]').forEach((other) => {
+          if (other !== audio && !other.paused) other.pause();
+        });
+        audio.play().catch(() => showError());
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener('play', () => container.classList.add('is-playing'));
+    audio.addEventListener('pause', () => container.classList.remove('is-playing'));
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('durationchange', updateDuration);
+    audio.addEventListener('ended', () => container.classList.remove('is-playing'));
+    audio.addEventListener('error', showError, { once: true });
+    audio.addEventListener('volumechange', updateVolumeIcon);
+
+    // Si el audio no carga metadata en unos segundos, intentamos recargar y luego mostramos el fallback.
+    window.setTimeout(() => {
+      if (audio.error) {
+        showError();
+        return;
+      }
+      if (audio.readyState < 1) {
+        audio.load();
+        window.setTimeout(() => {
+          if (audio.readyState < 1 || audio.error) showError();
+        }, 2500);
+      }
+    }, 3500);
+
+    progressInput.addEventListener('input', () => {
+      if (!audio.duration) return;
+      const time = (parseFloat(progressInput.value) / 100) * audio.duration;
+      audio.currentTime = time;
+      progressFill.style.width = `${progressInput.value}%`;
+    });
+
+    progressInput.addEventListener('pointerdown', () => {
+      wasPlayingBeforeSeek = !audio.paused;
+      audio.pause();
+    });
+
+    progressInput.addEventListener('pointerup', () => {
+      if (wasPlayingBeforeSeek) audio.play().catch(() => showError());
+    });
+
+    volumeInput.addEventListener('input', () => {
+      const value = parseFloat(volumeInput.value);
+      audio.volume = value;
+      audio.muted = value === 0;
+      updateVolumeIcon();
+    });
+
+    muteBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      updateVolumeIcon();
+    });
+
+    const speeds = [1, 1.25, 1.5, 2];
+    let speedIndex = 0;
+    speedBtn.addEventListener('click', () => {
+      speedIndex = (speedIndex + 1) % speeds.length;
+      audio.playbackRate = speeds[speedIndex];
+      speedBtn.textContent = `${speeds[speedIndex].toFixed(speeds[speedIndex] % 1 === 0 ? 0 : 2).replace('.00', '')}x`;
+    });
+
+    updateVolumeIcon();
+  }
+
+  function initAllPlayers() {
+    document.querySelectorAll<HTMLElement>('[data-audio-player]:not([data-initialized])').forEach(initAudioPlayer);
+  }
+
+  document.addEventListener('astro:page-load', initAllPlayers);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllPlayers);
+  } else {
+    initAllPlayers();
+  }
+</script>
+
+<style>
+  .audio-player {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    margin-top: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .player-body {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .player-cover {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: #e5e7eb;
+  }
+
+  .player-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .player-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .player-title {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .player-year {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 500;
+  }
+
+  .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .control-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: #5a9ab5;
+    cursor: pointer;
+    padding: 0.35rem;
+    border-radius: 50%;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+
+  .control-btn:hover {
+    background: rgba(90, 154, 181, 0.1);
+  }
+
+  .control-btn:active {
+    transform: scale(0.95);
+  }
+
+  .control-btn svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .play-btn {
+    width: 42px;
+    height: 42px;
+    background: #5a9ab5;
+    color: #fff;
+  }
+
+  .play-btn:hover {
+    background: #4a86a0;
+  }
+
+  .play-btn svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .icon-pause,
+  .is-playing .icon-play,
+  .is-muted .icon-volume {
+    display: none;
+  }
+
+  .is-playing .icon-pause,
+  .is-muted .icon-mute {
+    display: block;
+  }
+
+  .progress-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .time {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-variant-numeric: tabular-nums;
+    min-width: 2.4rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .progress-bar {
+    position: relative;
+    flex: 1;
+    height: 7px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: visible;
+  }
+
+  .progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #5a9ab5;
+    border-radius: 999px;
+    pointer-events: none;
+    transition: width 0.05s linear;
+  }
+
+  .progress-input {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 24px;
+    transform: translateY(-50%);
+    opacity: 0;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+  }
+
+  .progress-input:hover + .progress-fill,
+  .progress-input:focus + .progress-fill,
+  .progress-bar:hover .progress-fill {
+    background: #4a86a0;
+  }
+
+  .extra-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+
+  .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .volume-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .volume-slider {
+    width: 0;
+    height: 4px;
+    overflow: hidden;
+    opacity: 0;
+    transition: width 0.2s ease, opacity 0.2s ease;
+    accent-color: #5a9ab5;
+    cursor: pointer;
+  }
+
+  .volume-control:hover .volume-slider,
+  .volume-slider:focus {
+    width: 64px;
+    opacity: 1;
+  }
+
+  .speed-btn {
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #4b5563;
+    border-radius: 0.375rem;
+    padding: 0.25rem 0.45rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .speed-btn:hover {
+    border-color: #5a9ab5;
+    color: #5a9ab5;
+  }
+
+  .drive-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: #6b7280;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .drive-link:hover {
+    background: rgba(107, 114, 128, 0.1);
+    color: #5a9ab5;
+  }
+
+  .drive-link svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .player-error {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+
+  .player-error p {
+    color: #7f1d1d;
+    margin: 0 0 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .drive-play-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: #5a9ab5;
+    color: #fff;
+    padding: 0.65rem 1.1rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .drive-play-btn:hover {
+    background: #4a86a0;
+    text-decoration: none;
+  }
+
+  .drive-play-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .has-error .player-body {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    .audio-player {
+      padding: 0.9rem;
+    }
+
+    .player-body {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .player-cover {
+      width: 56px;
+      height: 56px;
+    }
+
+    .player-controls {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .progress-area {
+      order: 3;
+      flex-basis: 100%;
+      margin-top: 0.25rem;
+    }
+
+    .extra-controls {
+      margin-left: auto;
+    }
+
+    .time {
+      min-width: 2.2rem;
+    }
+  }
+</style>

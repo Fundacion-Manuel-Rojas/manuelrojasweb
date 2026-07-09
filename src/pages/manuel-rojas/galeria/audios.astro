@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import AudioPlayer from '../../../components/AudioPlayer.astro';
 
 const defaultImg = '/media/fotografias/R19-Manuel-Rojas-Retrato-1971-900x600-a2af8da699.webp';
 
@@ -29,18 +30,11 @@ const title = "Audios";
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     display: block;
   }
-  .audio-player-box {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background: #f8f8f8;
-    border-radius: 0.5rem;
-    border: 1px solid #e5e5e5;
-  }
-  .audio-player-box audio { width: 100%; }
-  .audio-player-box .meta {
+  .meta {
     font-size: 13px;
     color: #999;
-    margin-top: 4px;
+    margin-top: 6px;
+    margin-bottom: 1rem;
   }
 
   @media (max-width: 768px) {
@@ -65,10 +59,14 @@ const title = "Audios";
         <li>El canto de Chile – Cueca</li><li>Chucao – Canción</li>
         <li>Puerto Edén – Vals pericona</li><li>Lobero muerto – Sirilla</li>
       </ul>
-      <div class="audio-player-box">
-        <iframe class="zoom-75" src="https://drive.google.com/file/d/10U2u0o0XztcyTOZpRVDmOp73eoyVssGZ/preview" width="100%" height="280"></iframe>
-        <div class="meta"><strong>Letra: Manuel Rojas – Composición: Ángel Parra</strong> / <em>1968</em> · <a target="_blank" href="https://drive.google.com/file/d/10U2u0o0XztcyTOZpRVDmOp73eoyVssGZ/preview" class="text-blue-500 hover:underline">Descargar</a></div>
-      </div>
+      <AudioPlayer
+        id="10U2u0o0XztcyTOZpRVDmOp73eoyVssGZ"
+        src="https://ia903102.us.archive.org/22/items/manuel-rojas-dos-cuentos-mapuzungun/Manuel-Rojas-Angel-Parra-Chile-de-arriba-a-abajo.webm"
+        title="Chile de arriba a abajo"
+        cover="/media/2023/06/Chile_de_arriba_a_abajo.webp"
+        year="1968"
+      />
+      <div class="meta"><strong>Letra: Manuel Rojas – Composición: Ángel Parra</strong> / <em>1968</em> </div>
     </div>
     <div class="audio-cover">
       <img src="/media/2023/06/Chile_de_arriba_a_abajo.webp" alt="Chile de arriba a abajo" />
@@ -89,12 +87,14 @@ const title = "Audios";
         <li>Hijo de ladrón – La herida</li>
         <li>Hijo de ladrón – Últimas páginas</li>
       </ul>
-      <div class="audio-player-box">
-        
-        <iframe class="zoom-75" src="https://drive.google.com/file/d/10Su6cGX3AD1oZTDCd_StaC3dde8vl0zs/preview" width="100%" height="280"></iframe>
-
-        <div class="meta"><strong>Voz viva de América Latina</strong> / <em>1968</em> · <a target="_blank" href="https://drive.google.com/file/d/10Su6cGX3AD1oZTDCd_StaC3dde8vl0zs/preview" class="text-blue-500 hover:underline">Descargar</a></div>
-      </div>
+      <AudioPlayer
+        id="10Su6cGX3AD1oZTDCd_StaC3dde8vl0zs"
+        src="https://archive.org/download/manuel-rojas-dos-cuentos-mapuzungun/Manuel-Rojas-Hijo-de-ladron.webm"
+        title="Voz viva de América Latina"
+        cover="/media/2023/06/Manuel_Rojas_UNAM.webp"
+        year="1968"
+      />
+      <div class="meta"><strong>Voz viva de América Latina</strong> / <em>1968</em> </div>
     </div>
     <div class="audio-cover">
       <img src="/media/2023/06/Manuel_Rojas_UNAM.webp" alt="Manuel Rojas UNAM" />
@@ -109,10 +109,14 @@ const title = "Audios";
       <h2 class="text-2xl font-bold text-gray-800 mb-4">Manuel Rojas: El vaso de leche</h2>
       <p class="mb-4 leading-relaxed text-gray-600">En la colección de discos <em>Archivo de la Palabra</em>, <strong>Manuel Rojas</strong> lee su famoso cuento <a target="_blank" href="/libros/el-vaso-de-leche/" class="text-blue-500 hover:underline"><strong>El vaso de leche</strong></a>. El vinilo de 78 rpm, del que existen muy pocos ejemplares, fue grabado en 1953 por la histórica editorial <em>Cruz del Sur</em>. Dirigida por Arturo Soria y otros destacados refugiados republicanos españoles –como Mauricio Amster, José Ricardo Morales y Roser Bru–, <em>Cruz del Sur</em> tenía por objetivos rescatar los valores de la tradición literaria española y crear un diálogo con los escritores locales.</p>
       <p class="mb-4 leading-relaxed text-gray-600">La editorial dio también cabida a diversas iniciativas culturales, en las que se enmarca la colección de discos <em>Archivo de la Palabra</em>. Los títulos aparecidos –además de <a target="_blank" href="/libros/el-vaso-de-leche/" class="text-blue-500 hover:underline"><strong>El vaso de leche</strong></a>– son: <em>Golfo de Penas</em> de Francisco Coloane, <em>La Araucana</em> con voz de Rubén Azocar, <em>Mi amigo Miguel de Cervantes</em> con voz de Carlos Vicuña, <em>El nuevo mundo y sus apóstoles</em> de Marcel Bataillon y <em>Sobre el buen uso de las ruinas</em> de Julián Marías.</p>
-      <div class="audio-player-box">
-        <iframe class="zoom-75" src="https://drive.google.com/file/d/13t5Kokdcwk-Nyy_ishwatRt3qpphRmnS/preview" width="100%" height="280"></iframe>
-        <div class="meta"><strong>Cruz del Sur – Archivo de la Palabra</strong> / <em>1953</em> · <a target="_blank" href="https://drive.google.com/file/d/13t5Kokdcwk-Nyy_ishwatRt3qpphRmnS/preview" class="text-blue-500 hover:underline">Descargar</a></div>
-      </div>
+      <AudioPlayer
+        id="13t5Kokdcwk-Nyy_ishwatRt3qpphRmnS"
+        src="https://archive.org/download/manuel-rojas-dos-cuentos-mapuzungun/Manuel-Rojas-El-vaso-de-leche.webm"
+        title="El vaso de leche"
+        cover="/media/2023/06/El-Vaso-de-Leche-300x300.webp"
+        year="1953"
+      />
+      <div class="meta"><strong>Cruz del Sur – Archivo de la Palabra</strong> / <em>1953</em> </div>
     </div>
     <div class="audio-cover">
       <img src="/media/2023/06/El-Vaso-de-Leche-300x300.webp" alt="El vaso de leche" />
@@ -129,16 +133,24 @@ const title = "Audios";
       <p class="mb-4 leading-relaxed text-gray-600"><em>Pancho Rojas</em> es uno de los últimos cuentos escrito por el autor, publicado en 1951 en la revista <em>Occidente</em>. La narración es una profunda reflexión sobre la libertad a propósito de un queltehue que el escritor y su familia cuidan en el patio de su casa. <em>Pancho Rojas</em> destaca dentro de la serie de cuentos sobre pájaros –tales como <em>Mares libres</em> o <em>El niño y el choroy</em>–, aves que Rojas amó y conoció, siendo para él el símbolo natural y vital de la libertad.</p>
 
       <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-6">Poco sueldo – Leído por el autor</h3>
-      <div class="audio-player-box">
-        <iframe class="zoom-75" src="https://drive.google.com/file/d/1yPl55Qt0HUydT5eViMjIRmrSBpYyFUUE/preview" width="100%" height="280"></iframe>
-        <div class="meta"><strong>Biblioteca Nacional</strong> / <em>1934</em> · <a target="_blank" href="https://drive.google.com/file/d/1yPl55Qt0HUydT5eViMjIRmrSBpYyFUUE/preview" class="text-blue-500 hover:underline">Descargar</a></div>
-      </div>
+      <AudioPlayer
+        id="1yPl55Qt0HUydT5eViMjIRmrSBpYyFUUE"
+        src="https://archive.org/download/manuel-rojas-dos-cuentos-mapuzungun/Manuel-Rojas-Poco-sueldo.webm"
+        title="Poco sueldo"
+        cover="/media/2023/06/Biblioteca-Nacional-300x298.webp"
+        year="1934"
+      />
+      <div class="meta"><strong>Biblioteca Nacional</strong> / <em>1934</em> </div>
 
       <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-6">Pancho Rojas – Leído por el autor</h3>
-      <div class="audio-player-box">
-        <iframe class="zoom-75" src="https://drive.google.com/file/d/1zwztb2yBRGOUgBkxi4-nF8S9nlpLEplz/preview" width="100%" height="280"></iframe>
-        <div class="meta"><strong>Biblioteca Nacional</strong> / <em>1951</em> · <a target="_blank" href="https://drive.google.com/file/d/1zwztb2yBRGOUgBkxi4-nF8S9nlpLEplz/preview" class="text-blue-500 hover:underline">Descargar</a></div>
-      </div>
+      <AudioPlayer
+        id="1zwztb2yBRGOUgBkxi4-nF8S9nlpLEplz"
+        src="https://archive.org/download/manuel-rojas-dos-cuentos-mapuzungun/Manuel-Rojas-Pancho-Rojas.webm"
+        title="Pancho Rojas"
+        cover="/media/2023/06/Biblioteca-Nacional-300x298.webp"
+        year="1951"
+      />
+      <div class="meta"><strong>Biblioteca Nacional</strong> / <em>1951</em> </div>
     </div>
     <div class="audio-cover">
       <img src="/media/2023/06/Biblioteca-Nacional-300x298.webp" alt="Biblioteca Nacional" />
