@@ -27,6 +27,8 @@ const slides = [
   { src: "/media/exposiciones/Expo-UORV-23-scaled-1.webp", caption: "Expo UORV 23" },
   { src: "/media/exposiciones/Expo-UORV-24-scaled-1.webp", caption: "Expo UORV 24" },
   { src: "/media/exposiciones/Expo-UORV-25-scaled-1.webp", caption: "Expo UORV 25" },
+  { src: "/media/exposiciones/Expo-UORV26.webp", caption: "Expo UORV 26" },
+  { src: "/media/exposiciones/Expo-UORV27.webp", caption: "Expo UORV 27" },
 ];
 ---
 
@@ -131,7 +133,7 @@ const slides = [
           <a href={s.src} target="_blank" rel="noopener">
             <img src={s.src} alt={s.caption} loading={i === 0 ? "eager" : "lazy"} />
           </a>
-          <p class="caption">{s.caption}</p>
+          <!-- <p class="caption">{s.caption}</p> -->
         </div>
       ))}
     </div>
