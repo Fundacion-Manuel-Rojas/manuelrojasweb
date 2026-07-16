@@ -1,193 +1,57 @@
 # AGENTS.md — manuelrojas-astro
 
-Astro 6 static site for **Fundación Manuel Rojas** (manuelrojas.cl). Migrated from WordPress/Divi. Uses **Keystatic CMS** for content and **Tailwind CSS** for styling.
+Astro 7 static site for **Fundación Manuel Rojas** (manuelrojas.cl). Netlify adapter. Keystatic CMS for content. Tailwind CSS 4.
+
+## Essentials
+
+- **Package manager:** `pnpm`. Use `pnpm install`; `package-lock.json`/`yarn.lock` are ignored.
+- **No tests, no lint, no typecheck, no CI.** The only verification step is `pnpm run build`.
+- README says Astro 6.3 — the actual dependency is Astro 7 (`package.json`).
 
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Dev server with Keystatic admin UI at `/keystatic` |
-| `npm run build` | Static build to `dist/` (Keystatic is **already skipped** via `SKIP_KEYSTATIC=true` in package.json) |
-| `npm run preview` | Preview built site locally |
-| `npm run scrape` | **Destructive.** Re-scrapes WordPress live site, **deletes** all `src/pages/*.astro` (except `libros/`, `noticias/`, `admin/`, `env.d.ts`) and recreates them. Do not run with uncommitted page edits. |
+| `pnpm run dev` | Dev server; Keystatic admin UI at `/keystatic` |
+| `pnpm run build` | Wipes `.astro/`, `node_modules/.astro/`, and `dist/`, then builds. Emits a Netlify SSR function. |
+| `pnpm run preview` | Preview the built site locally |
 
-## Build quirks
+## Keystatic
 
-- Keystatic integration is conditional: `process.env.SKIP_KEYSTATIC` removes it from the Astro integrations array. `npm run build` sets it automatically; `npm run dev` does not.
-- `trailingSlash: 'ignore'`, `format: 'directory'` — outputs `dist/<route>/index.html`.
-- All CSS lives inline in `src/layouts/Layout.astro`. `src/styles/` is empty.
-- No tests, no linting, no typecheck scripts, no CI.
+- Integration is conditional in `astro.config.mjs`: `process.env.SKIP_KEYSTATIC` removes it. It is **not** set automatically by the build script.
+- `keystatic.config.ts` uses local storage in dev (`import.meta.env.PROD` is false) and Keystatic Cloud project `devel/manuelrojasweb` in production.
 
-## Content architecture
+## Content
 
-Three content collections defined in `src/content.config.ts`:
+Three collections in `src/content.config.ts`:
 
 | Collection | Loader | Files | Rendered at |
 |---|---|---|---|
-| `noticias` | `glob` | `src/content/noticias/*.mdoc` | `/noticias/[slug]/` |
+| `noticias` | `glob` | `src/content/noticias/*/index.mdoc` | `/noticias/[slug]/` |
 | `libros` | `glob` | `src/content/libros/*.mdoc` | `/libros/[slug]/` |
-| `slider` | **Custom** | `src/content/slider/*.mdoc` + `*/texto.mdx` | Home page slider |
+| `slider` | **Custom** | `src/content/slider/<slug>.mdoc` + `src/content/slider/<slug>/texto.mdx` | Home page slider |
 
-### Critical: custom slider loader
+**Custom slider loader** (`sliderLoader()`): manually parses YAML frontmatter from `.mdoc` and reads the sibling MDX file. It is not a standard Astro loader; editing the schema or loader requires understanding the hand-rolled parser.
 
-The `slider` collection does **not** use Astro's `glob` loader. `content.config.ts` defines a `sliderLoader()` that:
-1. Parses frontmatter manually from `.mdoc` files (basic YAML parser, not a full YAML engine)
-2. Reads MDX content from a sibling `texto.mdx` inside each entry's directory (e.g. `slider/autorretrato/texto.mdx`)
-3. Stores parsed data via `context.store.set()`
+**Dual content (noticias + libros):** legacy static pages still live under `src/pages/` (e.g., dated paths like `src/pages/2020/07/12/angelita-jeria.astro` and `src/pages/manuel-rojas/obra/*.astro`). The `.mdoc` collections are the source of truth. Prefer linking to `/noticias/<slug>/` and `/libros/<slug>/` rather than the legacy static paths.
 
-Editing the slider schema or loader requires understanding this custom parser.
+**Noticias slug quirk:** glob entries are directories with `index.mdoc`, so entry IDs end in `/index`. Dynamic routes strip it with `n.id.replace('/index', '')`.
 
-### Dual content: static pages + CMS entries
+**Images:** Keystatic stores uploaded images in `public/media/` (and subdirectories). Default Open Graph image is `/media/default_noticias.webp` (not `.jpg`).
 
-Both `noticias` and `libros` exist in **two forms**:
-- **Legacy static pages**: dated `.astro` files in `src/pages/` (scraped from WordPress), e.g. `src/pages/2020/07/12/angelita-jeria.astro`
-- **CMS source of truth**: `.mdoc` files in `src/content/noticias/` and `src/content/libros/`
+## Layout & styling
 
-Dynamic routes (`/noticias/[slug].astro`, `/libros/[slug].astro`) render from the CMS collections. Static pages still exist for backward compatibility but are NOT the preferred source.
+- `src/layouts/Layout.astro` is the single layout. It imports global styles from `src/styles/global.css` (Tailwind v4 with `@import "tailwindcss"`). CSS is no longer inline-only.
+- Header, nav, and footer are `src/components/Header.astro` and `src/components/Footer.astro`.
 
-### Keystatic image field paths
+## Build / deploy
 
-Images uploaded via Keystatic are saved to `public/media/` (or subdirectories like `public/media/noticias/`, `public/media/slider/`). The `publicPath` in `keystatic.config.ts` determines the URL prefix.
-
-## Page inventory (approximate)
-
-- Static `.astro` pages: ~106 (includes ~46 legacy blog posts, ~50 individual book pages, landings)
-- Dynamic routes: 2 (`/libros/[slug]`, `/noticias/[slug]`)
-- CMS entries: ~38 noticias, ~36 libros, ~5 slider items
-
-## Important file references
-
-- `src/layouts/Layout.astro` — single layout, all CSS, nav, footer, Open Graph meta tags
-- `src/content.config.ts` — collection schemas and custom slider loader
-- `keystatic.config.ts` — CMS collection schemas (noticias, libros, slider)
-- `scripts/scrape.mjs` — WordPress migration script (destructive)
-
-## Social sharing
-
-- `/admin/` — manual sharing page for noticias (Twitter/X, Facebook, LinkedIn, WhatsApp, copy link)
-- `netlify/functions/share-webhook.js` — webhook receiver for automation (optional Slack integration via `SLACK_WEBHOOK_URL`)
-- Default Open Graph image: `/media/default_noticias.jpg`
+- `astro.config.mjs`: `output: 'static'`, `trailingSlash: 'ignore'`, `build.format: 'directory'`.
+- `netlify.toml`: publishes `dist/`, sets aggressive cache headers for `/media/*` and `/_astro/*`.
 
 ## Gotchas
 
-- `npm run scrape` will wipe all your static pages. Commit first.
-- The slider loader is custom and fragile; changes to Markdoc/MDX handling in Astro may break it.
-- Many static book pages under `src/pages/manuel-rojas/obra/` likely have corresponding `.mdoc` entries in `src/content/libros/`. Prefer linking to `/libros/<slug>/` instead of the static `/manuel-rojas/obra/<slug>` paths.
-- The repo uses pnpm (`pnpm` field in `package.json`).
-
-## Sitio web: Características y contenidos
-
-Estos elementos están descritos en función de un sitio desktop, las versiones para dispositivos móviles deben considerarse al crear las vistas.
-
----
-
-### Fondo del sitio
-
-- Background general del sitio: imagen `/public/media/background.webp`
-- Tipografía: `'Alice', Georgia, "Times New Roman", serif`
-- Implementado: `src/layouts/Layout.astro:21-28` — `body` con `background: url('/media/background.webp') fixed center/cover`
-
-### Contenedor del sitio
-
-- Clase: `.site-wrapper` — flota sobre el background
-- Dimensiones: `max-width: 1280px`, altura variable según contenido
-- Márgenes: `margin: 30px auto`
-- Fondo: `#fff`
-- Bordes: `border-radius: 6px`
-- Sombra: `box-shadow: 0 1px 6px rgba(0,0,0,0.08)`
-- `overflow: hidden` para respetar bordes en header/footer
-- Header y Footer incluidos dentro del contenedor
-- Responsive: `max-width: 100%`, sin margen ni radius en mobile
-- Implementado: `src/layouts/Layout.astro:76-83`
-
-### Header
-
-- Implementado: `src/components/Header.astro:120-135`
-- Clase: `.site-header`
-- Fondo: `#353535`
-- Layout: flex con `justify-content: space-between`, `align-items: center`
-- Logo: alineado izquierda, `width: 200px`, `height: auto`
-- Respeta el `border-radius` del contenedor vía `overflow: hidden`
-
-#### Íconos sociales (Header)
-
-- Ubicación: dentro de `.site-header`, alineados a la derecha con `padding-right: 20px`
-- Clase: `.social-icons` — flex row con `gap: 12px`
-- Cada ícono: SVG inline de 16x16, círculo `#555` de 32x32, color `#ccc`
-- Hover:
-  - Facebook (`.fb`): `#1877F2`
-  - Twitter (`.tw`): `#1DA1F2`
-  - Vimeo (`.vm`): `#1AB7EA`
-- Implementado: `src/components/Header.astro:10-36, 124-134`
-
-### Menú
-
-- Implementado: `src/components/Header.astro:38-193`
-- Clase: `.site-nav` — ubicado bajo el header
-- Fondo: `#474747`
-- Sombras: `box-shadow: 0 4px 8px rgba(0,0,0,0.3)` con `z-index: 20` para quedar sobre el slider
-- Tipografía: uppercase (`text-transform: uppercase`, `letter-spacing: 1px`)
-- Color links: `#ccc`, hover: `#fff`
-- Tamaño: `14px`, `font-weight: 600`
-- Alineación: centrado (`justify-content: center`)
-- Submenus: Quienes Somos -> Fundación / Integrantes / Actividades
-- Submenus: Manuel Rojas -> Vida / Obra / Galería
-    * Vida -> Biografía / Cronología
-    * Obra -> Poesía / Ensayos / Autobiografías y Viajes / Novelas / Cuentos / Compilaciones
-    * Galería -> Fotografías / Audios
-- Sobre su obra -> Premios / Publicaciones y Estudios / Exposiciones / Videos y Audios
-- Noticias
-
-### Slider del Home
-
-- Implementado: `src/components/Slider.astro`
-- Gestionado desde Keystatic CMS (colección `slider` en `keystatic.config.ts`)
-- Dimensiones: 100% ancho, 500px alto (desktop)
-- Imágenes con `object-fit: cover`
-- Auto-play cada 5s, navegación con flechas y dots
-- Responsive: 280px en tablet (≤768px), 200px en mobile (≤480px)
-- Usado en: `src/pages/index.astro:8` — reemplaza el antiguo MasterSlider de WordPress
-
-### Contenido interno
-
-- Clase: `.inner` — ancho de contenido dentro del wrapper
-- `width: 80%`, `max-width: 1080px`, `margin: auto`
-- Usado SOLO en `.site-footer` (ya no envuelve `#main-content`)
-- `#main-content` no tiene wrapper por defecto — cada página controla su propio ancho
-
-### Footer
-
-- Implementado: `src/components/Footer.astro`
-- Clase: `.site-footer`
-- Fondo: `#222`, color texto: `#ccc`
-- Tres columnas (Fundación, Archivo, Apoye)
-- Flexbox con `flex-wrap`, `gap: 40px`
-- Padding: `40px 0`, margin-top: `40px`
-
----
-
-## Sistema de contenido (Keystatic CMS)
-
-### Colecciones
-
-| Colección | Ruta | Campos clave |
-|-----------|------|-------------|
-| `noticias` | `src/content/noticias/*.mdoc` | title, subtitle, fecha, autor, categoria, content (markdoc) |
-| `slider` | `src/content/slider/*.mdoc` | title, imagen (image), alt, enlace, orden, content (markdoc) |
-
-- Configuración: `keystatic.config.ts`
-- Admin UI: `/keystatic` (solo en dev)
-- Imágenes del slider: almacenadas en `public/media/slider/<slug>/` con `publicPath: '/media/slider/'`
-
-### Content collections (Astro)
-
-- Definidas en `src/content.config.ts`
-- Loader: `glob` con pattern `**/*.mdoc`
-- Colecciones: `noticias`, `slider`
-
----
-
-## Arquitectura del proyecto
-
-Ver `AGENTS.md` para detalles completos de build, comandos y estructura de archivos.
-
+- The old WordPress scrape script (`scripts/scrape.mjs`) mentioned in README no longer exists.
+- The nav menu is hardcoded in `src/components/Header.astro`; add/remove top-level sections there.
+- The slider auto-advances every 10s and only shows dots when there are 2+ slides.
+- This file is listed in `.gitignore` but is currently tracked by git.

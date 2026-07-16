@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+const noticias = await getCollection('noticias');
+const entrevistas = noticias
+  .filter((n) => n.data.categoria?.toString().toLowerCase().trim() === 'entrevistas')
+  .sort((a, b) => {
+    const dateA = a.data.fecha ? new Date(a.data.fecha).getTime() : 0;
+    const dateB = b.data.fecha ? new Date(b.data.fecha).getTime() : 0;
+    return dateB - dateA;
+  });
+
+const title = 'Entrevistas';
+---
+
+<Layout title={title}>
+  <h3 class="text-lg text-gray-400 mb-2 pt-6 pb-3 border-b border-gray-200">
+    <span class="text-gray-500">
+      <a target="_blank" href="/" class="hover:text-blue-500 transition-colors">Inicio</a> / {' '}
+      <a target="_blank" href="/manuel-rojas/" class="hover:text-blue-500 transition-colors">Manuel Rojas</a> / {' '}
+      <a target="_blank" href="/manuel-rojas/galeria/fotografias/" class="hover:text-blue-500 transition-colors">Galería</a> /
+    </span> {' '}
+    Entrevistas
+  </h3>
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-8 mt-6">Entrevistas</h1>
+
+  {
+    entrevistas.length === 0 ? (
+      <p class="text-gray-500">No hay entrevistas publicadas aún.</p>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {entrevistas.map((n) => (
+          <a
+            target="_blank"
+            href={`/noticias/${n.id.replace('/index', '')}/`}
+            class="group block bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-200"
+          >
+            {n.data.imagen ? (
+              <div class="aspect-[16/10] overflow-hidden bg-gray-100">
+                <img
+                  src={n.data.imagen}
+                  alt={n.data.subtitle || n.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div class="aspect-[16/10] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                <span class="text-4xl text-gray-300 font-serif">
+                  {n.data.subtitle?.charAt(0) || n.data.title?.charAt(0) || 'E'}
+                </span>
+              </div>
+            )}
+            <div class="p-5">
+              <p class="text-xs text-gray-400 mb-2">
+                {n.data.fecha
+                  ? new Date(n.data.fecha).toLocaleDateString('es-CL', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : ''}
+              </p>
+              <h2 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-blue-500 transition-colors leading-snug">
+                {n.data.subtitle || n.data.title}
+              </h2>
+              {n.data.extracto && (
+                <p class="text-sm text-gray-500 leading-relaxed line-clamp-3">{n.data.extracto}</p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    )
+  }
+</Layout>
