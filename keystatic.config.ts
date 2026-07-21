@@ -127,8 +127,9 @@ export default config({
           ],
           defaultValue: "poesia",
         }),
-        imagen: fields.image({
+        imagen: fields.file({
           label: "Imagen principal",
+          description: "Archivo de imagen de portada (webp, jpg o png).",
           directory: "public/media",
           publicPath: "/media/",
           validation: { isRequired: true },
