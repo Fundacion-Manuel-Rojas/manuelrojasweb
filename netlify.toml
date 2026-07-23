@@ -16,6 +16,6 @@
 
 # Cache para páginas HTML (actualizadas en cada deploy)
 [[headers]]
-  for = "/*"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+for = "/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"

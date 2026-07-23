@@ -1,26 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import BookGallery from '../../../components/BookGallery.astro';
-import { getCollection } from 'astro:content';
+import ObraSection from '../../../components/ObraSection.astro';
 
-const title = "Autobiografías y Viajes";
-const libros = await getCollection('libros', (libro) => libro.data.categoria === 'autobiografia_viaje');
-const librosOrdenados = libros.sort((a, b) => (a.data.orden || 0) - (b.data.orden || 0));
-const books = librosOrdenados.map((libro) => ({
-  href: `/libros/${libro.id}/`,
-  img: libro.data.imagen,
-  title: libro.data.titulo,
-}));
+const title = "Memorias y Viajes";
 ---
 
 <Layout title={title}>
-
-  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Memorias y Viajes</h3>
-
-  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">El material literario de gran parte de la obra de Manuel Rojas es de carácter autobiográfico. En 1931 inicia su proyecto memorialístico publicando <strong>«Imágenes de Buenos Aires: Barrio Boedo»</strong> en la revista <em>Atenea</em>. Al año siguiente aparece en un periódico de Santiago un texto, prácticamente desconocido, titulado <strong>«Imágenes de Santiago: El niño y el tranvía»</strong>. Más tarde, en 1955, se edita <i>Imágenes de infancia</i> que, en 1983, se completará con la obra póstuma <i>Imágenes de infancia y adolescencia</i>. Por último es en <i>Antología autobiográfica</i> donde Manuel Rojas presenta la genealogía de sus obras más conocidas, distinguiendo los hechos y personajes reales de los ficticios.</p>
-
-  <p class="mb-4 leading-relaxed text-gray-600">La experiencia de sus viajes por Chile, Latinoamérica y otras latitudes, es relatada por Manuel Rojas primeramente en crónicas publicadas en periódicos y en breves ensayos que serán luego recopilados en diversas ediciones. Sus excursiones a la Cordillera de los Andes y a distintas localidades de Chile se reúnen en <i>A pie por Chile</i> y sus primeras visitas a Cuba y Puerto Rico en <i>El árbol siempre verde</i>. Su estadía y recorrido por México, entre 1962 y 1963, es presentada en <i>Pasé por México un día</i>, obra que no constituye un diario de viaje, sino que es la reunión de las impresiones del paisaje, del habitante y su historia, organizadas cronológicamente. Similar estructura presenta <i>Viaje al país de los profetas</i>, donde Manuel Rojas comenta su visita a Israel, aceptando la invitación que se le hiciera en 1968.</p>
-
-  <BookGallery books={books} />
-
+  <ObraSection sectionSlug="autobiografias_viajes" pageTitle={title} />
 </Layout>

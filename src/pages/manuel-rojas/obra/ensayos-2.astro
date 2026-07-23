@@ -1,26 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import BookGallery from '../../../components/BookGallery.astro';
-import { getCollection } from 'astro:content';
+import ObraSection from '../../../components/ObraSection.astro';
 
 const title = "Ensayos";
-const libros = await getCollection('libros', (libro) => libro.data.categoria === 'ensayo');
-const librosOrdenados = libros.sort((a, b) => (a.data.orden || 0) - (b.data.orden || 0));
-const books = librosOrdenados.map((libro) => ({
-  href: `/libros/${libro.id}/`,
-  img: libro.data.imagen,
-  title: libro.data.titulo,
-}));
 ---
 
 <Layout title={title}>
-
-  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Ensayos</h3>
-
-  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">Las crónicas y ensayos literarios de Manuel Rojas abarcan buena parte de su producción escrita y en ellos se aprecia la amplitud de sus intereses intelectuales. La reflexión acerca de su propio oficio de escritor está presente en diversos textos, desde la conferencia que dictara en 1960 en Concepción —conocida como <i>Apuntes sobre la expresión escrita</i>— hasta el ensayo <i>De la poesía a la revolución</i>, donde Rojas define su particular visión acerca de la función de la literatura y la responsabilidad social del escritor.</p>
-
-  <p class="mb-4 leading-relaxed text-gray-600">Una importante faceta es la de antólogo y prologuista: bajo los auspicios de la editorial Zig-Zag realizó ediciones y estudios preliminares de algunos de los principales autores de la tradición narrativa chilena, tales como <i>Los costumbristas chilenos</i>, las páginas selectas de <i>Alberto Edwards</i> y <i>Blest Gana</i>, y una selección de los mejores cuentos de <i>Mariano Latorre</i>. A ello se suma el estudio introductorio al volumen de <i>José Joaquín Vallejo</i>. También escribió un documentado artículo sobre los navegantes y el astrónomo que descubrieron los mares del sur de Chile, bajo el título <i>Chile: 5 navegantes y 1 astrónomo</i>, entre otros documentos de carácter histórico. Su <i>Historia breve de la literatura chilena</i>, publicada en México en 1965, fue un intento por ofrecer una visión de conjunto de la evolución de nuestras letras.</p>
-
-  <BookGallery books={books} />
-
+  <ObraSection sectionSlug="ensayos-2" pageTitle={title} />
 </Layout>

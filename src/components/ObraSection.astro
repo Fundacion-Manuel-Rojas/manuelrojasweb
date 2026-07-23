@@ -1,0 +1,56 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BookGallery from './BookGallery.astro';
+
+export interface Props {
+  sectionSlug: string;
+  pageTitle: string;
+}
+
+const { sectionSlug, pageTitle } = Astro.props;
+
+const section = await getEntry('obra_secciones', sectionSlug);
+const { Content } = section ? await render(section) : { Content: null };
+
+let books: Array<{ href: string; img: string; title: string }> = [];
+
+if (section?.data.listado_manual && section.data.listado_manual.length > 0) {
+  books = section.data.listado_manual;
+} else if (section?.data.categoria) {
+  const libros = await getCollection('libros', (libro) => libro.data.categoria === section.data.categoria);
+  const librosOrdenados = libros.sort((a, b) => (a.data.orden || 0) - (b.data.orden || 0));
+  books = librosOrdenados.map((libro) => ({
+    href: `/libros/${libro.id}/`,
+    img: libro.data.imagen,
+    title: libro.data.titulo,
+  }));
+}
+---
+
+<h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
+  <span class="text-gray-500">Obra /</span> {pageTitle}
+</h3>
+
+{Content && (
+  <div class="section-intro mb-6">
+    <Content />
+  </div>
+)}
+
+{books.length > 0 && <BookGallery books={books} />}
+
+<style>
+  .section-intro :global(p) {
+    margin-bottom: 1rem;
+    line-height: 1.625;
+    color: #4b5563;
+  }
+  .section-intro :global(p:first-of-type)::first-letter {
+    float: left;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    line-height: 1;
+    color: #1f2937;
+  }
+</style>

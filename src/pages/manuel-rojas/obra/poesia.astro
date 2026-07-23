@@ -1,28 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import BookGallery from '../../../components/BookGallery.astro';
-import { getCollection } from 'astro:content';
+import ObraSection from '../../../components/ObraSection.astro';
 
-const title = "Poesía";
-const libros = await getCollection('libros', (libro) => libro.data.categoria === 'poesia');
-const librosOrdenados = libros.sort((a, b) => (a.data.orden || 0) - (b.data.orden || 0));
-const books = librosOrdenados.map((libro) => ({
-  href: `/libros/${libro.id}/`,
-  img: libro.data.imagen,
-  title: libro.data.titulo,
-}));
+const title = "Poesía y Teatro";
 ---
 
 <Layout title={title}>
-
-  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Poesía y Teatro</h3>
-
-  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">Poeta perseverante de juventud e intermitente en años posteriores, la lírica estaría siempre presente en el quehacer literario de Manuel Rojas. Se inicia con tempranos versos de inspiración modernista, de los cuales diría años después: <i>«empecé a escribir poesías y produje las peores que se hayan escrito en el hemisferio sur»</i>. La publicación de su soneto <i>Gusano</i>, en 1917, le otorga un primer reconocimiento de la crítica y lo alienta para publicar, en la ciudad de Mendoza, una primera colección de 9 poemas con el título de <i>Poéticas</i>.</p>
-
-  <p class="mb-4 leading-relaxed text-gray-600"> Posteriormente en Chile, una treintena de poesías aparecieron dispersas en revistas y periódicos, siendo reunidas en 1927 en el libro <i>Tonada del transeúnte</i>. Más tarde publica su poema mayor y más extenso, con el nombre de <i>Deshecha rosa</i>, dedicado a su mujer ya fallecida María Baeza —ella misma poeta— y a la que le había compuesto a mano su desconocida obra: <i>Canciones para ellos</i>.</p>
-
-  <p class="mb-4 leading-relaxed text-gray-600">Los poemas de Manuel Rojas terminaron siendo alabados y destacados por los principales autores y críticos de la época.</p>
-
-  <BookGallery books={books} />
-
+  <ObraSection sectionSlug="poesia" pageTitle={title} />
 </Layout>

@@ -152,4 +152,18 @@ const libros = defineCollection({
   }),
 });
 
-export const collections = { noticias, slider, libros };
+const obra_secciones = defineCollection({
+  loader: glob({ pattern: '**/*.mdoc', base: './src/content/obra_secciones' }),
+  schema: z.object({
+    titulo: z.string(),
+    categoria: z.enum(['poesia', 'novela', 'cuento', 'ensayo', 'autobiografia_viaje', 'compilacion']),
+    orden: z.number().optional(),
+    listado_manual: z.array(z.object({
+      href: z.string(),
+      img: z.string(),
+      title: z.string(),
+    })).optional(),
+  }),
+});
+
+export const collections = { noticias, slider, libros, obra_secciones };

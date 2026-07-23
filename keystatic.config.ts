@@ -106,6 +106,46 @@ export default config({
         }),
       },
     }),
+    obra_secciones: collection({
+      label: "Secciones de Obra",
+      slugField: "titulo",
+      columns: ["titulo", "categoria"],
+      path: "src/content/obra_secciones/*",
+      format: { contentField: "introduccion" },
+      entryLayout: "content",
+      schema: {
+        titulo: fields.slug({ name: { label: "Título" } }),
+        categoria: fields.select({
+          label: "Categoría",
+          options: [
+            { label: "Poesía", value: "poesia" },
+            { label: "Novela", value: "novela" },
+            { label: "Cuento", value: "cuento" },
+            { label: "Ensayo", value: "ensayo" },
+            { label: "Autobiografía y Viajes", value: "autobiografia_viaje" },
+            { label: "Compilación", value: "compilacion" },
+          ],
+          defaultValue: "poesia",
+        }),
+        orden: fields.number({ label: "Orden de visualización", defaultValue: 0 }),
+        listado_manual: fields.array(
+          fields.object({
+            href: fields.text({ label: "URL del libro o página" }),
+            img: fields.text({ label: "Ruta de la imagen de portada" }),
+            title: fields.text({ label: "Título visible" }),
+          }),
+          {
+            label: "Listado manual de libros (opcional)",
+            description: "Solo para secciones que necesiten un orden o mix de URLs personalizado (ej: Novelas). Si se deja vacío se usa el listado automático por categoría.",
+            itemLabel: (props) => props.fields.title.value || "Libro",
+          }
+        ),
+        introduccion: fields.markdoc({
+          label: "Introducción",
+          description: "Texto introductorio que aparece en la página de la sección.",
+        }),
+      },
+    }),
     libros: collection({
       label: "Libros",
       slugField: "titulo",
@@ -127,7 +167,7 @@ export default config({
           ],
           defaultValue: "poesia",
         }),
-        imagen: fields.file({
+        imagen: fields.image({
           label: "Imagen principal",
           description: "Archivo de imagen de portada (webp, jpg o png).",
           directory: "public/media",

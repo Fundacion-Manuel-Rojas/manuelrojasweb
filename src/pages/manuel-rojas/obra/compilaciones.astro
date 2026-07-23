@@ -1,26 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import BookGallery from '../../../components/BookGallery.astro';
-import { getCollection } from 'astro:content';
+import ObraSection from '../../../components/ObraSection.astro';
 
 const title = "Compilaciones";
-const libros = await getCollection('libros', (libro) => libro.data.categoria === 'compilacion');
-const librosOrdenados = libros.sort((a, b) => (a.data.orden || 0) - (b.data.orden || 0));
-const books = librosOrdenados.map((libro) => ({
-  href: `/libros/${libro.id}/`,
-  img: libro.data.imagen,
-  title: libro.data.titulo,
-}));
 ---
 
 <Layout title={title}>
-
-  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Obra /</span> Compilaciones</h3>
-
-  <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">En 1961 aparecen las <i>Obras completas</i> de Manuel Rojas, título inapropiado porque incluye sólo parcialmente su producción literaria. Más tarde se editan sus <i>Obras escogidas</i> en dos volúmenes, donde, al contenido anterior, se agregan su novela <i>Sombras contra el muro</i> y su relato <i>Pasé por México un día</i>.</p>
-
-  <p class="mb-4 leading-relaxed text-gray-600">En la selección de los escritos que se incluyeron en todas estas compilaciones participó activamente el propio autor y contienen la última versión de sus obras más significativas, revisadas y corregidas por él mismo. Finalmente se edita, en un volumen muy cuidado, la compilación <i>Obras</i>; esta edición salió a circulación en 1973, poco después que Manuel Rojas falleciera e incluye un extenso prólogo del escritor español Jorge Campos.</p>
-
-  <BookGallery books={books} />
-
+  <ObraSection sectionSlug="compilaciones" pageTitle={title} />
 </Layout>
