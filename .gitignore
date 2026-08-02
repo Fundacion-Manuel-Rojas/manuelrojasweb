@@ -62,6 +62,9 @@ coverage/
 # Local Netlify folder
 .netlify
 
+# Cloudflare Wrangler
+.wrangler
+
 # CLIPS
 CLIPS.md
 DOCS.md
