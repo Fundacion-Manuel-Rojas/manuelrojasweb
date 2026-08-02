@@ -1,6 +1,6 @@
 # Fundación Manuel Rojas
 
-Sitio web de la Fundación Manuel Rojas (https://manuelrojas.cl)
+Sitio web Fundación Manuel Rojas (https://manuelrojas.cl)
 
 ## Descripción
 
