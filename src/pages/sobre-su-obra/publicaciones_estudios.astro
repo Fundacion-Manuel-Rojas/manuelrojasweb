@@ -1,15 +1,37 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { marked } from 'marked';
+
 const title = "Publicaciones y Estudios";
+const publicaciones = (await getCollection('publicaciones')).sort((a, b) => (a.data.orden ?? 0) - (b.data.orden ?? 0));
+const rendered = await Promise.all(
+  publicaciones.map(async (pub) => {
+    const { Content } = await render(pub);
+    const destacadoHtml = pub.data.texto_destacado ? marked.parse(pub.data.texto_destacado) : '';
+    return { pub, Content, destacadoHtml };
+  })
+);
+
+const estudiosEntries = await getCollection('estudios');
+const estudiosEntry = estudiosEntries[0];
+const { Content: EstudiosContent } = estudiosEntry ? await render(estudiosEntry) : { Content: null };
 ---
 
-<Layout title={title}>
+<Layout
+  title={title}
+  breadcrumbs={[
+    { name: 'Inicio', url: '/' },
+    { name: 'Sobre su obra', url: '/sobre-su-obra/' },
+    { name: title, url: '/sobre-su-obra/publicaciones_estudios/' },
+  ]}
+>
 
-  <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
-    <span class="text-gray-500">Sobre su obra /</span> Publicaciones y Estudios
-  </h3>
+<h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200">
+  <span class="text-gray-500">Sobre su obra /</span> Publicaciones y Estudios
+</h3>
 
-  <style>
+<style>
   .pub-section {
     display: flex;
     gap: 2rem;
@@ -30,839 +52,94 @@ const title = "Publicaciones y Estudios";
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     display: block;
   }
+  .pub-info :global(a) {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  .pub-info :global(a:hover) {
+    text-decoration: underline;
+  }
+  .pub-destacado {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  .pub-destacado :global(p) {
+    margin-bottom: 1rem;
+    line-height: 1.625;
+    color: #4b5563;
+  }
+  .pub-destacado :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .pub-destacado :global(li) {
+    display: inline;
+  }
+  .estudios-list :global(ul) {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #4b5563;
+  }
+  .estudios-list :global(li) {
+    margin-bottom: 0.25rem;
+    line-height: 1.625;
+  }
+  .estudios-list :global(a) {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  .estudios-list :global(a:hover) {
+    text-decoration: underline;
+  }
+
   @media (max-width: 768px) {
     .pub-section { flex-direction: column; gap: 1rem; align-items: center; }
     .pub-cover { width: 200px; order: -1; }
     .pub-cover img { max-height: 300px; }
   }
-  </style>
+</style>
 
-  <!-- 1. Manuel, una vida con mi padre -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://lom.cl/products/manuel-una-vida-con-mi-padre?srsltid=AfmBOoo42i58HFlPqkpWUY8DnlACmQbmgNNBZ-DJ3LLXepYSaTvBxIGN" class="text-blue-500 hover:underline">Manuel, una vida con mi padre</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Paz Rojas</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">LOM, Santiago de Chile, 2026.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En este libro, Paz Rojas nos ofrece un testimonio muy personal, conmovedor y lúcido que trasciende el mero relato biográfico para adentrarse en la faceta más desconocida del célebre autor de 
-        <strong><a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Hijo de ladrón</a></strong>.
-        Lejos del bronce y la academia, esta obra reconstruye la figura de Manuel Rojas desde los recuerdos que dejaron huellas y la mirada atenta de su hija: un hombre de silencios elocuentes,
-        profundamente conectado con la naturaleza y poseedor de una ética inquebrantable que inculcó a sus hijos a través del ejemplo y la escucha y la observación del mundo.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        La narración transita desde una infancia «silvestre» marcada por la viudez temprana del escritor y las excursiones a la cordillera, hasta su consagración como intelectual cosmopolita.
-        A través de un valioso material epistolar, que Paz logra conjugar de manera armoniosa y notable, el lector descubre las tribulaciones del proceso creativo, sus viajes por Estados Unidos y México,
-        y las complejidades de sus relaciones sentimentales. Paz Rojas no elude las zonas de sombra ni las contradicciones de su padre, logrando un equilibrio magistral entre el amor filial y el rigor de su formación médica.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        El relato culmina con el trasfondo político de la Unidad Popular y los meses previos al golpe de Estado de 1973, entrelazando la historia íntima de una familia con el destino de un país.
-        Este libro es, en definitiva, un documento imprescindible que revela la humanidad desbordante de uno de los escritores fundamentales del siglo XX, situado entre la ternura doméstica y el compromiso social.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Aquí se incluyen las presentaciones del libro, por:</strong>&nbsp;
-          <a href="https://drive.google.com/file/d/1AnhTKcCpIaGcbqVqRmxO1Abn1778-M4D/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Soledad Bianchi – «Eran mis primeros pasos por el mundo, su mundo»</a>.&nbsp;
-          <a href="https://drive.google.com/file/d/1LxrGryVFGD3pClveBxDpefwNDsSi0OUq/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Ignacio Álvarez – Unas palabras para presentar Manuel, una vida con mi padre</a>.&nbsp;
-          <a href="https://drive.google.com/file/d/1DwVLPEBxfEglaehWVIHuCHvWY2vOZC5w/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Francisca Palacios – Pacita, una vida con mi padre</a>.
-        </p>
+{
+  rendered.map(({ pub, Content, destacadoHtml }, index) => (
+    <div class="pub-section">
+      <div class="pub-info">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
+          {pub.data.titulo_url ? (
+            <a href={pub.data.titulo_url} target="_blank" rel="noopener">{pub.data.titulo}</a>
+          ) : (
+            pub.data.titulo
+          )}
+        </h3>
+        {pub.data.autor && (
+          <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>{pub.data.autor}</strong></h5>
+        )}
+        {pub.data.editorial_info && (
+          <h5 class="text-lg font-semibold text-gray-700 mb-2">{pub.data.editorial_info}</h5>
+        )}
+        <Content />
+        {destacadoHtml && (
+          <div class="pub-destacado" set:html={destacadoHtml} />
+        )}
+      </div>
+      <div class="pub-cover">
+        <img src={pub.data.imagen} alt={pub.data.titulo} />
       </div>
     </div>
-    <div class="pub-cover">
-      <img src="/media/2026/04/Paz-Rojas-Manuel-Una-vida-con-mi-padre.webp" alt="Manuel, una vida con mi padre" />
-    </div>
-  </div>
+  ))
+}
 
-  <!-- 2. Lanchas en la bahía – La novela gráfica -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://ocholibros.myshopify.com/products/lanchas-en-la-bahia-novela-grafica?variant=47295574081781" class="text-blue-500 hover:underline">Lanchas en la bahía – La novela gráfica</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Manuel Rojas / Guión de Christian Morales; dibujos de Luis Martínez</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ediciones Ocho Libros, Santiago de Chile, 2025.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Adaptación en formato Novela Gráfica del clásico libro de Manuel Rojas,
-        <a href="/libros/lanchas-en-la-bahia/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Lanchas en la bahía</strong></a>,
-        guion por Christian Morales e ilustraciones de Luis Martínez, que en conjunto con 
-        <strong><a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Hijo de ladrón </a></strong> 
-        <em>Novela gráfica</em> nos presentan de una manera novedosa y atractiva estos clásicos de la escritura rojiana y su referencia al nuestro «puerto principal».
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En esta versión Morales y Martínez, se atreven a reescribir la historia de «lucha diaria», de conflictos existenciales, materiales y afectivos, del protagonista y su círculo, mediante nuevos recursos narrativos,
-        textuales y visuales; a lo que se suma la decisión de incluir las voces de seis escritores contemporáneos, quienes introducen con sus propias palabras cada capítulo de esta obra; convirtiéndola en el resultado
-        de un cuidadoso trabajo colectivo, que responde a una opción estética y política, que nos invita a imaginar otras formas de vivir lo común, en sintonía con los valores del cooperativismo, la reciprocidad y la
-        dignidad humana, que movilizan a los personajes fundamentales de la obra de Manuel Rojas.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <strong>Incluye</strong> el Prólogo de Ramón Diáz Eterovic:
-        <a href="https://drive.google.com/file/d/13i0Fw5vlTDgr4gL44-PP9pcsMd8WLX1H/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Manuel Rojas: Las primeras lecciones de la vida</a>,
-        la adaptación a novela gráfica de <em>Lanchas en la bahía</em>, y textos de los poetas y escritores Javiera Morales, Rodrigo Carvacho, Julia Guzmán, Valeria Vargas, Nicolás Poblete y Cristián Geisse.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2026/04/Lanchas-en-la-bahia-Novela-grafica.webp" alt="Lanchas en la bahía – La novela gráfica" />
-    </div>
-  </div>
+<hr class="border-t border-gray-200 my-8">
+<h4 class="text-lg font-semibold text-gray-700 mb-2">ESTUDIOS</h4>
+<p class="mb-4 leading-relaxed text-gray-600"><small>(archivos PDF y enlaces externos)</small></p>
+<hr class="border-t border-gray-200 my-8">
 
-  <!-- 3. Chile de arriba a abajo -->
-  <div class="pub-section">
-  <div class="pub-info">
-    <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-      <a target="_blank" href="https://grafitoediciones.cl/producto/chile-de-arriba-a-abajo/" class="text-blue-500 hover:underline">Chile de arriba a abajo</a>
-    </h3>
-    <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Manuel Rojas / Elisa Monsalve</strong></h5>
-    <h5 class="text-lg font-semibold text-gray-700 mb-2">Grafito Ediciones, Santiago de Chile, 2024.</h5>
-    <p class="mb-4 leading-relaxed text-gray-600">
-      <em>Chile, de arriba a abajo</em> es un poemario de Manuel Rojas, que retrata diferentes localidades del país. Rojas muestra territorios y habitantes que han sido marginados, pero también la grandeza
-      de su sobrevivencia en la hostilidad y belleza del paisaje. Los poemas son en realidad canciones escritas por Manuel Rojas y musicalizadas por Ángel Parra, publicadas en el
-      <a href="/manuel-rojas/galeria/audios/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> álbum homónimo de 1968 </a>.
-    </p>
-    <p class="mb-4 leading-relaxed text-gray-600">
-      Es, ante todo y en muchos sentidos –señala Jorge Guerra en el prólogo–, un encuentro, un cruce en el camino de dos auténticos caminantes: Ángel Parra y Manuel Rojas. Aquel con su guitarra y este con su palabra.
-      Ángel heredero de la tradición caminante de su madre Violeta, con quién recorrió nuestros paisajes en busca del canto verdadero y profundo de Chile. Manuel con la herencia de su propia vida de andante,
-      vocación que no abandonó nunca y que se transformó en una manera de conocer el mundo. «Caminar es conocer» dijo alguna vez. Pero también es el encuentro de dos generaciones distintas que unen sus talentos
-      para seguir cominos juntos como discípulo y maestro, pero donde ambos salen beneficiados y enriquecidos. A esta caminata nos invita este cancionero ilustrado.
-    </p>
-    <p class="mb-4 leading-relaxed text-gray-600">
-      En este pequeño libro bilingüe, español – francés, las ilustraciones contemporáneas de Elisa Monsalve, dialogan desde su oficio del grabado con los textos de Rojas, aportando imágenes cargadas de fuerza y expresividad.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-    <p class="mb-4 leading-relaxed text-gray-600">
-      <strong>Incluye</strong> una presentación de Jorge Guerra; la introducción y letra de las ocho canciones de Manuel Rojas contenidas en el disco original, y adicionalmente la llamada
-      «Puerto de Valparaíso»; y las ilustraciones de Elisa Monsalve.
-        </p>
-      </div>
-    <!-- <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4"> -->
-    <!--   <p class="mb-4 leading-relaxed text-gray-600"> -->
-    <!--     <strong>Aquí se incluye el registro de lanzamiento:</strong>&nbsp; -->
-    <!--     <a href="https://drive.google.com/file/d/10U2u0o0XztcyTOZpRVDmOp73eoyVssGZ/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Audio de la presentación</a>. -->
-    <!--   </p> -->
-    <!-- </div> -->
+{EstudiosContent && (
+  <div class="estudios-list">
+    <EstudiosContent />
   </div>
-  <div class="pub-cover">
-    <img src="/media/2025/07/Manuel-Rojas-Chile-de-arriba-a-abajo.webp" alt="Chile de arriba a abajo" />
-  </div>
-</div>
-
-  <!-- 4. Mecánica de la escritura -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://carbonlibros.cl/" class="text-blue-500 hover:underline">Mecánica de la escritura</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Manuel Rojas</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Carbón libros, Arica, 2023.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Mecánica de la escritura</em> es una nueva edición de los apuntes para las clases de redacción y estilo que Manuel Rojas escribió tras impartir aulas el año 1953 en la nueva escuela de Periodismo
-        de la Universidad de Chile. Estas notas las publicará años después en Caracas, bajo el título de
-        <strong><a href="/libros/apuntes-sobre-la-expresion-escrita/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Apuntes sobre la expresión escrita</a></strong>,
-        junto a la editorial de la Universidad Central de Venezuela.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Este texto, más que un manual de redacción y estilo, es un recorrido por los conocimientos teóricos y siempre prácticos que Manuel Rojas acumuló en su proceso de formación y perfeccionamiento autodidacta.
-        A través de varios comentarios y ejemplos permiten también conocer la concepción que tiene el autor sobre la literatura y su producción, entendidas ambas como una de las formas de expresión artística más
-        certeras de los valores y sentimientos humanos.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        «Creemos que Mecánica de la Escritura –señalan los editores– será una pieza clave para ahondar aún más en el conocimiento de la obra de Rojas, particularmente para los lectores habituales de sus ficciones,
-        pero esperamos también que sea un legítimo pase de ingreso (al menos como oyentes) a todos cuantos quieran escuchar a través de este ejercicio imaginario, la voz autorizada de un escritor que jamás olvidó
-        su condición de obrero de la palabra».
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <strong>Incluye</strong> una Nota introductoria; el texto revisado de
-        <strong><a href="/libros/apuntes-sobre-la-expresion-escrita/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Apuntes sobre la expresión escrita </a></strong>
-        y anotado por Silvia Donoso y Paula Aguilar; y en Anexo el ensayo de Rojas
-        <a href="https://drive.google.com/file/d/1uHzqZEL0elufCDI_kfas1kUXE8ytF9PB/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> «La creación en el trabajo»</a>.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2025/07/Manuel-Rojas-Mecanica-de-la-escritura.webp" alt="Mecánica de la escritura" />
-    </div>
-  </div>
-
-  <!-- 5. Manuel Rojas, narrativa de la imagen -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://www.yalibros.cl/manuel-rojas-narrativa-de-la-imagen-jorge-guerra-c/" class="text-blue-500 hover:underline">Manuel Rojas, narrativa de la imagen</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Su vínculo con el cine y la televisión</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Jorge Guerra</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Narrativa Punto Aparte, Valparaíso, 2022.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En la Feria Iberoamericana de Sevilla de 1929, Chile incluyó una película realizada especialmente para esa ocasión por el multifacético Jorge Délano, «Coke». El filme se titulaba
-        <em>La calle del ensueño</em> y logró una entusiasta acogida en el medio local y una generosa opinión de la crítica de esos años. En la cinta aparecía el escritor Manuel Rojas interpretando a un arriero cordillerano.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Por esos años Rojas comenzaba a forjarse un nombre en la literatura chilena, habiendo publicado ya una colección de poemas y otra de cuentos. Este sería uno de los momentos en que Rojas se vincularía en forma activa
-        con el cine, que por entonces era solo un incipiente medio de expresión. Ya en su infancia se había iniciado como un precoz espectador y su interés se mantendría e iría en aumento durante toda su vida.
-        Incluso llegaría a ubicarse detrás de las cámaras filmando imágenes que están contenidas en una película que aún no ha sido revelada.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Esos puntos de contacto del escritor con el mundo audiovisual son los que incluye este texto. Estos momentos dan cuenta de su casi desconocida relación con el cine y, a partir de los años '60, también con la televisión.
-        Rojas vio a ambos como mediadores eficientes para la difusión de su obra y un campo para el desarrollo de su amplia faceta de escritor.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Hay también otro aspecto relevante: la posibilidad de desentrañar las claves y códigos cinematográficos inmersos en parte de la narrativa rojiana que se explican, en parte, por este interés y conocimiento del autor
-        por dicho arte. De este modo, a través de las páginas de este libro veremos cómo el cine y la TV estuvieron presentes en Manuel Rojas, así como también Manuel Rojas dejó su huella en ambas expresiones.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> el prólogo <em>La literatura va al cine. Rojas, el campo cultural y el impacto de la imagen en la narrativa</em>,
-          de José Adriasola y Luis Valenzuela; una descripción cronológica de los principales trabajos de Rojas para el cine y televisión;
-          un listado de las obras audiovisuales realizadas sobre Rojas y sus respectivas fichas técnicas; y una biografía del escritor.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Manuel-Rojas-Narrativa-de-la-imagen-191x300.webp" alt="Manuel Rojas, narrativa de la imagen" />
-    </div>
-  </div>
-
-  <!-- 6. Manuel Rojas: Cuentos Completos -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://ediciones.uahurtado.cl/producto/manuel-rojas-cuentos-completos/" class="text-blue-500 hover:underline">Manuel Rojas: Cuentos Completos</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición crítica de Ignacio Álvarez</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ediciones UAH, Santiago de Chile, 2021.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Manuel Rojas: Cuentos Completos – Edición Crítica</em>, reúne todos los relatos breves del autor, en una destacada edición fijada, cotejada y anotada por Ignacio Álvarez, a la que se suma un aparato crítico
-        de gran valor al que contribuyeron Jaime Concha, Lorena Ubilla, Pablo Concha Ferreccio y Gastón Carrasco Aguilar.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        No es fácil encontrar en la historia literaria chilena un narrador que sepa leer su tiempo de una manera tan compleja y consistente como Manuel Rojas, y esa sabiduría es hija de la variedad y de la intensidad
-        de sus experiencias vitales. El hombre que escribe estos cuentos es alguien que conoce de cerca el hambre, la arbitrariedad de las jerarquías, la dureza de la roca, pero también las posibilidades creadoras
-        de la ficción literaria y su potencial articulador para las comunidades de seres humanos.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Manuel Rojas se nos aparece, entonces, como un sujeto plural. Habita varios tiempos, conoce varios lugares, ha sido varios sujetos. La escritura de sus cuentos convierte esa pluralidad en un espacio que ofrece
-        reconocimiento a personas de muy diversas trayectorias históricas y vitales. Coincide en ello con la sensibilidad más acusada del siglo XX chileno y también con una aspiración permanente del proyecto moderno.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> el prólogo <em>Los cuentos de Manuel Rojas, saber habitar el tiempo</em> de Ignacio Álvarez y los siguientes cuentos:
-          Los 28 relatos reunidos en
-          <strong><a href="/10914-2/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Cuentos </a></strong> (1970),
-          3 cuentos dispersos: <em>Una pelea en la Pampa</em>, <em>Una historia sin interés</em> y <em>Corazones sencillos</em>,
-          y 3 cuentos inéditos: <em>Tres alemanes y un chileno</em>, <em>Nochebuena en Santiago</em> y <em>El niño y el choroy</em>.
-          Además se incorporaron otros textos como la crónica <em>La muchacha intrusa</em> (publicada en 1967 y proveniente de un libro de memorias perdido y titulado
-          «Memorias de un afuerino»), el argumento central de su novela <em>Punta de rieles</em> titulado <em>Confesión de madrugada</em>,
-          un esbozo de su cuento <em>Zapatos subdesarrollados</em>, y un fragmento inacabado de una narración titulada <em>Una mujer en la estación</em>.
-          El libro termina con un dossier formado por los estudios&nbsp;<em>Los primeros cuentos de Manuel Rojas</em> de Jaime Concha,
-          <em>Peones, bandoleros y delincuentes: construcción de identidades masculinas populares en los cuentos de Manuel Rojas</em> de Lorena Ubilla,
-          <em>Papelería varia: inscripciones de Manuel Rojas en el archivo popular de la nación</em> de Pablo Concha,
-          una Cronología de Gastón Carrasco Aguilar y una Bibliografía de Ignacio Álvarez.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Cuentos-Completos-Ed-Critica-199x300.webp" alt="Manuel Rojas: Cuentos Completos" />
-    </div>
-  </div>
-
-  <!-- 7. Manuel Rojas, una oscura y radiante vida (Ediciones UC, 2021) -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://ebooks.ediciones.uc.cl/library/publication/manuel-rojas-una-oscura-y-radiante-vida-nuevas-lecturas-y-aproximaciones-criticas-1668796671" class="text-blue-500 hover:underline">Manuel Rojas, una oscura y radiante vida</a>
-      </h3>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <a href="https://vimeo.com/547137624" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Acceda al video de lanzamiento</a>
-      </p>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de María José Barros y Pía Gutiérrez</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ediciones UC, Santiago de Chile, 2021.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Manuel Rojas: Una oscura y radiante vida. Nuevas lecturas y aproximaciones críticas</em>, reúne dieciocho ensayos acerca de la obra del autor escritos por una nueva generación de lectores y lectoras
-        con interés en interrogar su proyecto literario y de vida desde aproximaciones críticas originales y novedosas.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        El oficio del escritor y las escenas de lectura, la representación de los espacios y el caminar, el diálogo con otras disciplinas artísticas y la cultura material, los posicionamientos de género y clase,
-        son los ejes que articulan los escritos de este volumen y que nos invitan a revisitar la obra de Rojas prestando atención a sus narraciones más emblemáticas, pero también a aquellos textos menos conocidos
-        que se vinculan con los géneros referenciales, la poesía, el teatro y la música.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Pensado para un público amplio y diverso, esta publicación busca tensionar la imagen muchas veces infantilizada y neutralizada de la literatura rojiana. Lo anterior se complementa con la incorporación de imágenes
-        relacionadas con la vida y obra del escritor, tomadas del
-        <a href="https://archivospatrimoniales.uc.cl/handle/123456789/53400" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Archivo Manuel Rojas</a>,
-        y que ponen en escena una mirada más íntima y desconocida en torno a uno de los escritores chilenos más importantes del siglo XX.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> los siguientes ensayos: <li>El escritor como artesano</li> por Juan José Adriasola;
-<li>El mundo del libro: tres escenas del descubrimiento de la lectura en «Imágenes de infancia y adolescencia» de Manuel Rojas</li> por Ignacio Álvarez;
-          <li>Autobiografismo y humanismo en Manuel Rojas </li>por Cecilia Rubio;
-          <li>La novela de lo abierto de Manuel Rojas </li>por Macarena Areco;
-          <li>«Tonada del transeúnte» (Poema) y «Lanchas en la bahía» (en prosa): tipos urbanos, ciudad y arte contemporáneo</li> por Patricio Lizama;
-          <li>«Lanchas en la bahía» de Manuel Rojas: una apelación a la autenticidad existencial</li> por Cristián Montes;
-          <li>El orden de los cuerpos: la caminata en «Imágenes de infancia y adolescencia» y «A pie por Chile»</li> por Antonia Viu;
-          <li>Las derivas de Manuel Rojas en Buenos Aires</li> por Gonzalo León;
-          <li>Las imágenes de Manuel Rojas. Lecturas, archivos y escritura</li> por Luis Valenzuela;
-          <li>La 'descripción viva' en la narrativa de Manuel Rojas</li> por Silvia Donoso;
-          <li>Por una escena generosa: sobre «Población Esperanza» de Isidora Aguirre y Manuel Rojas</li> por Marcia Martínez;
-          <li>Teatro, restos y archivos: del oficio teatral en Manuel Rojas</li> por Pía Gutiérrez;
-          <li>«Chile de arriba a abajo» de Manuel Rojas y Ángel Parra: musicalización de una cartografía nacional popular y mestiza</li> por María José Barros;
-          <li>Ojo de ladrón (Leer desde el inventario)</li> por María José Navia;
-          <li>Manuel Rojas consueta</li> por Ana Lea-Plaza;
-          <li>«Rieles de punta» o las mujeres de Manuel Rojas</li> por Jorge Guerra;
-          <li>Masculinidades y sociabilidad popular en la narrativa de Manuel Rojas: una mirada al proceso de modernización</li> por Lorena Ubilla;
-          y <li>Manuel Rojas, masón: primeras entradas de lectura</li> por Pablo Concha.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Manuel-Rojas-Una-Oscura-y-Radiante-Vida-200x300.webp" alt="Manuel Rojas, una oscura y radiante vida" />
-    </div>
-  </div>
-
-  <!-- 8. Manuel Rojas: Dos cuentos, cinco voces -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1bcGpJ_fvf2sTosVMiAqC5iXLpUaGT9Ps/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas: Dos cuentos, cinco voces</a>
-      </h3>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <a target="_blank" href="/sobre-su-obra/videos_y_audios/" class="text-blue-500 hover:underline">Acceda a los audios</a>
-      </p>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Ana María Berthelon y Claudio Aguilera</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ediciones Biblioteca Nacional de Chile, Santiago de Chile, 2016.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Dos cuentos, cinco voces</em>, es un homenaje de la Biblioteca Nacional a los 120 años del natalicio de Manuel Rojas. Este hermoso libro, que va acompañado de 3 CDs, reúne dos de los más emblemáticos cuentos
-        del autor: <em>El vaso de leche</em> y <em>Pancho Rojas</em>. Ambos relatos son traducidos por primera vez a las lenguas originales de Chile. El libro incluye además los audios originales del escritor y las lecturas
-        de Benito Cumilaf en mapuzungun, Carlos Cañari en aymara, Miguel Urrelo en quechua y Mario Tuki en rapa nui.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        "A Manuel Rojas no se le lee solo con los ojos. Se le lee con todo el cuerpo. Su escritura tiene una presencia física. Nos obliga a trabajar en talleres humildes, a vivir en conventillos hacinados,
-        a caminar por paisajes helados, a sentir el aire marino, a dormir en el suelo húmedo, a subir cerros y a escuchar a los pájaros. Y como pasa siempre tras un esfuerzo o después de llegar a la cumbre y
-        mirar el horizonte… una sensación extraña se arraiga en cada músculo. Una mezcla de fatiga y dicha. La certeza de haber vivido intensamente, de haber probado el sabor de la libertad…".
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> los siguientes cuentos de Manuel Rojas: <em>El vaso de leche</em> y <em>Pancho Rojas</em>,
-          ambos traducidos a las lenguas originarias de Chile; además de
-          <a target="_blank" href="/sobre-su-obra/videos_y_audios/" class="text-blue-500 hover:underline"> tres CDs </a>
-          con sus respectivas lecturas en español por el propio autor, y en las lenguas originales por Benito Cumilaf, Carlos Cañari, Miguel Urrelo y Mario Tuki.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Manuel-Rojas-Dos-Cuentos-Cinco-Voces.webp" alt="Manuel Rojas: Dos cuentos, cinco voces" />
-    </div>
-  </div>
-
-  <!-- 9. Manuel Rojas, una oscura y radiante vida (Catálogo, 2016) -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1cNV5UUs2kbCSg16Pf3IvI7F2DnoDmq4X/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, una oscura y radiante vida</a>
-      </h3>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <a href="/una-oscura-y-radiante-vida/" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Acceda a la exposición</a>
-      </p>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Andrea Palet y Jorge Guerra; diseño gráfico de Rodrigo Garretón</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Catálogo de la Exposición itinerante – Argentina 2016 / 2017 – DIRAC, Santiago de Chile, 2016.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Este libro corresponde al catálogo de la exposición itinerante
-        <strong><a target="_blank" href="/una-oscura-y-radiante-vida/" class="text-blue-500 hover:underline"> Manuel Rojas: Una oscura y radiante vida </a></strong>
-        que se realizó con ocasión de la celebración de los 120 años del nacimiento del escritor y se exhibió tanto en Chile como en Argentina. La muestra sigue una estructura cronológica y destaca más de una veintena
-        de hitos biográficos del escritor.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En Chile, la exposición fue inaugurada en Valparaíso y se exhibió en Santiago, Antofagasta, Constitución, Concepción y Valdivia. En Argentina, la exposición inició su recorrido en el Centro Matta de Buenos Aires,
-        donde fue inaugurada por el Canciller Heraldo Muñoz, ante la presencia, entre otros, del Embajador de Chile José Antonio Viera-Gallo, el Ministro de Cultura Ernesto Ottone, María Paz Rojas hija del escritor
-        y el Presidente de la <strong>Fundación Manuel Rojas</strong>, Jorge Guerra. La muestra también se exhibió en Rosario y Mendoza, ciudades en las cuales Rojas vivió parte importante de su infancia.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> los siguientes textos: <li>Presentaciones</li> de Heraldo Muñoz y Jorge Guerra;
-          <li>Manuel Rojas</li> por César Aira en "Diccionario de autores latinoamericanos", Buenos Aires, 2001;
-          <li>Nacionalidad</li> por Manuel Rojas, Diario Clarín, Santiago de Chile, 1972;
-          <li>Boeado – Chile: Ida y vuelta</li> por Celia Zaragoza, Diario La Nación, Buenos Aires, 1960;
-          <li>Infancia en el barrio de las Ranas</li>, Diario La Opinión, Buenos Aires, 1971;
-          <li>Recuerdos de Rosario</li> por Manuel Rojas, extracto de "Imágenes de infancia y adolescencia", Santiago de Chile, 1981;
-          <li>Un escritor de aquí y de allá</li> por Jorge Guerra;
-          <li>Laguna atravesó otra vez la cordillera</li> por Carlos Droguett, Buenos Aires, 1971;
-          y una Cronografía de Manuel Rojas.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Manuel-Rojas-Una-Oscura-y-Radiante-Vida.webp" alt="Manuel Rojas, una oscura y radiante vida (Catálogo)" />
-    </div>
-  </div>
-
-  <!-- 10. Hijo de ladrón, la novela gráfica -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://ocholibros.publica.la/library/publication/hijo-de-ladron-novela-grafica" class="text-blue-500 hover:underline">Hijo de ladrón, la novela gráfica</a>
-      </h3>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <a href="https://drive.google.com/file/d/1wOShtBjiejfYlUI4SudPotXYQ2qvxncP/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Acceda al prólogo de Díaz Eterovic</a>
-      </p>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Manuel Rojas / Guión de Christian Morales; dibujos de Luis Martínez; adaptación de Marco Herrera</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ediciones Ocho Libros, Santiago de Chile, 2015.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Hace un tiempo ya que <strong><a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Hijo de ladrón</a></strong>
-        encontró una nueva vida, que Aniceto Hevia y sus personajes principales han saltado de las letras a las imágenes fijas de la novela gráfica. La destacada adaptación de
-        <strong><a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Hijo de ladrón </a></strong>
-        es el producto del gran oficio del guionista Christian Morales, del dibujante Luis "Beto" Martínez y de Marco Herrera en la adaptación. Su trabajo comenzó en el año 2012 y se convirtió el 2015 en un contundente
-        volumen de 294 páginas, publicado por <em>Ediciones Ocho Libros</em>. La adaptación de la obra maestra de Manuel Rojas al lenguaje del cómic ha generado un renovado interés de jóvenes y adultos por su siempre vigente literatura.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        A su salida, la novela gráfica se presentó en las ferias del libro de Santiago y de Buenos Aires: con una gran acogida del público chileno y argentino. En una
-        <a href="/noticias/hijo-de-ladron-novela-grafica/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> publicación anterior </a>
-        reprodujimos el excelente prólogo del escritor chileno Ramón Diáz Eterovic y una entrevista a los autores Christian Morales y Luis Martínez, realizada por el colectivo <em>Ergocomics</em>,
-        que tiene por objeto difundir la narrativa gráfica chilena y latinoamericana.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> el Prólogo de Ramón Diáz Eterovic:
-          <a href="https://drive.google.com/file/d/1wOShtBjiejfYlUI4SudPotXYQ2qvxncP/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Aniceto Hevia, la vigencia de un rebelde </a>
-          y la adaptación a novela gráfica de <strong>Hijo de ladrón</strong>. La versión electrónica incluye la lectura por Manuel Rojas de fragmentos de su novela.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Manuel-Rojas-Hijo-de-Ladron-Novela-Grafica-Portada.webp" alt="Hijo de ladrón, la novela gráfica" />
-    </div>
-  </div>
-
-  <!-- 11. Manuel Rojas: La prosa nunca está terminada -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://ediciones.udp.cl/libro/la-prosa-nunca-esta-terminada/" class="text-blue-500 hover:underline">Manuel Rojas: La prosa nunca está terminada</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Andrés Florit</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ediciones Universidad Diego Portales – Colección Huellas, Santiago de Chile, 2013.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>La prosa nunca está terminada</em>, reúne una selección de textos de Manuel Rojas sobre literatura, compilador por el poeta Andrés Florit. Estos escritos nos muestran a un autor atento y reflexivo a propósito
-        de su arte, la literatura chilena y otros escritores, tales como: Horacio Quiroga, Vicente Huidobro, González Vera y Alberto Edwards.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        El volumen, compuesto de ensayos, crónicas, prólogos y fragmentos de entrevistas, incluye las páginas excluidas de
-        <strong><a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Hijo de ladrón </a></strong>,
-        publicadas en Babel en 1951. Manuel Rojas, sin ser un ensayista, reflexionó sobre la literatura, sobre autores, sobre el vínculo entre política y literatura, por una necesidad natural que en último término
-        apostaba por la autonomía de la literatura respecto de cualquier pretensión demostrativa. Rojas aquí habla desde su experiencia acerca de cómo fue mejorando su técnica y procedimientos de manera concreta,
-        antes que enfrascarse en abstracciones teóricas.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <p class="mb-4 leading-relaxed text-gray-600">
-          <strong>Incluye</strong> los siguientes textos de Manuel Rojas: <em>Algo sobre mi experiencia literaria</em>,
-          <em>Reflexiones sobre la literatura chilena</em>, <em>Lance sobre el escritor y la política</em>, <em>Horacio Quiroga</em>,
-          <em>Aproximaciones a Mariano Latorre</em>, <em>Antólogos y antologías</em>, <em>Recuerdos de José Domingo Gómez Rojas</em>,
-          <em>Alberto Edwards – Cuentos fantásticos</em>, <em>Huidobro y sus obras completas</em>, <em>González Vera</em>,
-          <em>Braulio Arenas y Sansón</em>, <em>Cómo oír hablar a un carpintero</em> (fragmentos de entrevistas) y
-          <em>Páginas excluidas de Hijo de ladrón</em>.
-        </p>
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Manuel-Rojas-La-Prosa-Nunca-Esta-Terminada.webp" alt="Manuel Rojas: La prosa nunca está terminada" />
-    </div>
-  </div>
-
-  <!-- 12. Conversaciones con Manuel Rojas -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://ebook.zigzag.cl/library/publication/conversaciones-con-manuel-rojas-1658432608" class="text-blue-500 hover:underline">Conversaciones con Manuel Rojas</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Entrevistas 1928 – 1972</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Daniel Fuenzalida</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. Zig-Zag, Santiago de Chile, 2012.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En el presente libro, Daniel Fuenzalida ha recogido gran parte de las opiniones que Manuel Rojas ofreciera a la prensa escrita entre los años 1928 y 1972, poco antes de su muerte. El conjunto
-        –que incluye entrevistas realizadas en Chile, Argentina, México y Cuba– muestra vívidamente no solo al escritor opinando sobre su obra y la de otros, sino que también la del ser humano hablando de su vida,
-        de su familia, de sus viajes por Chile y de sus experiencias en diferentes países.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Las respuestas de Manuel Rojas lo muestran tal como era: un hombre íntegro, sincero, valeroso, que no se aproblemaba para decir lo que pensaba. Rojas habla de sus obras, de sus éxitos y fracasos, con la
-        auténtica humildad del creador. Igual cosa hace cuando se refiere a las muchas dificultades que encontró para abrirse paso en la dura vida que le tocó llevar y llegar a ser lo que fue: uno de los grandes
-        narradores de América y, para muchos, el mejor novelista chileno de todos los tiempos. En este libro el lector será partícipe de una larga charla, de casi cincuenta años, con nuestro Premio Nacional de
-        Literatura de 1957.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una Introducción de Daniel Fuenzalida, un Prólogo de Jaime Valdivieso, una Bibliografía general y una Bibliografía de las entrevistas a Manuel Rojas.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/ConversacionesconMR.webp" alt="Conversaciones con Manuel Rojas" />
-    </div>
-  </div>
-
-  <!-- 13. Manuel Rojas: Su voz viene en el viento -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://lom.cl/products/su-voz-viene-en-el-viento-poesia-reunida?srsltid=AfmBOorkcEMRjGtkw5eLz4eMyNPOSXDA-c1FEO_KslHHbIAFlhS9gjfo" class="text-blue-500 hover:underline">Manuel Rojas: Su voz viene en el viento</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Poesía reunida</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Rodrigo Carvacho</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">LOM Ediciones, Santiago de Chile, 2012.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Su voz viene en el viento</em>, poesía reunida por Rodrigo Carvacho, recopila parte de los poemas que Manuel Rojas publicara originalmente en
-        <a href="/libros/tonada-del-transeunte/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong>Tonada del transeúnte</strong></a> (1927) y
-        <a href="/libros/deshecha-rosa/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong>Deshecha rosa</strong></a> (1954),
-        además de un conjunto de poesías aparecidos en distintos diarios y revistas de la primera mitad del siglo XX.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Su voz viene en el viento</em> –verso del poema <em>Balada de la primavera</em> publicado en
-        <a href="/libros/tonada-del-transeunte/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong>Tonada del transeúnte</strong></a>–
-        describe los inicios literarios de Manuel Rojas. Leyendo sus poemas se descubre que la prosa de Rojas tiene un origen lírico de una tradición, según él, modernista, pero en su esencia se encuentra sabiduría,
-        belleza y utopía.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> un Prólogo de Rodrigo Carvacho.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Su_voz_viene_en_el_viento.webp" alt="Manuel Rojas: Su voz viene en el viento" />
-    </div>
-  </div>
-
-  <!-- 14. Manuel Rojas: Un joven en la Batalla -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://lom.cl/products/un-joven-en-la-batalla-textos-publicados-en-el-periodico-anarquista-la-batalla-1912-1915?srsltid=AfmBOopfwD516GZPImr08n5iRI_1ME0rTVlrQoqyretN_g8Uq4WU7Jm6" class="text-blue-500 hover:underline">Manuel Rojas: Un joven en la Batalla</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Textos publicados en el periódico anarquista La Batalla, 1912 – 1915</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Jorge Guerra</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">LOM Ediciones, Santiago de Chile, 2012.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Un joven en la batalla</em>, compila los primeros artículos, crónicas periodísticas y trabajos literarios que Manuel Rojas escribió entre los años 1912 y 1915. El libro también entrega antecedentes
-        documentales del contexto histórico y social en que los escritos de Manuel Rojas se produjeron y publicaron.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        La mayor parte de los textos recopilados aquí aparecieron en el periódico anarquista chileno <em>La Batalla</em>. Son escritos que expresan y surgen de un compromiso apasionado de Manuel Rojas con el pensamiento
-        libertario y un inédito antecedente de su constante búsqueda por encontrar un lenguaje y un marco ideológico propios, aspectos que se irían consolidando en su gran obra literaria posterior.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        A pesar de los numerosos estudios y recopilaciones sobre la obra de Manuel Rojas, no existía hasta ahora un volumen que reuniera sus primeros escritos. Este libro viene a llenar ese vacío y pretende iniciar
-        un camino de recuperación del legado literario del escritor.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una Presentación de la Fundación Manuel Rojas, una Introducción y el Estudio <em>Lecciones de un carpintero solitario y de un orador errante</em>, ambos de Jorge Guerra C.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Un_joven_en_la_batalla.webp" alt="Manuel Rojas: Un joven en la Batalla" />
-    </div>
-  </div>
-
-  <!-- 15. Julianne Clark: Y nunca te he de olvidar -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a target="_blank" href="https://www.catalonia.cl/libros/y-nunca-te-he-de-olvidar-mi-vida-junto-a-m-rojas/" class="text-blue-500 hover:underline">Julianne Clark: Y nunca te he de olvidar</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Mi vida junto a Manuel Rojas</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. Catalonia, Santiago de Chile, 2007.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Cuando el gran escritor chileno Manuel Rojas tenía 65 años y daba clases en una universidad de los Estados Unidos, conoce a la autora de este libro, su alumna Julianne Clark, de 19 años. Casi medio siglo
-        de diferencia generacional no constituye barrera alguna para que surja una apasionante historia de amor.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        La nueva pareja se traslada a México, donde contrae matrimonio y emprende un singular viaje, cual protagonistas de un clásico roadmovie de los años sesenta, el que será relatado por Rojas en su libro
-        <a href="/libros/pase-por-mexico-un-dia/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Pasé por México un día</strong></a>.
-        La vida juntos durará ocho años –recorrerán diversos países, frecuentando los escritores más significativos de una época turbulenta– y tendrá un dramático final.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Este libro permite acceder a dimensiones desconocidas de la hermética biografía del Premio Nacional de Literatura 1957, alcanzando un singular valor documental.
-        «Qué más puede pedir un hombre que ocho años de dicha» dirá el escritor en una de sus cartas que documentan este franco y valiente relato.
-      </p>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Y_nunca_te_he_de_olvidar.webp" alt="Julianne Clark: Y nunca te he de olvidar" />
-    </div>
-  </div>
-
-  <!-- 16. Manuel Rojas – Estudios críticos -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1bOkD9laJc4J7x02ubLtSxYODwWnG0GCG/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas – Estudios críticos</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Naím Nómez y Emmanuel Tornés</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Editorial Universidad de Santiago, Santiago de Chile, 2005.</strong></h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Manuel Rojas – Estudios críticos</em>, es una recopilación de artículos, notas, reseñas, entrevistas y opiniones sobre uno de los escritores más relevantes de la literatura chilena y latinoamericana
-        del siglo XX. Su importancia ha sobrepasado de lejos a la crítica sobre su obra. Es por ello que esta publicación espera constituirse en un hito insustituible para los estudiosos del autor y la literatura
-        chilena, no sólo en el ámbito académico sino también en el ámbito de los escritores, estudiantes y público en general.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Se incorporó en el libro el prólogo original de la edición realizada para <em>Casa de las Américas</em> por el crítico cubano Emmanuel Tornés (1989) y otra contemporánea del profesor y editor Naín Nómez;
-        la compilación sin ser exhaustiva, se ha completado con varios artículos más actuales, lo que permite señalar que se trata de la mayor recopilación de escritos sobre Manuel Rojas que se haya publicado.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Esperamos que el público chileno y latinoamericano sepa valorar este esfuerzo conjunto de <em>Casa de las Américas</em> de Cuba y la <em>Universidad de Santiago de Chile</em> para entregar a sus lectores
-        esta valiosa colección de trabajos sobre un escritor imprescindible en el canon literario nacional e internacional.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong>, además de los Prólogos de Tornés y Nómez, una Cronología de la vida de Manuel Rojas, una breve Biografía de los autores citados en el libro y una Bibliografía.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/estudios_criticos_chico.webp" alt="Manuel Rojas – Estudios críticos" />
-    </div>
-  </div>
-
-  <!-- 17. Letras anarquistas -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">Letras anarquistas</h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Artículos periodísticos y otros escritos inéditos de Manuel Rojas y José Santos González Vera</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Carmen Soria</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Editorial Planeta, Santiago de Chile, 2005.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        La presente recopilación de publicaciones, nunca antes reunidas en un libro, y de otros papeles inéditos nos presenta de cuerpo entero y rejuvenecidos a José Santos González Vera y a Manuel Rojas.
-        Ambos jóvenes, anarcosindicalistas de aquel entonces, hablan de la locura que les genera la injusticia y la miseria.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En estos escritos, como en todos sus libros, no hay desperdicio posible. Hay que leerlos de principio a fin para ser de veras, en nuestro pobre Chile, persona civilizada.
-        «Imita con la vida el pensamiento» reza la Epístola Moral de Fabio: así ocurrió con estos dos grandes de nuestras letras.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una Presentación de Armando Uribe y un Prólogo de Oscar Ortiz.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Letras_Anarquistas.webp" alt="Letras anarquistas" />
-    </div>
-  </div>
-
-  <!-- 18. Manuel Rojas: Páginas excluidas -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">Manuel Rojas: Páginas excluidas</h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Edición de Federico Schopf</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Editorial Universitaria, Santiago de Chile, 1997.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Dada la difusión permanente –en nuestro país– de los textos centrales de Manuel Rojas (entre los que destacan sus novelas y relatos), la presente edición recoge los trabajos de más difícil acceso
-        –algunos, incluso, no incluidos en sus
-        <a href="/libros/obras-completas/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Obras completas </strong></a> u
-        <a href="/manuel-rojas/obra/obras-escogidas/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Obras escogidas </strong></a>–
-        y que permiten una visión más amplia de su escritura. Así, se han recogido los comentarios de Manuel Rojas a
-        <a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Hijo de ladrón </strong></a>
-        y las «Páginas excluidas de Hijo de ladrón»; una cantidad importante de crónicas y artículos aparecidos en diarios y revistas de Chile; y algunos ensayos de literatura –también de distintos momentos–
-        que delatan la preocupación crítica del autor por el trabajo de otros escritores y el suyo propio.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        <em>Páginas excluidas</em>, como indica su título, pretende servir de útil guía al estudioso y al lector culto en general, en relación a todo lo tradicionalmente excluido de las publicaciones
-        de la obra del Premio Nacional de Literatura de 1957.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una
-        <a href="https://drive.google.com/file/d/15vzMd_Fi-v8VeQdMxzsuAPBWTAPhgB1a/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline"> Introducción de Federico Schopf </a>,
-        una breve Biografia de Manuel Rojas y una Bibliografía selectiva de y sobre su obra.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/MRPaginas_excluidas.webp" alt="Manuel Rojas: Páginas excluidas" />
-    </div>
-  </div>
-
-  <!-- 19. Manuel Rojas 1896 – 1996 -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1xirp8qT-fHObxUJTlWPKusQkj8a_w8aW/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas 1896 – 1996</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Fundación Pablo Neruda, Cuadernos, Año VII – Nº 24 – LOM Ediciones, Santiago de Chile, 1996.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En este número especial dedicado a Manuel Rojas, los <em>Cuadernos de la Fundación Pablo Neruda</em> recopilan una serie de críticas, estudios y recuerdos sobre el autor. Dentro de esta edición destacan
-        en particular los siguientes textos: <em>Nuestro Máximo Gorki</em>, de Luis Enrique Délano; <em>Recuerdos de mi padre</em>, de Paz Rojas; <em>Un grande del siglo</em>, de Volodia Teitelboim;
-        <em>Escritor multiforme</em>, de Juan Antonio Massone; <em>«¡Hazte hombre Manuel!»</em>, de José Santos González Vera; <em>Una oscura vida radiante</em>, de Filebo;
-        <em>Manuel Rojas apuntador y autor teatral</em>, de Mario Cánepa Guzmán y <em>El hombre de la rosa y sus misterios</em>, de Virginia Vidal.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        Los <em>Cuadernos de la Fundación Pablo Neruda</em> incluyen el poema <em>Deshecha rosa</em> de Manuel Rojas y <em>Tres poemas</em> de María Baeza (1903 – 1936)
-        –la primera mujer del escritor y madre de sus tres hijos– además de una serie de estampas y fotografías del archivo de la <strong>Fundación Manuel Rojas</strong>.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/MRFundacionPabloNeruda.webp" alt="Manuel Rojas 1896 – 1996" />
-    </div>
-  </div>
-
-  <!-- 20. Manuel Rojas, la novelesca vida de un novelista -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1mQTptfgR9zqRiK_F6Qxtwe4eo09_I_1I/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, la novelesca vida de un novelista</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Biografía de Floridor Pérez</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. Zig-Zag, Santiago de Chile, 1994.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Esta pequeña biografía de Manuel Rojas, perteneciente a la serie <em>Grandes figuras de nuestra Historia</em>, está destinada principalmente a los jóvenes estudiantes.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Floridor Pérez, pedagogo y escritor de literatura infantil, relata aquí, como si fuera un cuento, la vida de Manuel Rojas. Este relato de la variada e intensa vida del escritor es un llamado al estudiante
-        a leer sus obras, cuentos y novelas.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> un prólogo del autor.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/MRNovelesca_vida.webp" alt="Manuel Rojas, la novelesca vida de un novelista" />
-    </div>
-  </div>
-
-  <!-- 21. Hijo de ladrón, novela de aprendizaje antiburguesa -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">Hijo de ladrón, novela de aprendizaje antiburguesa</h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Estudio de Berta López Morales</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. La Noria, Santiago de Chile, 1987.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Este ensayo sobre la novela
-        <a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong>Hijo de ladrón</strong></a>
-        se sustenta principalmente en la línea teórica de George Luckás y Francois Jost relativas al <em>Bildungsroman</em> –o novela de aprendizaje– y en Susan Suleiman y sus ideas sobre <em>Novela de Tesis</em>.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Según la propia autora, este enfoque permite interpretar la novela de Manuel Rojas desde ángulos anteriormente ignorados y darle un nuevo sentido a la tetralogía de <em>Aniceto Hevia</em>, su protagonista,
-        compuesta por las novelas
-        <a href="/libros/hijo-de-ladron/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Hijo de ladrón </strong></a>,
-        <a href="/libros/sombras-contra-el-muro/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Sombras contra el muro </strong></a>,
-        <a href="/libros/la-oscura-vida-radiante/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> La oscura vida radiante </strong></a> y
-        <a href="/libros/mejor-que-el-vino/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Mejor que el vino </strong></a>.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> un prólogo de Alfonso Calderón.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/Hijodeladron_BertaLopez.webp" alt="Hijo de ladrón, novela de aprendizaje antiburguesa" />
-    </div>
-  </div>
-
-  <!-- 22. La narrativa anarquista de Manuel Rojas -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/12_7UqHfFVhqRfU6JAzps3yMHQJ45ewmW/view?usp=sharing" target="_blank" rel="noopener" class="text-blue-500 hover:underline">La narrativa anarquista de Manuel Rojas</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Estudio de Darío A. Cortés</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. Pliegos, Madrid, España, 1986.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En este libro se analiza por primera vez la producción completa de Manuel Rojas, cubriendo su trayectoria de más de 60 años de creación literaria. El autor pone en evidencia que el denominado
-        «humanismo rojasiano» deriva principalmente de su formación anarquista durante las primeras décadas del siglo XX en Buenos Aires y Santiago de Chile. Es precisamente este periodo, anarcosindicalista
-        de su juventud, el que Rojas selecciona a lo largo de toda su narrativa para acentuar su compromiso con los marginados.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Darío A. Cortés explora el desarrollo estilístico de Manuel Rojas, sus valores literarios intrínsecos, así como, paralelamente, los puntos de contacto entre la ideología libertaria, su mundo subjetivo
-        y las experiencias vitales de su errante, variada e intensa vida.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una Bibliografía de y sobre Manuel Rojas.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/ManuelRojas_La_Narrativa_Anarquista-de.webp" alt="La narrativa anarquista de Manuel Rojas" />
-    </div>
-  </div>
-
-  <!-- 23. Manuel Rojas, vida y obra -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1E8iJOCg5vhMdmXZvHs53zqCZGcS0-IRV/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, vida y obra</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Estudio de Máximo Fernández Fraile</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. Lord Cochrane S.A., Santiago de Chile, 1977.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        El profesor de literatura Fernández Fraile realizó esta biografía de Manuel Rojas poco después del fallecimiento del escritor, el 11 de marzo de 1973, en Santiago de Chile. Este estudio hace de la vida
-        y obra de Manuel Rojas una dualidad inseparable.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Fernández Fraile documenta su trabajo en una exhaustiva revisión de los estudios que se han escrito sobre Manuel Rojas y recoge en sus páginas –ricamente ilustradas con documentos históricos– muchas citas
-        del escritor.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una Bibliografía de y sobre Manuel Rojas.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/MRVidayObra.webp" alt="Manuel Rojas, vida y obra" />
-    </div>
-  </div>
-
-  <!-- 24. Manuel Rojas, narrador -->
-  <div class="pub-section">
-    <div class="pub-info">
-      <h3 class="text-xl font-semibold text-gray-800 mb-2 pb-3 border-b border-gray-200">
-        <a href="https://drive.google.com/file/d/1U9cB2yH_5LKmYQFeH_YcvdpPzefm-B0C/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, narrador</a>
-      </h3>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2"><strong>Biografía de Enrique Espinoza</strong></h5>
-      <h5 class="text-lg font-semibold text-gray-700 mb-2">Ed. Babel, Buenos Aires, 1976.</h5>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        Enrique Espinoza, seudónimo en el quehacer de las letras de Samuel Glusberg, redactó esta biografía de Manuel Rojas luego que este mismo se lo solicitara. Espinoza mantuvo una estrecha relación intelectual
-        y humana con Manuel Rojas, especialmente cuando el autor de
-        <a href="/libros/imagenes-de-infancia-y-adolescencia/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong>Imágenes de infancia</strong></a>
-        se integró al grupo <em>Babel</em> en Chile, entre los años 1939 y 1951.
-      </p>
-      <p class="mb-4 leading-relaxed text-gray-600">
-        En esta biografía de Manuel Rojas, una de las más profundas y emotiva que se han escrito, Espinoza describe tanto la vida de Manuel Rojas como su larga trayectoria literaria e intelectual.
-        El trabajo de Espinoza se funda en la máxima de que "todo escritor verdadero debería estar íntegro en su obra y que sólo es preciso saber leerla de manera penetrante para encontrar la historia de su vida en ella".
-        Manuel Rojas, consciente de ello facilitó esta búsqueda a sus lectores, al adelantarse a señalar en su
-        <a href="/libros/antologia-autobiografica/" target="_blank" rel="noopener" class="text-blue-500 hover:underline"><strong> Antología autobiográfica </strong></a>
-        cuánto hay de su vida en sus cuentos y novelas.
-      </p>
-      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 my-4">
-        <strong>Incluye</strong> una Bibliografía y una Cronología de Manuel Rojas.
-      </div>
-    </div>
-    <div class="pub-cover">
-      <img src="/media/2023/06/MRNarrador.webp" alt="Manuel Rojas, narrador" />
-    </div>
-  </div>
-
-  <!-- ========== ESTUDIOS SECTION ========== -->
-  <hr class="border-t border-gray-200 my-8">
-  <h4 class="text-lg font-semibold text-gray-700 mb-2">ESTUDIOS</h4>
-  <p class="mb-4 leading-relaxed text-gray-600"><small>(archivos PDF y enlaces externos)</small></p>
-  <hr class="border-t border-gray-200 my-8">
-
-  <ul class="list-disc pl-6 mb-4 space-y-1 text-gray-600">
-    <li>Ignacio Álvarez (2025). <a href="https://drive.google.com/file/d/18mJmMspOlM2kBsYvvSxzD7jjpddkQPD1/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, en Historia crítica de la literatura chilena.</a></li>
-    <li>Jaime Concha (2021). <a href="https://drive.google.com/file/d/1gpsMDoj24Ju470NlRNzcIJB5yh5HWjNT/view?usp=sharing" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Los primeros cuentos de Manuel Rojas.</a></li>
-    <li>Lorena Ubilla (2021). <a href="https://drive.google.com/file/d/1fKlWX2a0g-xir1vpLD4ib73YLrC3O4mq/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Peones, bandoleros y delincuentes.</a></li>
-    <li>Pablo Concha (2021). <a href="https://drive.google.com/file/d/1LiQFLYk2RHoXFK9cHJbX59ZDwcFjj_rH/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Papelería varia: inscripción de Manuel Rojas en el archivo popular de la nación.</a></li>
-    <li>Varios Autores (2021). <a href="https://drive.google.com/file/d/1AKQlA6MSfKHXI2Obifhe5EeH8IN5qkdB/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Dosier Manuel Rojas – Anales de Literatura Chilena.</a></li>
-    <li>Varios Autores (2021). <a href="https://drive.google.com/file/d/1LhpXOpf5p4X1SXYj7-TyTfQzkB95YoZq/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Setenta años de Hijo de ladrón – Revista Chilena de Literatura.</a></li>
-    <li>Juan José Adriasola (2019). <a href="https://drive.google.com/file/d/1iwy9y7_SuB9bSdG0dGb5-spmBzglzXIS/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, lector.</a></li>
-    <li>Ana M. Lea-Plaza (2018). <a href="https://drive.google.com/file/d/1TrAaAR6tRJ8D1Knb75pijfiCjW6EpPh8/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Punta de rieles de Manuel Rojas: Montaje irónico de un encuentro entre mundos.</a></li>
-    <li>Antonia Viu (2016). <a href="https://drive.google.com/file/d/1XG_5HhID2kkkvM0XVvWmqxuTc_XGct8O/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Disciplinamientos y contagios textuales: La narrativa temprana de Manuel Rojas y La Hoja Sanitaria.</a></li>
-    <li>Miguel E. Morales (2016). <a href="https://drive.google.com/file/d/1RUqLmJji0dVw4o97QeYxZnsbznDutq_7/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">La escritura siempre caminante.</a></li>
-    <li>Pía Gutiérrez (2015). <a href="https://drive.google.com/file/d/1g5-O8CQRhOVbVLgJprl6Cba7PFyvPfDA/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Una población, dos cabezas y cuatro manos.</a></li>
-    <li>Pablo Fuentes Retamal (2015). <a href="https://drive.google.com/file/d/1BL-IQiIIGEAzyJinEdN0zu3L5Vbbrb4F/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">La mancha indeleble de Aniceto Hevia.</a></li>
-    <li>Ignacio Álvarez (2012). <a href="https://drive.google.com/file/d/1sf11eYbQETxJMZUxRo4Ot1S8T63arDde/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">La escritura en tiempo presente. Manuel Rojas corrige sus cuentos (1929-1970).</a></li>
-    <li>Silvia Donoso (2012). <a href="https://drive.google.com/file/d/1qulRyADtnDLLuCPSBIaZbk1kqsJV3tLL/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">El modo cinematográfico en el relato de Hijo de ladrón.</a></li>
-    <li>Ignacio Álvarez &amp; M. Massmann (2011). <a href="https://drive.google.com/file/d/1fOztO_jO3IA6zEfJF_NwYcopHyCJ0hnq/view?usp=sharing" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Vínculo social e identidad en la primera narrativa de Manuel Rojas.</a></li>
-    <li>Jaime Concha (2011). <a href="https://drive.google.com/file/d/18BIFl11vjauNQw5r53Fib2OSQqHRst70/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">El otro tiempo perdido.</a></li>
-    <li>Lorena Ubilla (2010). <a href="https://drive.google.com/file/d/1_45oeVkjolV_rtXGoQV2qoYrLwhyGyUI/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Sujetos marginales en la narrativa de Manuel Rojas.</a></li>
-    <li>Grínor Rojo (2009). <a href="https://drive.google.com/file/d/1o0h8QeQ1TfYEICtjcbOkZIiBBn8LEmqj/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">La ContraBildungsroman de Manuel Rojas.</a></li>
-    <li>Juan José Daneri (2009). <a href="https://drive.google.com/file/d/1fLbMRISct-zCG7pfdfX_i95mXulribF2/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Elementos para reconsiderar la ciudad utópica de Manuel Rojas.</a></li>
-    <li>Ana M. Lea-Plaza (2009). <a href="https://drive.google.com/file/d/1alR2YYqSEmy9gTjcd3VM2IUwzcR-8zZu/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">El otro Manuel Rojas. Élite y relaciones de clase en "Punta de rieles", novela de la corriente de la conciencia.</a></li>
-    <li>Jaime Concha (2004). <a href="https://drive.google.com/file/d/1b4r8xrAozH3m8lRI2ggcMBZr3sfTrHUc/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Robar, trabajar, jugar en el primer Manuel Rojas.</a></li>
-    <li>Carla Cordua (2003). <a href="https://drive.google.com/file/d/1Meo7OdSskxoY7_7OdEKiFY13lyIXCsYI/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Una fortaleza sin puente levadizo.</a></li>
-    <li>Darío A. Cortés (1985). <a href="https://drive.google.com/file/d/1USEiVvjpT5kAnyKBbyWcnE03AclyYb8s/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">El anarquismo en Manuel Rojas.</a></li>
-    <li>Mercedes M. Robles (1983). <a href="https://drive.google.com/file/d/129JMDXvZRp6Te02eQ-797nrkD1F-1aCB/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Thomas Mann's The Magic Mountain and Manuel Rojas' Born Guilty.</a></li>
-    <li>Fernando Moreno (1981). <a href="https://drive.google.com/file/d/1qMudFziOynQpm1I5uX4Ilzuj9UaEeZSJ/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Hijo de ladrón, la existencia herida.</a></li>
-    <li>Raúl Silva Castro (1960). <a href="https://drive.google.com/file/d/1bKbDDLddkgRqekiR68WQJdmwSrBu-K5M/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas, novelista.</a></li>
-    <li>Norman Cortés (1960). <a href="https://drive.google.com/file/d/1SV2b_7GB3deTWuNWs4LZkcGkI9j5frb7/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Hijo de ladrón, tres formas de inconexión en el relato.</a></li>
-    <li>Cedomil Goic (1960). <a href="https://drive.google.com/file/d/1Y7-tY2rEqu6dAZ6irdautlmaFNDxi-vv/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Hijo de ladrón, libertad y lágrimas.</a></li>
-    <li>Enrique Espinoza (1957). <a href="https://drive.google.com/file/d/1k3UAd13dYBAl2fqB7po6ajg2ZZOynhGL/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Manuel Rojas.</a></li>
-  </ul>
+)}
 
 </Layout>

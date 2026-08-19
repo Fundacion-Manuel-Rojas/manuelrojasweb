@@ -232,5 +232,84 @@ export default config({
         content: fields.markdoc({ label: "Reseña/Contenido" }),
       },
     }),
+    premios: collection({
+      label: "Premios",
+      slugField: "titulo",
+      columns: ["titulo", "orden"],
+      path: "src/content/premios/*",
+      format: { contentField: "content" },
+      entryLayout: "content",
+      schema: {
+        titulo: fields.slug({ name: { label: "Título" } }),
+        imagen: fields.image({
+          label: "Imagen",
+          directory: "public/media/premios",
+          publicPath: "/media/premios/",
+          validation: { isRequired: true },
+        }),
+        texto_imagen: fields.text({
+          label: "Texto de imagen",
+          description: "Leyenda o pie de foto que aparece debajo de la imagen.",
+          multiline: true,
+        }),
+        destacar_inicio: fields.checkbox({
+          label: "Destacar primera letra",
+          description: "Aplica el estilo de letra capitular al primer párrafo.",
+        }),
+        orden: fields.number({
+          label: "Orden de visualización",
+          defaultValue: 0,
+        }),
+        content: fields.markdoc({ label: "Cuerpo de texto" }),
+      },
+    }),
+    publicaciones: collection({
+      label: "Publicaciones y Estudios",
+      slugField: "titulo",
+      columns: ["titulo", "autor", "orden"],
+      path: "src/content/publicaciones/*",
+      format: { contentField: "content" },
+      entryLayout: "content",
+      schema: {
+        titulo: fields.slug({ name: { label: "Título" } }),
+        subtitulo: fields.text({ label: "Subtítulo" }),
+        autor: fields.text({ label: "Autor / Edición" }),
+        editorial_info: fields.text({ label: "Editorial, lugar y año" }),
+        imagen: fields.image({
+          label: "Imagen de portada",
+          directory: "public/media/publicaciones",
+          publicPath: "/media/publicaciones/",
+          validation: { isRequired: true },
+        }),
+        titulo_url: fields.url({
+          label: "URL del título",
+          description: "Enlace externo al que apunta el título de la publicación (opcional).",
+        }),
+        texto_destacado: fields.text({
+          label: "Texto destacado",
+          description: "Texto del bloque gris al final de la publicación. Usa Markdown básico: **negrita**, *cursiva*, [enlace](url).",
+          multiline: true,
+        }),
+        orden: fields.number({
+          label: "Orden de visualización",
+          defaultValue: 0,
+        }),
+        content: fields.markdoc({ label: "Cuerpo de texto" }),
+      },
+    }),
+    estudios: collection({
+      label: "Estudios",
+      slugField: "titulo",
+      path: "src/content/estudios/*",
+      format: { contentField: "content" },
+      entryLayout: "content",
+      schema: {
+        titulo: fields.slug({ name: { label: "Título" } }),
+        content: fields.markdoc({
+          label: "Lista de estudios",
+          description: "Lista de estudios que aparece al final de la página. Usa una lista de Markdown (- elemento) y [enlaces](url).",
+        }),
+      },
+    }),
   },
 });

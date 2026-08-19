@@ -1,9 +1,25 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
 const title = "Premios";
+const premios = (await getCollection('premios')).sort((a, b) => (a.data.orden ?? 0) - (b.data.orden ?? 0));
+const rendered = await Promise.all(
+  premios.map(async (premio) => {
+    const { Content } = await render(premio);
+    return { premio, Content };
+  })
+);
 ---
 
-<Layout title={title}>
+<Layout
+  title={title}
+  breadcrumbs={[
+    { name: 'Inicio', url: '/' },
+    { name: 'Sobre su obra', url: '/sobre-su-obra/' },
+    { name: title, url: '/sobre-su-obra/premios/' },
+  ]}
+>
 
 <h3 class="text-lg text-gray-400 mb-6 pt-6 pb-3 border-b border-gray-200"><span class="text-gray-500">Sobre su obra /</span> Premios</h3>
 
@@ -33,6 +49,22 @@ const title = "Premios";
     margin-top: 6px;
     font-style: italic;
   }
+  .premio-destacado .premio-info > :global(article > p:first-of-type)::first-letter,
+  .premio-destacado .premio-info > :global(p:first-of-type)::first-letter {
+    float: left;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    line-height: 1.25;
+    color: #1f2937;
+  }
+  .premio-info :global(a) {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  .premio-info :global(a:hover) {
+    text-decoration: underline;
+  }
 
   @media (max-width: 768px) {
     .premio-section { flex-direction: column; gap: 1rem; }
@@ -41,124 +73,22 @@ const title = "Premios";
   }
 </style>
 
-<h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">Premio Iberoamericano Manuel Rojas</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800"><strong>El Premio Iberoamericano de Narrativa Manuel Rojas</strong> es el máximo reconocimiento que el Estado de Chile otorga a los creadores literarios iberoamericanos. El Premio, que cuenta con el patrocinio de la <strong>Fundación Manuel Rojas</strong>, es otorgado por el <em>Consejo Nacional de la Cultura y las Artes</em> del Gobierno de Chile y es definido por un jurado internacional.</p>
-    <p class="mb-4 leading-relaxed text-gray-600">El Premio Manuel Rojas se entrega una vez al año a un autor o autora de reconocida trayectoria, cuya obra literaria destaca a nivel iberoamericano. El Premio se entregó por primera vez el año 2012 y contempla un diploma, una medalla y la suma de 60.000 dólares, lo que lo sitúa como uno de los más relevantes en el mundo de habla hispana y lusófona.</p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Premio-Manuel-Rojas.webp" alt="Premio Manuel Rojas" />
-    <div class="img-caption">Emblema del Premio, compuesto por la imagen del sacapuntas y la firma de Manuel Rojas, sobre un manuscrito del autor.</div>
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premio Manuel Rojas / 2017: Hebe Uhart</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600">El premio Manuel Rojas / 2017 ha distinguido nuevamente a un narrador argentino: la escritora <strong>Hebe Uhart</strong>, nacida en 1936 en la ciudad de Moreno y a la que el jurado del premio ha definido "como una persona que mira, y cuando dice mira quiere decir escucha, quiere decir que los relatos de sus libros siguen una línea que no se guía por el impacto de los acontecimientos, sino por el deseo de captar el detalle, almacenar en la memoria el microcosmos contemplado y, recién entonces, traer las historias de vuelta como si estuvieran ocurriendo ahora en este mundo".</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><strong>Uhart</strong> es autora de una veintena de títulos, entre los que destacan su más reciente obra "De la Patagonia a México" (2015) y otras como "Visto y oído" (2012) y "Viajera crónica" (2011). <strong>Uhart</strong> se desempeña también como docente y colaboradora de importantes medios de comunicación internacionales, en sus palabras de agradecimiento señaló: "leí <em>Hijo de ladrón</em> y a las veinte páginas pensé ¿cómo es posible que yo lo desconozca? Es potente y directo como a mi me gustan los escritores…"</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><a href="https://drive.google.com/file/d/1kee-QjMnJMM31x2aeT1QQkvDCo6gBSeE/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Palabras de agradecimiento de Hebe Uhart</a></p>
-    <p class="mb-4 leading-relaxed text-gray-600"><em>Jurado 2017: César Aira (Argentina), Martín Kohan (Argentina), Jorge Volpi (México), Alejandra Costamagna (Chile), Ramón Díaz Eterovic (Chile).</em></p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Hebe-Uhart-Premio-Manuel-Rojas.webp" alt="Hebe Uhart" />
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premio Manuel Rojas / 2016: César Aira</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600">En el Palacio La Moneda, la presidenta Michelle Bachelet reconoció al escritor argentino <strong>César Aira</strong> con el Premio Iberoamericano de Narrativa Manuel Rojas / 2016. <strong>Aira</strong>, que nació en 1949 en Coronel Pringles – Argentina, es considerado como uno de los autores más prolíficos de su país por haber desarrollado una labor literaria que cubre prácticamente todos los campos: traductor, novelista, dramaturgo, periodista y ensayista. La crítica asegura que su obra está marcada por la originalidad, la subversión y la capacidad de sorpresa. Entre sus más de 70 novelas destacan: "Ema, la cautiva" (1981), "Embalse" (1987), "Cumpleaños" (2000), "Parménides" (2006) y "El mármol" (2011).</p>
-    <p class="mb-4 leading-relaxed text-gray-600">Durante su paso por Santiago, <strong>Aira</strong> señaló: "estos días mi nombre se está asociando, siquiera periodísticamente, al de Manuel Rojas, nombre que puedo usar como talismán protector. Su fórmula <em>la oscura vida radiante</em>, es la mejor estrategia para evitar la asimilación, sin perder poder. Y el guardián de esa oscuridad es el joven pobre que está en el corazón de su obra".</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><a href="https://drive.google.com/file/d/1CQdmAU08cHlR66M0YQLEvLGCvcKi_0dV/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Palabras de agradecimiento de César Aira</a></p>
-    <p class="mb-4 leading-relaxed text-gray-600"><em>Jurado 2016: Margo Glantz (México), Christopher Domínguez (México), Gioconda Belli (Nicaragua), Álvaro Bisama (Chile), Poli Délano (Chile).</em></p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Premio-Manuel-Rojas-Cesar-Aira.webp" alt="César Aira" />
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premio Manuel Rojas / 2015: Margo Glantz</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600">La escritora y ensayista mexicana <strong>Margo Glantz</strong> obtuvo el Premio Manuel Rojas / 2015. <strong>Glantz</strong> (1930) nació en Ciudad de México de padres judíos emigrados de Ucrania, por lo que sin duda temas como la identidad, la auto ficción y el viaje están muy presentes a lo largo de su obra, iniciada con la novela "Las mil y una calorías" (1978). En su libro "Las genealogías", que tiene varias versiones, ha repasado su biografía y a través de ella la historia de México.</p>
-    <p class="mb-4 leading-relaxed text-gray-600">Al recibir la noticia, <strong>Glantz</strong> —quién es miembro de la Academia Mexicana de la Lengua— señaló: "Me atrae en Rojas la pluralidad de voces, su lirismo, su manera de manejar el fragmento, ejemplo del cual es su famosa intercalación que se conoce como <em>la herida</em>… sí, la fragmentación es quizás una de las características más definitivas de mi propia escritura, por lo que me siento muy cercana a Rojas."</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><a href="https://drive.google.com/file/d/1eJPBz052HuyVaZnDE84dxu4ubSrPKy93/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Palabras de agradecimiento de Margo Glantz</a></p>
-    <p class="mb-4 leading-relaxed text-gray-600"><em>Jurado 2015: Horacio Castellanos Moya (El Salvador), Miguel Barnet (Cuba), Sergio Ramírez Mercado (Nicaragua), Vivian Lavín (Chile), Adriana Valdés (Chile).</em></p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Margo-Glanz-Moneda.webp" alt="Margo Glantz" />
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premio Manuel Rojas / 2014: Horacio Castellanos Moya</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600">El escritor salvadoreño <strong>Horacio Castellanos Moya</strong> ha ganado el Premio Manuel Rojas / 2014. Definido por Roberto Bolaño como un "melancólico que escribe como si viviera en el fondo de alguno de los muchos volcanes de su país", El Salvador. <strong>Castellanos Moya</strong> es una de las voces más provocadoras y originales de la literatura centroamericana de posguerra. Su obra es una exploración crítica de la temática y retórica de la violencia. La gratuidad del crimen, los abusos de la derecha y de la izquierda, el deterioro de las utopías revolucionarias y el desencanto de los que lucharon por ellas, son algunos de los motivos que aparecen en sus historias.</p>
-    <p class="mb-4 leading-relaxed text-gray-600">Al recibir el premio <strong>Castellanos Moya</strong> señaló: "Tiene para mi un especial significado que este premio lleve el nombre de Manuel Rojas: un escritor hecho a sí mismo, un sobreviviente a su aventura vital, quien logró convertir sus propias experiencias y las de los hombres con quienes compartió su tiempo, en materias narrativas para sus espléndidas ficciones. A eso he dedicado también yo mis mejores energías".</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><a href="https://drive.google.com/file/d/17JBNUMXhS0haF4MVLn6dbJizJuV7wWx8/view?usp=drive_link" target="_blank" rel="noopener" class="text-blue-500 hover:underline">Palabras de agradecimiento de Horacio Castellanos Moya</a></p>
-    <p class="mb-4 leading-relaxed text-gray-600"><em>Jurado 2014: Ana María Schoua (Argentina), Edmundo Paz Soldán (Bolivia), Santiago Rocagliolo (Perú), Patricia Espinosa (Chile), Chantal Signorio (Chile).</em></p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Castellanos-Moya.webp" alt="Horacio Castellanos Moya" />
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premio Manuel Rojas / 2013: Ricardo Piglia</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600">El escritor argentino <strong>Ricardo Piglia</strong> fue escogido como ganador del Premio Iberoamericano de Narrativa Manuel Rojas / 2013, otorgado por segundo año consecutivo por el Consejo Nacional de la Cultura y las Artes, en Valparaíso. El autor trasandino, calificado por el jurado como "un autor imprescindible que ha abierto los horizontes de la narrativa en la lengua española", se enteró a través de la llamada telefónica que el Ministro de Cultura, Roberto Ampuero, realizó en la Biblioteca Severín de Valparaíso, para informarle que era el ganador. Luego de recibir el premio y en una entrevista realizada por el escritor chileno Roberto Contreras, Piglia compara a Manuel Rojas con el mítico narrador argentino Roberto Arlt.</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><em>Jurado 2013: Leila Guerrero (Argentina), Juan Gabriel Vásquez (Colombia), Alonso Cueto (Perú), Alejandro Zambra (Chile), Álvaro Bisama (Chile).</em></p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Ricardo-Piglia-Premio-Manuel-Rojas-1024x269.webp" alt="Ricardo Piglia" />
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premio Manuel Rojas / 2012: Rubem Fonseca</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600">El escritor brasileño <strong>Rubem Fonseca</strong> ganó la primera edición del Premio de Narrativa Manuel Rojas / 2012 equivalente, en el campo de la narrativa, al Premio de Poesía Pablo Neruda. La deliberación fue realizada en Santiago de Chile por un jurado internacional, en septiembre de 2012. Fonseca es uno de los escritores actuales más reconocido en el continente; a través de sus policiales, su escritura seca y cortante, describe maravillosamente la cruda realidad de los barrios bajos de Rio de Janeiro.</p>
-    <p class="mb-4 leading-relaxed text-gray-600"><em>Jurado 2012: Martín Caparrós (Argentina), Iván Thays (Perú), Roberto González Echevarría (Cuba), Carolina Rivas (Chile), Camilo Marks (Chile).</em></p>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/rubem_fonseca2.webp" alt="Rubem Fonseca" />
-  </div>
-</div>
-
-<hr class="border-t border-gray-200 my-8">
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Premios Recibidos por Manuel Rojas</h2>
-
-<div class="premio-section">
-  <div class="premio-info">
-    <p class="mb-4 leading-relaxed text-gray-600 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:mr-2 first-letter:leading-tight first-letter:text-gray-800">Manuel Rojas recibió numerosos premios durante su vida, inicialmente participó en concursos literarios de diarios argentinos y chilenos, como una forma de ganarse la vida, para luego ser reconocido con los mayores honores tanto en Chile como en el extranjero. Estos son algunos de los premios recibidos por Manuel Rojas:</p>
-    <ul class="list-disc pl-6 mb-4 space-y-1 text-gray-600">
-      <li>1922: Segundo lugar en el <em>Concurso del Periódico La Mañana</em> de Buenos Aires – Argentina, con el cuento <strong><a target="_blank" href="/libros/hombres-del-sur/" class="text-blue-500 hover:underline">Laguna</a></strong>. El primer premio lo obtuvo Elías Castelnuovo.</li>
-      <li>1923: Tercer lugar en el <em>Concurso de relatos de la Revista Caras y Caretas</em> de Buenos Aires – Argentina, con el cuento «Leyendas de la Patagonia: El hombre de los ojos azules». Más tarde este relato se titulará sólo <strong><a target="_blank" href="/libros/hombres-del-sur/" class="text-blue-500 hover:underline">El hombre de los ojos azules</a></strong>.</li>
-      <li>1929: <em>Premio Marcial Martínez</em> y <em>Premio Atenea</em> de la Universidad de Concepción. Ambos por <strong><a target="_blank" href="/libros/el-delincuente/" class="text-blue-500 hover:underline">El delincuente</a></strong>, su segunda colección de cuentos.</li>
-      <li>1930: <em>Premio Literario Marcial Martínez</em> de la Facultad de Ciencias Jurídicas y Sociales de la Universidad de Chile.</li>
-      <li>1931: Primer premio del <em>Concurso del Periódico La Nación</em> de Santiago de Chile, con su novela <strong><a target="_blank" href="/libros/lanchas-en-la-bahia/" class="text-blue-500 hover:underline">Lanchas en la bahía</a></strong>.</li>
-      <li>1957: <em>Premio Nacional de Literatura</em> de Chile, otorgado por unanimidad del jurado.</li>
-      <li>1958: <em>Premio Mauricio Fabry</em> de la Cámara Chilena del Libro, por su novela <strong><a target="_blank" href="/libros/mejor-que-el-vino/" class="text-blue-500 hover:underline">Mejor que el vino</a></strong>.</li>
-    </ul>
-  </div>
-  <div class="premio-cover">
-    <img src="/media/2023/06/Manuel-Rojas-El-Hombre-de-los-Ojos-Azules-600x168-1.webp" alt="Manuel Rojas" />
-  </div>
-</div>
+{
+  rendered.map(({ premio, Content }, index) => (
+    <>
+      {index > 0 && <hr class="border-t border-gray-200 my-8" />}
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8">{premio.data.titulo}</h2>
+      <article class:list={['premio-section', { 'premio-destacado': premio.data.destacar_inicio }]}>
+        <div class="premio-info">
+          <Content />
+        </div>
+        <div class="premio-cover">
+          <img src={premio.data.imagen} alt={premio.data.titulo} />
+          {premio.data.texto_imagen && <div class="img-caption">{premio.data.texto_imagen}</div>}
+        </div>
+      </article>
+    </>
+  ))
+}
 
 </Layout>

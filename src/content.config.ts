@@ -166,4 +166,36 @@ const obra_secciones = defineCollection({
   }),
 });
 
-export const collections = { noticias, slider, libros, obra_secciones };
+const premios = defineCollection({
+  loader: glob({ pattern: '**/*.mdoc', base: './src/content/premios' }),
+  schema: z.object({
+    titulo: z.string(),
+    imagen: z.string(),
+    texto_imagen: z.string().optional(),
+    destacar_inicio: z.boolean().optional(),
+    orden: z.number().optional(),
+  }),
+});
+
+const publicaciones = defineCollection({
+  loader: glob({ pattern: '**/*.mdoc', base: './src/content/publicaciones' }),
+  schema: z.object({
+    titulo: z.string(),
+    subtitulo: z.string().optional(),
+    autor: z.string().optional(),
+    editorial_info: z.string().optional(),
+    imagen: z.string(),
+    titulo_url: z.string().optional(),
+    texto_destacado: z.string().optional(),
+    orden: z.number().optional(),
+  }),
+});
+
+const estudios = defineCollection({
+  loader: glob({ pattern: '**/*.mdoc', base: './src/content/estudios' }),
+  schema: z.object({
+    titulo: z.string(),
+  }),
+});
+
+export const collections = { noticias, slider, libros, obra_secciones, premios, publicaciones, estudios };

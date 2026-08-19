@@ -23,13 +23,16 @@ Astro 7 static site for **Fundación Manuel Rojas** (manuelrojas.cl). Netlify ad
 
 ## Content
 
-Three collections in `src/content.config.ts`:
+Six collections in `src/content.config.ts`:
 
 | Collection | Loader | Files | Rendered at |
 |---|---|---|---|
 | `noticias` | `glob` | `src/content/noticias/*/index.mdoc` | `/noticias/[slug]/` |
 | `libros` | `glob` | `src/content/libros/*.mdoc` | `/libros/[slug]/` |
 | `slider` | **Custom** | `src/content/slider/<slug>.mdoc` + `src/content/slider/<slug>/texto.mdx` | Home page slider |
+| `premios` | `glob` | `src/content/premios/*.mdoc` | `/sobre-su-obra/premios/` |
+| `publicaciones` | `glob` | `src/content/publicaciones/*.mdoc` | `/sobre-su-obra/publicaciones_estudios/` |
+| `estudios` | `glob` | `src/content/estudios/*.mdoc` | `/sobre-su-obra/publicaciones_estudios/` (sección ESTUDIOS) |
 
 **Custom slider loader** (`sliderLoader()`): manually parses YAML frontmatter from `.mdoc` and reads the sibling MDX file. It is not a standard Astro loader; editing the schema or loader requires understanding the hand-rolled parser.
 
