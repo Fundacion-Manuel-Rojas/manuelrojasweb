@@ -57,7 +57,7 @@ const {
 const siteUrl = 'https://manuelrojas.cl';
 const siteName = 'Fundación Manuel Rojas';
 const defaultDescription = 'Fundación Manuel Rojas - Preservando y difundiendo la vida y obra del escritor chileno Manuel Rojas (1896-1973), autor de «Hijo de ladrón».';
-const defaultImagePath = '/media/default_noticias.webp';
+const defaultImagePath = '/manuelrojas_header.webp';
 const defaultImage = `${siteUrl}${defaultImagePath}`;
 
 const rawImage = image || defaultImagePath;
@@ -103,8 +103,8 @@ const canonicalUrl = canonical
   <meta property="og:image" content={fullImage} />
   <meta property="og:image:secure_url" content={fullImage} />
   <meta property="og:image:alt" content={title} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="auto" />
+  <meta property="og:image:height" content="auto" />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content={ogType} />
   <meta property="og:locale" content="es_CL" />
