@@ -68,7 +68,7 @@ const rendered = await Promise.all(
 
   @media (max-width: 768px) {
     .premio-section { flex-direction: column; gap: 1rem; }
-    .premio-cover { width: 100%; }
+    .premio-cover { width: 100%; order: -1; }
     .premio-cover img { max-height: 280px; }
   }
 </style>
@@ -90,5 +90,12 @@ const rendered = await Promise.all(
     </>
   ))
 }
+
+<script>
+  document.querySelectorAll('.premio-info a[href]').forEach((a) => {
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  });
+</script>
 
 </Layout>
