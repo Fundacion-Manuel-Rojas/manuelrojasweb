@@ -2,6 +2,9 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   sharp: true
+minimumReleaseAgeExclude:
+  - '@astrojs/runtime@0.1.2'
+  - astro@7.4.13
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
