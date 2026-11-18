@@ -39,12 +39,22 @@
   border: 1px solid #9ca3af;
   border-radius: 0.5rem;
   z-index: -1;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 .book-stack::before {
-  transform: translate(12px, 12px);
+  transform: translate(0, 0);
 }
 .book-stack::after {
+  transform: translate(0, 0);
+}
+.book-stack:hover::before {
+  transform: translate(12px, 12px);
+  opacity: 1;
+}
+.book-stack:hover::after {
   transform: translate(6px, 6px);
+  opacity: 1;
 }
 
 img {
