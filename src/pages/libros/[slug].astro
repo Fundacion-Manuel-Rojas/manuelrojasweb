@@ -87,7 +87,7 @@ const description = `${libro.data.titulo}, de Manuel Rojas. ${categoriaLabel}. $
     <div class="obra-images flex gap-4 flex-wrap justify-center">
       {allImages.map((img: any) => (
         img.link ? (
-          <a href={img.link} target="_blank" rel="noopener" class="flex-shrink-0">
+          <a href={img.link} target="_blank" rel="noopener" class="flex-shrink-0 book-stack">
             <img src={img.src} alt="" title={libro.data.titulo} class="rounded-lg border border-gray-300 shadow-sm max-w-full h-auto my-4 mx-auto block">
           </a>
         ) : (

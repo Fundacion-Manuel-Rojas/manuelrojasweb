@@ -25,6 +25,28 @@
   object-fit: scale-down;
 }
 
+/* Efecto de "documento de varias páginas" para portadas con enlace (PDF o externo) */
+.book-stack {
+  position: relative;
+  z-index: 0;
+}
+.book-stack::before,
+.book-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  border: 1px solid #9ca3af;
+  border-radius: 0.5rem;
+  z-index: -1;
+}
+.book-stack::before {
+  transform: translate(12px, 12px);
+}
+.book-stack::after {
+  transform: translate(6px, 6px);
+}
+
 img {
   max-width: 100%;
   height: auto;
